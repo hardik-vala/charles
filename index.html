@@ -1,0 +1,287 @@
+<!doctype html>
+<html ng-app>
+  <head>
+    <link rel="stylesheet" href="/lib/bootstrap.min.css">
+    <link rel="stylesheet" href="/lib/bootstrap-theme.min.css">
+    <script src="/lib/angular.min.js"></script>
+    <script src="/lib/ui-bootstrap-tpls-0.12.1.min.js"></script>
+    
+    <!-- BRAT -->
+    <link rel="stylesheet" type="text/css" href="/lib/brat/static/style-vis.css"/>
+    <script type="text/javascript" src="/lib/brat/client/lib/head.load.min.js"></script>
+    <script type="text/javascript">
+        var bratLocation = '/lib/brat';
+head.js(
+    // External libraries
+    bratLocation + '/client/lib/jquery.min.js',
+    bratLocation + '/client/lib/jquery.svg.min.js',
+    bratLocation + '/client/lib/jquery.svgdom.min.js',
+
+    // brat helper modules
+    bratLocation + '/client/src/configuration.js',
+    bratLocation + '/client/src/util.js',
+    bratLocation + '/client/src/annotation_log.js',
+    bratLocation + '/client/lib/webfont.js',
+
+    // brat modules
+    bratLocation + '/client/src/dispatcher.js',
+    bratLocation + '/client/src/url_monitor.js',
+    bratLocation + '/client/src/visualizer.js'
+);
+var webFontURLs = [
+    bratLocation + '/static/fonts/Astloch-Bold.ttf',
+    bratLocation + '/static/fonts/PT_Sans-Caption-Web-Regular.ttf',
+    bratLocation + '/static/fonts/Liberation_Sans-Regular.ttf'
+];
+    </script>
+    <!-- END BRAT -->
+  </head>
+  <body>
+      <!-- override a few style-vis.css settings for the embedded version to make things larger -->
+<style type="text/css">
+text { font-size: 15px; }
+.span text { font-size: 10px; }
+.arcs text { font-size: 9px; }
+</style>
+        <script type="text/javascript" src="/lib/json2.js"></script>
+
+<script type="text/javascript">
+    head.ready(function() {
+        var collInput = $('#coll-input');
+        var docInput = $('#doc-input');
+        var liveDiv = $('#embedding-live-example');
+
+        // Time for some "real" brat coding, let's hook into the dispatcher
+        var liveDispatcher = Util.embed('embedding-live-example',
+                $.extend({'collection': null}, collData),
+                $.extend({}, docData), webFontURLs);
+
+        var renderError = function() {
+            // liveDiv.css({'border': '2px solid red'}); // setting this blows the layout
+            collInput.css({'border': '2px solid red'});
+            docInput.css({'border': '2px solid red'});
+        };
+
+        liveDispatcher.on('renderError: Fatal', renderError);
+
+        var collInputHandler = function() {
+            var collJSON;
+            try {
+                collJSON = JSON.parse(collInput.val());
+                collInput.css({'border': '2px inset'});
+            } catch (e) {
+                // Not properly formatted JSON...
+                collInput.css({'border': '2px solid red'});
+                return;
+            }
+
+            try {
+                liveDispatcher.post('collectionLoaded',
+                        [$.extend({'collection': null}, collJSON)]);
+                //liveDiv.css({'border': '2px inset'});  // setting this blows the layout
+                docInput.css({'border': '2px inset'});
+            } catch(e) {
+                console.error('collectionLoaded went down with:', e);
+                //liveDiv.css({'border': '2px solid red'});
+                collInput.css({'border': '2px solid red'});
+            }
+        };
+
+        var docInputHandler = function() {
+            var docJSON;
+            try {
+                docJSON = JSON.parse(docInput.val());
+                docInput.css({'border': '2px inset'});
+            } catch (e) {
+                docInput.css({'border': '2px solid red'});
+                return;
+            }
+
+            try {
+                liveDispatcher.post('requestRenderData', [$.extend({}, docJSON)]);
+                // liveDiv.css({'border': '2px inset'});  // setting this blows the layout
+                collInput.css({'border': '2px inset'});
+            } catch(e) {
+                console.error('requestRenderData went down with:', e);
+                // liveDiv.css({'border': '2px solid red'});
+                collInput.css({'border': '2px solid red'});
+            }
+        };
+
+        // Inject our current example as a start
+        var collJSON = JSON.stringify(collData, undefined, '    ');
+        docJSON = JSON.stringify(docData, undefined, '    ')
+        // pack those just a bit
+        var packJSON = function(s) {
+            // replace any space with ' ' in non-nested curly brackets
+            s = s.replace(/(\{[^\{\}\[\]]*\})/g, 
+                          function(a, b) { return b.replace(/\s+/g, ' '); });
+            // replace any space with ' ' in [] up to nesting depth 1
+            s = s.replace(/(\[(?:[^\[\]\{\}]|\[[^\[\]\{\}]*\])*\])/g, 
+                          function(a, b) { return b.replace(/\s+/g, ' '); });
+            return s
+        }
+        collInput.text(packJSON(collJSON));
+        docInput.text(packJSON(docJSON));
+
+        var listenTo = 'propertychange keyup input paste';
+        collInput.bind(listenTo, collInputHandler);
+        docInput.bind(listenTo, docInputHandler);
+    });
+    
+    
+var collData = {
+    entity_types: [ {
+            type   : 'Person',
+            /* The labels are used when displaying the annotion, in this case
+                we also provide a short-hand "Per" for cases where
+                abbreviations are preferable */
+            labels : ['Person', 'Per'],
+            // Blue is a nice colour for a person?
+            bgColor: '#7fa2ff',
+            // Use a slightly darker version of the bgColor for the border
+            borderColor: 'darken'
+    } ]
+};
+
+var docData = {
+    // Our text of choice
+    text     : "Ed O'Kelley was the man who shot the man who shot Jesse James.",
+    // The entities entry holds all entity annotations
+    entities : [
+        /* Format: [${ID}, ${TYPE}, [[${START}, ${END}]]]
+            note that range of the offsets are [${START},${END}) */
+        ['T1', 'Person', [[0, 11]]],
+        ['T2', 'Person', [[20, 23]]],
+        ['T3', 'Person', [[37, 40]]],
+        ['T4', 'Person', [[50, 61]]],
+    ],
+};
+
+        </script>
+    <div>
+      <label>Name:</label>
+      <input type="text" ng-model="yourName" placeholder="Enter a name here">
+      <hr>
+      <h1>Hello {{yourName}}!</h1>
+    </div>
+    <div id="embedding-live-example" class="hasSVG" style="display: block; height: 51.5px;"><svg version="1.1" style="width: 970px; height: 51.5px;" class=""><!-- document: undefined/undefined --><defs><filter id="Gaussian_Blur"><fegaussianblur in="SourceGraphic" stddeviation="2"></fegaussianblur></filter><marker id="drag_arrow" refX="5" refY="2.5" markerWidth="5" markerHeight="5" orient="auto" markerUnits="strokeWidth" class="drag_fill"><polyline points="0,0 5,2.5 0,5 0.2,2.5"></polyline></marker><marker id="arrow_triangle_5_green" refX="5" refY="2.5" markerWidth="5" markerHeight="5" orient="auto" markerUnits="strokeWidth" fill="green"><polyline points="0,0 5,2.5 0,5 0.4166666666666667,2.5"></polyline></marker><marker id="arrow_triangle_5_000000" refX="5" refY="2.5" markerWidth="5" markerHeight="5" orient="auto" markerUnits="strokeWidth" fill="#000000"><polyline points="0,0 5,2.5 0,5 0.4166666666666667,2.5"></polyline></marker><marker id="arrow_triangle_5_purple" refX="5" refY="2.5" markerWidth="5" markerHeight="5" orient="auto" markerUnits="strokeWidth" fill="purple"><polyline points="0,0 5,2.5 0,5 0.4166666666666667,2.5"></polyline></marker></defs><g class="background"><rect x="0" y="4.5" width="970" height="49.5" class="background0"></rect></g><g class="glow"></g><g class="highlight"><rect x="24" y="35.5" width="77.900390625" height="15.5" fill="#e5ecfe" rx="3" ry="3"></rect><rect x="161.42724609375" y="35.5" width="29.1796875" height="15.5" fill="#e5ecfe" rx="3" ry="3"></rect><rect x="226.6240234375" y="35.5" width="28.35205078125" height="15.5" fill="#e8fbe8" rx="3" ry="3"></rect><rect x="286.20751953125" y="35.5" width="29.1796875" height="15.5" fill="#e5ecfe" rx="3" ry="3"></rect><rect x="351.404296875" y="35.5" width="28.35205078125" height="15.5" fill="#e8fbe8" rx="3" ry="3"></rect><rect x="393.638671875" y="35.5" width="87.53173828125" height="15.5" fill="#e5ecfe" rx="3" ry="3"></rect></g><g class="text"><text x="0" y="0"><tspan x="24" y="47.5" data-chunk-id="0">Ed O'Kelley </tspan><tspan x="105.900390625" y="47.5" data-chunk-id="1">was </tspan><tspan x="136.5751953125" y="47.5" data-chunk-id="2" class="">the </tspan><tspan x="161.42724609375" y="47.5" data-chunk-id="3" class="">man </tspan><tspan x="194.60693359375" y="47.5" data-chunk-id="4">who </tspan><tspan x="226.6240234375" y="47.5" data-chunk-id="5" class="">shot </tspan><tspan x="261.35546875" y="47.5" data-chunk-id="6" class="">the </tspan><tspan x="286.20751953125" y="47.5" data-chunk-id="7" class="">man </tspan><tspan x="319.38720703125" y="47.5" data-chunk-id="8" class="">who </tspan><tspan x="351.404296875" y="47.5" data-chunk-id="9" class="">shot </tspan><tspan x="393.638671875" y="47.5" data-chunk-id="10" class="">Jesse James.</tspan></text></g><g transform="translate(0, 47)"><g></g><g transform="translate(24, 0)"><g></g><g class="span"><rect x="21.5" y="-28.5" width="35.6845703125" height="10" class="span_Person span_default" fill="#7fa2ff" stroke="#002998" rx="2" ry="1" data-span-id="T1" data-fragment-id="0"></rect><text x="38.5" y="-20.5" fill="#000000">Person</text><path d="M0,-13.5C0,-17.5 38.5,-13.5 38.5,-17.5C38.5,-13.5 77.900390625,-17.5 77.900390625,-13.5" class="curly" stroke="#002998"></path></g></g><g transform="translate(105.900390625, 0)"><g></g></g><g transform="translate(136.5751953125, 0)"><g></g></g><g transform="translate(161.42724609375, 0)"><g></g><g class="span"><rect x="4.5" y="-28.5" width="19.5615234375" height="10" class="span_Person span_default" fill="#7fa2ff" stroke="#002998" rx="2" ry="1" data-span-id="T2" data-fragment-id="0"></rect><text x="14.5" y="-20.5" fill="#000000">Per</text><path d="M0,-13.5C0,-17.5 14.5,-13.5 14.5,-17.5C14.5,-13.5 29.1796875,-17.5 29.1796875,-13.5" class="curly" stroke="#002998"></path></g></g><g transform="translate(194.60693359375, 0)"><g></g></g><g transform="translate(226.6240234375, 0)"><g></g><g class="span"><rect x="-0.5" y="-28.5" width="31.2314453125" height="10" class="span_Assassination span_default" fill="lightgreen" stroke="#148414" rx="2" ry="1" data-span-id="E2" data-fragment-id="0"></rect><text x="14.5" y="-20.5" fill="#000000">Assas</text><path d="M0,-13.5C0,-17.5 14.5,-13.5 14.5,-17.5C14.5,-13.5 28.35205078125,-17.5 28.35205078125,-13.5" class="curly" stroke="#148414"></path></g></g><g transform="translate(261.35546875, 0)"><g></g></g><g transform="translate(286.20751953125, 0)"><g></g><g class="span"><rect x="4.5" y="-28.5" width="19.5615234375" height="10" class="span_Person span_default" fill="#7fa2ff" stroke="#002998" rx="2" ry="1" data-span-id="T3" data-fragment-id="0"></rect><text x="14.5" y="-20.5" fill="#000000">Per</text><path d="M0,-13.5C0,-17.5 14.5,-13.5 14.5,-17.5C14.5,-13.5 29.1796875,-17.5 29.1796875,-13.5" class="curly" stroke="#002998"></path></g></g><g transform="translate(319.38720703125, 0)"><g></g></g><g transform="translate(351.404296875, 0)"><g></g><g class="span"><rect x="-0.5" y="-28.5" width="31.2314453125" height="10" class="span_Assassination span_default" fill="lightgreen" stroke="#148414" rx="2" ry="1" data-span-id="E1" data-fragment-id="0"></rect><text x="14.5" y="-20.5" fill="#000000">Assas</text><path d="M0,-13.5C0,-17.5 14.5,-13.5 14.5,-17.5C14.5,-13.5 28.35205078125,-17.5 28.35205078125,-13.5" class="curly" stroke="#148414"></path></g></g><g transform="translate(393.638671875, 0)"><g></g><g class="span"><rect x="19.5" y="-28.5" width="48.46288299560547" height="10" class="span_Person span_default" fill="#7fa2ff" stroke="#002998" rx="2" ry="1" data-span-id="T4" data-fragment-id="0"></rect><text x="43.5" y="-20.5" fill="#000000">Person <tspan class="glyph">★</tspan></text><path d="M0,-13.5C0,-17.5 43.5,-13.5 43.5,-17.5C43.5,-13.5 87.53173828125,-17.5 87.53173828125,-13.5" class="curly" stroke="#002998"></path></g></g><g class="arcs"><g data-from="E1" data-to="T3"><text x="330.586669921875" y="-26" fill="green" data-arc-role="Perpetrator" data-arc-origin="E1" data-arc-target="T3">Perp</text><path d="M320.081298828125,-28.5L319.081298828125,-28.5Q314.6751708984375,-28.5 310.26904296875,-27.5" marker-end="url(#arrow_triangle_5_green)" style="stroke: green"></path><path d="M341.092041015625,-28.5L342.092041015625,-28.5Q346.4981689453125,-28.5 350.904296875,-23.5" style="stroke: green"></path></g><g data-from="E1" data-to="T4" class=""><text x="397.63720703125" y="-26" fill="#000000" data-arc-role="Victim" data-arc-origin="E1" data-arc-target="T4" class="">Vict</text><path d="M389.1357421875,-28.5L388.1357421875,-28.5Q385.1357421875,-28.5 382.1357421875,-23.5" style="stroke: #000000"></path><path d="M406.138671875,-28.5L407.138671875,-28.5Q410.138671875,-28.5 413.138671875,-27.5" marker-end="url(#arrow_triangle_5_000000)" style="stroke: #000000"></path></g><g data-from="E2" data-to="T2"><text x="205.806396484375" y="-26" fill="green" data-arc-role="Perpetrator" data-arc-origin="E2" data-arc-target="T2">Perp</text><path d="M195.301025390625,-28.5L194.301025390625,-28.5Q189.8948974609375,-28.5 185.48876953125,-27.5" marker-end="url(#arrow_triangle_5_green)" style="stroke: green"></path><path d="M216.311767578125,-28.5L217.311767578125,-28.5Q221.7178955078125,-28.5 226.1240234375,-23.5" style="stroke: green"></path></g><g data-from="E2" data-to="T3"><text x="274.031494140625" y="-26" fill="#000000" data-arc-role="Victim" data-arc-origin="E2" data-arc-target="T3">Vict</text><path d="M265.530029296875,-28.5L264.530029296875,-28.5Q260.9427490234375,-28.5 257.35546875,-23.5" style="stroke: #000000"></path><path d="M282.532958984375,-28.5L283.532958984375,-28.5Q287.1202392578125,-28.5 290.70751953125,-27.5" marker-end="url(#arrow_triangle_5_000000)" style="stroke: #000000"></path></g><g data-from="T2" data-to="T1"><text x="123.555908203125" y="-26" fill="purple" data-arc-role="Anaphora" data-arc-origin="T2" data-arc-target="T1" data-arc-ed="R1">Anaphora</text><path d="M103.039794921875,-28.5L96.1845703125,-28.5Q88.6845703125,-28.5 81.1845703125,-27.5" marker-end="url(#arrow_triangle_5_purple)" style="stroke: purple" stroke-dasharray="3,3"></path><path d="M144.072021484375,-28.5L150.92724609375,-28.5Q158.42724609375,-28.5 165.92724609375,-23.5" style="stroke: purple" stroke-dasharray="3,3"></path></g></g></g><g class="sentnum"><a xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#undefined?focus=sent~1"><text x="18" y="47.5" data-sent="1">1</text></a><path d="M20,0L20,51.5"></path></g></svg></div>
+    <div id="live-io">
+    <p>
+        <textarea id="coll-input" style="display:block;float:left;width:40%;height:400px;font-size:11px;border:2px inset" placeholder="Enter JSON for the collection object here...">{
+    "entity_types": [
+        {
+            "type": "Person",
+            "labels": [ "Person", "Per" ],
+            "bgColor": "#7fa2ff",
+            "borderColor": "darken"
+        }
+    ],
+    "entity_attribute_types": [
+        {
+            "type": "Notorious",
+            "values": {
+                "Notorious": { "glyph": "★" }
+            },
+            "bool": "Notorious"
+        }
+    ],
+    "relation_types": [
+        {
+            "type": "Anaphora",
+            "labels": [ "Anaphora", "Ana" ],
+            "dashArray": "3,3",
+            "color": "purple",
+            "args": [
+                {
+                    "role": "Anaphor",
+                    "targets": [ "Person" ]
+                },
+                {
+                    "role": "Entity",
+                    "targets": [ "Person" ]
+                }
+            ]
+        }
+    ],
+    "event_types": [
+        {
+            "type": "Assassination",
+            "labels": [ "Assassination", "Assas" ],
+            "bgColor": "lightgreen",
+            "borderColor": "darken",
+            "arcs": [
+                {
+                    "type": "Victim",
+                    "labels": [ "Victim", "Vict" ]
+                },
+                {
+                    "type": "Perpetrator",
+                    "labels": [ "Perpetrator", "Perp" ],
+                    "color": "green"
+                }
+            ]
+        }
+    ]
+}</textarea>
+        <textarea id="doc-input" style="display:block;float:right;width:55%;height:400px;font-size:11px;border:2px inset" placeholder="Enter JSON for the document object here...">{
+    "text": "Ed O'Kelley was the man who shot the man who shot Jesse James.",
+    "entities": [
+        [
+            "T1",
+            "Person",
+            [ [ 0, 11 ] ]
+        ],
+        [
+            "T2",
+            "Person",
+            [ [ 20, 23 ] ]
+        ],
+        [
+            "T3",
+            "Person",
+            [ [ 37, 40 ] ]
+        ],
+        [
+            "T4",
+            "Person",
+            [ [ 50, 61 ] ]
+        ]
+    ],
+    "attributes": [ [ "A1", "Notorious", "T4" ] ],
+    "relations": [
+        [
+            "R1",
+            "Anaphora",
+            [ [ "Anaphor", "T2" ], [ "Entity", "T1" ] ]
+        ]
+    ],
+    "triggers": [
+        [
+            "T5",
+            "Assassination",
+            [ [ 45, 49 ] ]
+        ],
+        [
+            "T6",
+            "Assassination",
+            [ [ 28, 32 ] ]
+        ]
+    ],
+    "events": [
+        [
+            "E1",
+            "T5",
+            [ [ "Perpetrator", "T3" ], [ "Victim", "T4" ] ]
+        ],
+        [
+            "E2",
+            "T6",
+            [ [ "Perpetrator", "T2" ], [ "Victim", "T3" ] ]
+        ]
+    ]
+}</textarea>
+    </p>
+</div>
+  </body>
+</html>
