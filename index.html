@@ -1,287 +1,276 @@
-<!doctype html>
-<html ng-app>
-  <head>
-    <link rel="stylesheet" href="/lib/bootstrap.min.css">
-    <link rel="stylesheet" href="/lib/bootstrap-theme.min.css">
-    <script src="/lib/angular.min.js"></script>
-    <script src="/lib/ui-bootstrap-tpls-0.12.1.min.js"></script>
-    
-    <!-- BRAT -->
-    <link rel="stylesheet" type="text/css" href="/lib/brat/static/style-vis.css"/>
-    <script type="text/javascript" src="/lib/brat/client/lib/head.load.min.js"></script>
-    <script type="text/javascript">
-        var bratLocation = '/lib/brat';
-head.js(
-    // External libraries
-    bratLocation + '/client/lib/jquery.min.js',
-    bratLocation + '/client/lib/jquery.svg.min.js',
-    bratLocation + '/client/lib/jquery.svgdom.min.js',
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-GB" xml:lang="en-GB" xmlns="http://www.w3.org/1999/xhtml" data-ng-app="frankenbratApp">
 
-    // brat helper modules
-    bratLocation + '/client/src/configuration.js',
-    bratLocation + '/client/src/util.js',
-    bratLocation + '/client/src/annotation_log.js',
-    bratLocation + '/client/lib/webfont.js',
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>Frankenbrat</title>
 
-    // brat modules
-    bratLocation + '/client/src/dispatcher.js',
-    bratLocation + '/client/src/url_monitor.js',
-    bratLocation + '/client/src/visualizer.js'
-);
-var webFontURLs = [
-    bratLocation + '/static/fonts/Astloch-Bold.ttf',
-    bratLocation + '/static/fonts/PT_Sans-Caption-Web-Regular.ttf',
-    bratLocation + '/static/fonts/Liberation_Sans-Regular.ttf'
-];
-    </script>
-    <!-- END BRAT -->
-  </head>
-  <body>
-      <!-- override a few style-vis.css settings for the embedded version to make things larger -->
-<style type="text/css">
-text { font-size: 15px; }
-.span text { font-size: 10px; }
-.arcs text { font-size: 9px; }
-</style>
-        <script type="text/javascript" src="/lib/json2.js"></script>
+  <!-- AngularJS -->
+  <script src="/lib/angular.min.js"></script>
+  <script src="/lib/ui-bootstrap-tpls-0.12.1.min.js"></script>
 
-<script type="text/javascript">
-    head.ready(function() {
-        var collInput = $('#coll-input');
-        var docInput = $('#doc-input');
-        var liveDiv = $('#embedding-live-example');
+  <!-- Firebase -->
+  <script src="https://cdn.firebase.com/js/client/2.2.4/firebase.js"></script>
+  <!-- AngularFire -->
+  <script src="https://cdn.firebase.com/libs/angularfire/1.1.1/angularfire.min.js"></script>
 
-        // Time for some "real" brat coding, let's hook into the dispatcher
-        var liveDispatcher = Util.embed('embedding-live-example',
-                $.extend({'collection': null}, collData),
-                $.extend({}, docData), webFontURLs);
+  <link rel="stylesheet" href="/lib/bootstrap.min.css">
+  <link rel="stylesheet" href="/lib/bootstrap-theme.min.css">
+  <link rel="stylesheet" type="text/css" href="css/style.css" />
+  <link rel="stylesheet" type="text/css" href="css/jquery-theme/jquery-ui-redmond.css" />
+  <link rel="stylesheet" type="text/css" href="style-vis.css" />
 
-        var renderError = function() {
-            // liveDiv.css({'border': '2px solid red'}); // setting this blows the layout
-            collInput.css({'border': '2px solid red'});
-            docInput.css({'border': '2px solid red'});
-        };
-
-        liveDispatcher.on('renderError: Fatal', renderError);
-
-        var collInputHandler = function() {
-            var collJSON;
-            try {
-                collJSON = JSON.parse(collInput.val());
-                collInput.css({'border': '2px inset'});
-            } catch (e) {
-                // Not properly formatted JSON...
-                collInput.css({'border': '2px solid red'});
-                return;
-            }
-
-            try {
-                liveDispatcher.post('collectionLoaded',
-                        [$.extend({'collection': null}, collJSON)]);
-                //liveDiv.css({'border': '2px inset'});  // setting this blows the layout
-                docInput.css({'border': '2px inset'});
-            } catch(e) {
-                console.error('collectionLoaded went down with:', e);
-                //liveDiv.css({'border': '2px solid red'});
-                collInput.css({'border': '2px solid red'});
-            }
-        };
-
-        var docInputHandler = function() {
-            var docJSON;
-            try {
-                docJSON = JSON.parse(docInput.val());
-                docInput.css({'border': '2px inset'});
-            } catch (e) {
-                docInput.css({'border': '2px solid red'});
-                return;
-            }
-
-            try {
-                liveDispatcher.post('requestRenderData', [$.extend({}, docJSON)]);
-                // liveDiv.css({'border': '2px inset'});  // setting this blows the layout
-                collInput.css({'border': '2px inset'});
-            } catch(e) {
-                console.error('requestRenderData went down with:', e);
-                // liveDiv.css({'border': '2px solid red'});
-                collInput.css({'border': '2px solid red'});
-            }
-        };
-
-        // Inject our current example as a start
-        var collJSON = JSON.stringify(collData, undefined, '    ');
-        docJSON = JSON.stringify(docData, undefined, '    ')
-        // pack those just a bit
-        var packJSON = function(s) {
-            // replace any space with ' ' in non-nested curly brackets
-            s = s.replace(/(\{[^\{\}\[\]]*\})/g, 
-                          function(a, b) { return b.replace(/\s+/g, ' '); });
-            // replace any space with ' ' in [] up to nesting depth 1
-            s = s.replace(/(\[(?:[^\[\]\{\}]|\[[^\[\]\{\}]*\])*\])/g, 
-                          function(a, b) { return b.replace(/\s+/g, ' '); });
-            return s
+  <script type="text/javascript">
+    // Returns the value of a URL variable. (If it doesn't exist, then it returns null.)
+    function getQueryVariable(variable) {
+      var query = window.location.search.substring(1);
+      var vars = query.split("&");
+      for (var i = 0; i < vars.length; i++) {
+        var pair = vars[i].split("=");
+        if (pair[0] == variable) {
+          return pair[1];
         }
-        collInput.text(packJSON(collJSON));
-        docInput.text(packJSON(docJSON));
+      }
+      return null;
+    }
+  </script>
 
-        var listenTo = 'propertychange keyup input paste';
-        collInput.bind(listenTo, collInputHandler);
-        docInput.bind(listenTo, docInputHandler);
-    });
-    
-    
-var collData = {
-    entity_types: [ {
-            type   : 'Person',
-            /* The labels are used when displaying the annotion, in this case
-                we also provide a short-hand "Per" for cases where
-                abbreviations are preferable */
-            labels : ['Person', 'Per'],
-            // Blue is a nice colour for a person?
-            bgColor: '#7fa2ff',
-            // Use a slightly darker version of the bgColor for the border
-            borderColor: 'darken'
-    } ]
-};
+  <script type="text/javascript" src="head.load.min.js"></script>
+  <script type="text/javascript" src="lib/spin.min.js"></script>
+  <script type="text/javascript" src="js/app.js"></script>
+  <script type="text/javascript" src="js/controllers/spinnerController.js"></script>
+  <script type="text/javascript" src="js/controllers/docSelectorController.js"></script>
+  <script type="text/javascript" src="js/controllers/showController.js"></script>
+  <script type="text/javascript" src="js/controllers/deleteTagController.js"></script>
+  <script type="text/javascript" src="js/controllers/bratController.js"></script>
+  <script type="text/javascript" src="js/controllers/tagController.js"></script>
+  <script type="text/javascript" src="js/controllers/navigationController.js"></script>
+  <script type="text/javascript" src="js/controllers/logController.js"></script>
+  <script type="text/javascript" src="js/lib/json2.js"></script>
+</head>
 
-var docData = {
-    // Our text of choice
-    text     : "Ed O'Kelley was the man who shot the man who shot Jesse James.",
-    // The entities entry holds all entity annotations
-    entities : [
-        /* Format: [${ID}, ${TYPE}, [[${START}, ${END}]]]
-            note that range of the offsets are [${START},${END}) */
-        ['T1', 'Person', [[0, 11]]],
-        ['T2', 'Person', [[20, 23]]],
-        ['T3', 'Person', [[37, 40]]],
-        ['T4', 'Person', [[50, 61]]],
-    ],
-};
+<body>
 
+  <div id="main" class="container">
+    <div class="row">
+      <div id="content" class="col-sm-7">
+        <div>
+          <h1 style="text-align:center">Welcome to Frankenbrat!</h1>
+        </div>
+        
+        <div>
+          <h3 style="text-align:center">Resolve the aliases to characters in these passages from <i>Pride and Prejudice</i></h3>
+        </div>
+        
+        <div id="spinner" ng-controller="spinnerController"></div>
+        
+        <style type="text/css">
+          @import url("//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc2/css/bootstrap-glyphicons.css");
+        </style>
+        
+        <script type="text/ng-template" id="docSelectorModalContent.html">
+          <div class="modal-header">
+            <h3 class="modal-title">Select a Document</h3>
+          </div>
+          <div class="modal-body">
+            <div ng-repeat="nameIndex in docNameIndexData">
+              <a ng-click="selected.nameIndex = nameIndex">{{ nameIndex.name }}</a>
+            </div>
+            <p style="margin-top: 5px;">Go to <b>{{ selected.nameIndex.name }}</b></p>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="ok()">Go</button>
+            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+          </div>
         </script>
-    <div>
-      <label>Name:</label>
-      <input type="text" ng-model="yourName" placeholder="Enter a name here">
-      <hr>
-      <h1>Hello {{yourName}}!</h1>
+        
+        <div style="margin: 15px auto 5px;" ng-controller="navigationController">
+          <center>
+            <div style="margin-bottom:40px">
+              <button type="button" class="btn btn-default btn-lg" ng-click="selectDoc()"><strong>Select Document</strong></button>
+            </div>
+            
+            <button type="button" class="btn btn-default btn-lg" ng-click="previousDoc()" ng-disabled="docIndex <= 0">
+              <span class="glyphicon glyphicon-arrow-left"></span> &nbsp; Prev
+            </button>
+            <!--<p style="display: inline;margin: 0 30px;padding-top: 10px;font-size:20px;font-weight:bold;">{{(docIndex + 1) + ' of ' + numDocuments}}</p>-->
+            <p style="display: inline;margin: 0 30px;padding-top: 10px;font-size:20px;font-weight:bold;">{{docData.name}}</p>
+            <button type="button" class="btn btn-default btn-lg" ng-click="nextDoc()" ng-disabled="docIndex >= numDocuments - 1">
+              Next &nbsp; <span class="glyphicon glyphicon-arrow-right"></span>
+            </button>
+          </center>
+        </div>
+        
+        <style type="text/css">
+          text {
+            font-size: 15px;
+          }
+          .span text {
+            font-size: 10px;
+          }
+          .arcs text {
+            font-size: 9px;
+          }
+        </style>
+
+        <script type="text/javascript">
+          var bratLocation = 'lib/brat/';
+
+          head.js(
+            // External libraries.
+            bratLocation + '/client/lib/jquery.min.js',
+            bratLocation + '/client/lib/jquery.svg.min.js',
+            bratLocation + '/client/lib/jquery.svgdom.min.js',
+
+            // brat helper modules.
+            bratLocation + '/client/src/configuration.js',
+            bratLocation + '/client/src/util.js',
+            bratLocation + '/client/src/annotation_log.js',
+            bratLocation + '/client/lib/webfont.js',
+            
+            // brat modules.
+            bratLocation + '/client/src/dispatcher.js',
+            bratLocation + '/client/src/url_monitor.js',
+            bratLocation + '/client/src/visualizer.js'
+          );
+
+          var webFontURLs = [
+            bratLocation + '/static/fonts/Astloch-Bold.ttf',
+            bratLocation + '/static/fonts/PT_Sans-Caption-Web-Regular.ttf',
+            bratLocation + '/static/fonts/Liberation_Sans-Regular.ttf'
+          ];
+        </script>
+        
+        <div id="brat-view" ng-controller="bratController" ng-click="select($event)"></div>
+      </div>
+
+<div class="col-sm-4">
+  <div class="panel panel-primary" style="height: 100%;margin: 10px;position: fixed;">
+    <div class="panel-heading">
+      <h3>Character Annotation Panel</h3>
     </div>
-    <div id="embedding-live-example" class="hasSVG" style="display: block; height: 51.5px;"><svg version="1.1" style="width: 970px; height: 51.5px;" class=""><!-- document: undefined/undefined --><defs><filter id="Gaussian_Blur"><fegaussianblur in="SourceGraphic" stddeviation="2"></fegaussianblur></filter><marker id="drag_arrow" refX="5" refY="2.5" markerWidth="5" markerHeight="5" orient="auto" markerUnits="strokeWidth" class="drag_fill"><polyline points="0,0 5,2.5 0,5 0.2,2.5"></polyline></marker><marker id="arrow_triangle_5_green" refX="5" refY="2.5" markerWidth="5" markerHeight="5" orient="auto" markerUnits="strokeWidth" fill="green"><polyline points="0,0 5,2.5 0,5 0.4166666666666667,2.5"></polyline></marker><marker id="arrow_triangle_5_000000" refX="5" refY="2.5" markerWidth="5" markerHeight="5" orient="auto" markerUnits="strokeWidth" fill="#000000"><polyline points="0,0 5,2.5 0,5 0.4166666666666667,2.5"></polyline></marker><marker id="arrow_triangle_5_purple" refX="5" refY="2.5" markerWidth="5" markerHeight="5" orient="auto" markerUnits="strokeWidth" fill="purple"><polyline points="0,0 5,2.5 0,5 0.4166666666666667,2.5"></polyline></marker></defs><g class="background"><rect x="0" y="4.5" width="970" height="49.5" class="background0"></rect></g><g class="glow"></g><g class="highlight"><rect x="24" y="35.5" width="77.900390625" height="15.5" fill="#e5ecfe" rx="3" ry="3"></rect><rect x="161.42724609375" y="35.5" width="29.1796875" height="15.5" fill="#e5ecfe" rx="3" ry="3"></rect><rect x="226.6240234375" y="35.5" width="28.35205078125" height="15.5" fill="#e8fbe8" rx="3" ry="3"></rect><rect x="286.20751953125" y="35.5" width="29.1796875" height="15.5" fill="#e5ecfe" rx="3" ry="3"></rect><rect x="351.404296875" y="35.5" width="28.35205078125" height="15.5" fill="#e8fbe8" rx="3" ry="3"></rect><rect x="393.638671875" y="35.5" width="87.53173828125" height="15.5" fill="#e5ecfe" rx="3" ry="3"></rect></g><g class="text"><text x="0" y="0"><tspan x="24" y="47.5" data-chunk-id="0">Ed O'Kelley </tspan><tspan x="105.900390625" y="47.5" data-chunk-id="1">was </tspan><tspan x="136.5751953125" y="47.5" data-chunk-id="2" class="">the </tspan><tspan x="161.42724609375" y="47.5" data-chunk-id="3" class="">man </tspan><tspan x="194.60693359375" y="47.5" data-chunk-id="4">who </tspan><tspan x="226.6240234375" y="47.5" data-chunk-id="5" class="">shot </tspan><tspan x="261.35546875" y="47.5" data-chunk-id="6" class="">the </tspan><tspan x="286.20751953125" y="47.5" data-chunk-id="7" class="">man </tspan><tspan x="319.38720703125" y="47.5" data-chunk-id="8" class="">who </tspan><tspan x="351.404296875" y="47.5" data-chunk-id="9" class="">shot </tspan><tspan x="393.638671875" y="47.5" data-chunk-id="10" class="">Jesse James.</tspan></text></g><g transform="translate(0, 47)"><g></g><g transform="translate(24, 0)"><g></g><g class="span"><rect x="21.5" y="-28.5" width="35.6845703125" height="10" class="span_Person span_default" fill="#7fa2ff" stroke="#002998" rx="2" ry="1" data-span-id="T1" data-fragment-id="0"></rect><text x="38.5" y="-20.5" fill="#000000">Person</text><path d="M0,-13.5C0,-17.5 38.5,-13.5 38.5,-17.5C38.5,-13.5 77.900390625,-17.5 77.900390625,-13.5" class="curly" stroke="#002998"></path></g></g><g transform="translate(105.900390625, 0)"><g></g></g><g transform="translate(136.5751953125, 0)"><g></g></g><g transform="translate(161.42724609375, 0)"><g></g><g class="span"><rect x="4.5" y="-28.5" width="19.5615234375" height="10" class="span_Person span_default" fill="#7fa2ff" stroke="#002998" rx="2" ry="1" data-span-id="T2" data-fragment-id="0"></rect><text x="14.5" y="-20.5" fill="#000000">Per</text><path d="M0,-13.5C0,-17.5 14.5,-13.5 14.5,-17.5C14.5,-13.5 29.1796875,-17.5 29.1796875,-13.5" class="curly" stroke="#002998"></path></g></g><g transform="translate(194.60693359375, 0)"><g></g></g><g transform="translate(226.6240234375, 0)"><g></g><g class="span"><rect x="-0.5" y="-28.5" width="31.2314453125" height="10" class="span_Assassination span_default" fill="lightgreen" stroke="#148414" rx="2" ry="1" data-span-id="E2" data-fragment-id="0"></rect><text x="14.5" y="-20.5" fill="#000000">Assas</text><path d="M0,-13.5C0,-17.5 14.5,-13.5 14.5,-17.5C14.5,-13.5 28.35205078125,-17.5 28.35205078125,-13.5" class="curly" stroke="#148414"></path></g></g><g transform="translate(261.35546875, 0)"><g></g></g><g transform="translate(286.20751953125, 0)"><g></g><g class="span"><rect x="4.5" y="-28.5" width="19.5615234375" height="10" class="span_Person span_default" fill="#7fa2ff" stroke="#002998" rx="2" ry="1" data-span-id="T3" data-fragment-id="0"></rect><text x="14.5" y="-20.5" fill="#000000">Per</text><path d="M0,-13.5C0,-17.5 14.5,-13.5 14.5,-17.5C14.5,-13.5 29.1796875,-17.5 29.1796875,-13.5" class="curly" stroke="#002998"></path></g></g><g transform="translate(319.38720703125, 0)"><g></g></g><g transform="translate(351.404296875, 0)"><g></g><g class="span"><rect x="-0.5" y="-28.5" width="31.2314453125" height="10" class="span_Assassination span_default" fill="lightgreen" stroke="#148414" rx="2" ry="1" data-span-id="E1" data-fragment-id="0"></rect><text x="14.5" y="-20.5" fill="#000000">Assas</text><path d="M0,-13.5C0,-17.5 14.5,-13.5 14.5,-17.5C14.5,-13.5 28.35205078125,-17.5 28.35205078125,-13.5" class="curly" stroke="#148414"></path></g></g><g transform="translate(393.638671875, 0)"><g></g><g class="span"><rect x="19.5" y="-28.5" width="48.46288299560547" height="10" class="span_Person span_default" fill="#7fa2ff" stroke="#002998" rx="2" ry="1" data-span-id="T4" data-fragment-id="0"></rect><text x="43.5" y="-20.5" fill="#000000">Person <tspan class="glyph">★</tspan></text><path d="M0,-13.5C0,-17.5 43.5,-13.5 43.5,-17.5C43.5,-13.5 87.53173828125,-17.5 87.53173828125,-13.5" class="curly" stroke="#002998"></path></g></g><g class="arcs"><g data-from="E1" data-to="T3"><text x="330.586669921875" y="-26" fill="green" data-arc-role="Perpetrator" data-arc-origin="E1" data-arc-target="T3">Perp</text><path d="M320.081298828125,-28.5L319.081298828125,-28.5Q314.6751708984375,-28.5 310.26904296875,-27.5" marker-end="url(#arrow_triangle_5_green)" style="stroke: green"></path><path d="M341.092041015625,-28.5L342.092041015625,-28.5Q346.4981689453125,-28.5 350.904296875,-23.5" style="stroke: green"></path></g><g data-from="E1" data-to="T4" class=""><text x="397.63720703125" y="-26" fill="#000000" data-arc-role="Victim" data-arc-origin="E1" data-arc-target="T4" class="">Vict</text><path d="M389.1357421875,-28.5L388.1357421875,-28.5Q385.1357421875,-28.5 382.1357421875,-23.5" style="stroke: #000000"></path><path d="M406.138671875,-28.5L407.138671875,-28.5Q410.138671875,-28.5 413.138671875,-27.5" marker-end="url(#arrow_triangle_5_000000)" style="stroke: #000000"></path></g><g data-from="E2" data-to="T2"><text x="205.806396484375" y="-26" fill="green" data-arc-role="Perpetrator" data-arc-origin="E2" data-arc-target="T2">Perp</text><path d="M195.301025390625,-28.5L194.301025390625,-28.5Q189.8948974609375,-28.5 185.48876953125,-27.5" marker-end="url(#arrow_triangle_5_green)" style="stroke: green"></path><path d="M216.311767578125,-28.5L217.311767578125,-28.5Q221.7178955078125,-28.5 226.1240234375,-23.5" style="stroke: green"></path></g><g data-from="E2" data-to="T3"><text x="274.031494140625" y="-26" fill="#000000" data-arc-role="Victim" data-arc-origin="E2" data-arc-target="T3">Vict</text><path d="M265.530029296875,-28.5L264.530029296875,-28.5Q260.9427490234375,-28.5 257.35546875,-23.5" style="stroke: #000000"></path><path d="M282.532958984375,-28.5L283.532958984375,-28.5Q287.1202392578125,-28.5 290.70751953125,-27.5" marker-end="url(#arrow_triangle_5_000000)" style="stroke: #000000"></path></g><g data-from="T2" data-to="T1"><text x="123.555908203125" y="-26" fill="purple" data-arc-role="Anaphora" data-arc-origin="T2" data-arc-target="T1" data-arc-ed="R1">Anaphora</text><path d="M103.039794921875,-28.5L96.1845703125,-28.5Q88.6845703125,-28.5 81.1845703125,-27.5" marker-end="url(#arrow_triangle_5_purple)" style="stroke: purple" stroke-dasharray="3,3"></path><path d="M144.072021484375,-28.5L150.92724609375,-28.5Q158.42724609375,-28.5 165.92724609375,-23.5" style="stroke: purple" stroke-dasharray="3,3"></path></g></g></g><g class="sentnum"><a xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#undefined?focus=sent~1"><text x="18" y="47.5" data-sent="1">1</text></a><path d="M20,0L20,51.5"></path></g></svg></div>
-    <div id="live-io">
-    <p>
-        <textarea id="coll-input" style="display:block;float:left;width:40%;height:400px;font-size:11px;border:2px inset" placeholder="Enter JSON for the collection object here...">{
-    "entity_types": [
-        {
-            "type": "Person",
-            "labels": [ "Person", "Per" ],
-            "bgColor": "#7fa2ff",
-            "borderColor": "darken"
-        }
-    ],
-    "entity_attribute_types": [
-        {
-            "type": "Notorious",
-            "values": {
-                "Notorious": { "glyph": "★" }
-            },
-            "bool": "Notorious"
-        }
-    ],
-    "relation_types": [
-        {
-            "type": "Anaphora",
-            "labels": [ "Anaphora", "Ana" ],
-            "dashArray": "3,3",
-            "color": "purple",
-            "args": [
-                {
-                    "role": "Anaphor",
-                    "targets": [ "Person" ]
-                },
-                {
-                    "role": "Entity",
-                    "targets": [ "Person" ]
-                }
-            ]
-        }
-    ],
-    "event_types": [
-        {
-            "type": "Assassination",
-            "labels": [ "Assassination", "Assas" ],
-            "bgColor": "lightgreen",
-            "borderColor": "darken",
-            "arcs": [
-                {
-                    "type": "Victim",
-                    "labels": [ "Victim", "Vict" ]
-                },
-                {
-                    "type": "Perpetrator",
-                    "labels": [ "Perpetrator", "Perp" ],
-                    "color": "green"
-                }
-            ]
-        }
-    ]
-}</textarea>
-        <textarea id="doc-input" style="display:block;float:right;width:55%;height:400px;font-size:11px;border:2px inset" placeholder="Enter JSON for the document object here...">{
-    "text": "Ed O'Kelley was the man who shot the man who shot Jesse James.",
-    "entities": [
-        [
-            "T1",
-            "Person",
-            [ [ 0, 11 ] ]
-        ],
-        [
-            "T2",
-            "Person",
-            [ [ 20, 23 ] ]
-        ],
-        [
-            "T3",
-            "Person",
-            [ [ 37, 40 ] ]
-        ],
-        [
-            "T4",
-            "Person",
-            [ [ 50, 61 ] ]
-        ]
-    ],
-    "attributes": [ [ "A1", "Notorious", "T4" ] ],
-    "relations": [
-        [
-            "R1",
-            "Anaphora",
-            [ [ "Anaphor", "T2" ], [ "Entity", "T1" ] ]
-        ]
-    ],
-    "triggers": [
-        [
-            "T5",
-            "Assassination",
-            [ [ 45, 49 ] ]
-        ],
-        [
-            "T6",
-            "Assassination",
-            [ [ 28, 32 ] ]
-        ]
-    ],
-    "events": [
-        [
-            "E1",
-            "T5",
-            [ [ "Perpetrator", "T3" ], [ "Victim", "T4" ] ]
-        ],
-        [
-            "E2",
-            "T6",
-            [ [ "Perpetrator", "T2" ], [ "Victim", "T3" ] ]
-        ]
-    ]
-}</textarea>
-    </p>
-</div>
-  </body>
+
+    <div class="panel-body" ng-controller="tagController">
+
+      <script type="text/ng-template" id="showModalContent.html">
+        <div class="modal-header">
+          <h3 class="modal-title">Instances of '{{ tag.type }}'</h3>
+        </div>
+        <div class="modal-body">
+          <div>
+            <carousel interval="myInterval">
+              <slide ng-repeat="slide in slides" active="slide.active">
+                <!-- <img ng-src="{{slide.image}}" style="margin:auto;"> -->
+                <div class="carousel-caption" style="position:relative;color:black;margin:auto;right:0;left:0;width:600px">
+                  <h4>{{ slide.docName }}</h4>
+                  <p>
+                    ...{{ slide.pretext }} &nbsp;&nbsp;&nbsp;
+                    <span style="color: red;font-weight: bold;">{{ slide.span }}</span> &nbsp;&nbsp;&nbsp; {{ slide.posttext }}...
+                  </p>
+                </div>
+              </slide>
+            </carousel>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-default" ng-click="close()">Close</button>
+        </div>
+      </script>
+
+      <script type="text/ng-template" id="deleteTagModalContent.html">
+        <div class="modal-header">
+          <h3 class="modal-title">Choose a Replacement Character</h3>
+        </div>
+        <div class="modal-body">
+          <div ng-repeat="item in items">
+            <a ng-click="selected.item = item">{{ item.type }}</a>
+          </div>
+          <p style="margin-top: 5px;">Replace with <b>{{ selected.item.type }}</b></p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-danger" ng-click="ok()">DELETE</button>
+          <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+        </div>
+            </script>
+            
+            <div class="well well-sm">
+              <p align="center" style="font-size:12px">SELECTED:</p>
+              <p align="center" style="font-size:18px" ng-show="visualElement" ng-hide="!visualElement">
+                <b>{{ span }}</b>
+              </p>
+              <p align="center" style="font-size:18px" ng-show="!visualElement" ng-hide="visualElement">
+                <b>NONE</b>
+              </p>
+              
+              <div style="margin-bottom: 5px; overflow: hidden;" ng-repeat="item in collData.entity_types">
+                <label ng-show="item.type != 'ALIAS' && (item.type == 'NON-CHARACTER' || item.type == 'UNRESOLVED')">
+                  <div style="float:left">
+                    <button class="btn btn-default" ng-click="tag(item)" ng-disabled="!visualElement">{{ item.type }}</button>
+                  </div>
+                </label>
+
+                <div style="float:right" ng-show="item.type == 'NON-CHARACTER' || item.type == 'UNRESOLVED'">
+                  <button class="btn btn-success" ng-click="tagOnTop(item)" ng-disabled="!visualElement">+</button>
+                </div>
+              </div>
+              
+              <div ng-show="collData.entity_types.length > 3" class="pre-scrollable" style="border: 2px solid #AAA; border-radius: 5px; padding: 5px; max-height: 250px;">
+                <div style="overflow:hidden" ng-repeat="item in collData.entity_types | tagOrderFilter">
+                  <label ng-show="item.type != 'ALIAS' && item.type != 'NON-CHARACTER' && item.type != 'UNRESOLVED'">
+                    <div style="float:left">
+                      <button class="btn btn-default" ng-click="tag(item)" ng-disabled="!visualElement">{{ item.type }}</button>
+                    </div>
+                  </label>
+
+                  <div style="float:right" ng-if="item.type != 'ALIAS' && item.type != 'NON-CHARACTER' && item.type != 'UNRESOLVED'">
+                    <button class="btn btn-danger" ng-click="removeTag(item)" ng-disabled="!visualElement">X</button>
+                  </div>
+
+                  <div style="float:right" ng-show="item.type != 'ALIAS' && item.type != 'NON-CHARACTER' && item.type != 'UNRESOLVED'">
+                    <button class="btn btn-success" ng-click="tagOnTop(item)" ng-disabled="!visualElement">+</button>
+                  </div>
+
+                  <div style="float:right" ng-show="item.type != 'ALIAS' && item.type != 'NON-CHARACTER' && item.type != 'UNRESOLVED'">
+                    <button class="btn btn-info" ng-click="showEntities(item)" ng-disabled="!visualElement"><></button>
+                  </div>
+                </div>
+              </div>
+              <div style="text-align: center;">
+                <button class="btn btn-info" style="font-size: 15px;margin: 10px auto;" ng-click="addNewTag()" ng-disabled="!visualElement">NEW</button>
+                <button class="btn btn-warning" ng-click="untag()" ng-disabled="!visualElement">Untag</button>
+              </div>
+            </div>
+
+
+            <div class="panel-footer bg-info">
+              <p align="center" style="color: blue;font-size: 15px;margin: 10px auto;">ALIAS's Remaining: <b>{{aliasesRemaining}}</b>
+              </p>
+            </div>
+          </div>
+          
+          <h3 align="center">Log</h3>
+          
+          <div class="well well-sm" ng-controller="logController" style="width:300px;margin:auto">
+              <div class="pre-scrollable" style="height:100px">
+                <div style="overflow:hidden">
+             <ul style="list-style-type: none;">
+      <li style="margin: 15px 0;" ng-repeat="message in messages">{{ message.text }}</li>
+    </ul></div
+        <!-- push a new message onto the array -->
+    </div>
+        <form ng-submit="addMessage()">
+      <input ng-model="newMessageText" />
+      <button type="submit">Add Entry</button>
+    </form>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  </div>
+</body>
+
 </html>
