@@ -1,14 +1,14 @@
 app.controller('bratController', function($scope, $log, $rootScope, $firebaseObject) {
   
-    // TODO: Retrieve this value from Firebase.
+  // TODO: Retrieve this value from Firebase.
   $rootScope.numDocuments = 3;
   
   // Index of document (in document data) to display.
   $rootScope.docIndex = parseInt(getQueryVariable("doc") || "0");
   
   // TODO: Make constants for URL's here.
-  var collDataRef = new Firebase('https://blazing-heat-6025.firebaseio.com/collData');
-  var docDataRef = new Firebase('https://blazing-heat-6025.firebaseio.com/docData/'+ $rootScope.docIndex);
+  var collDataRef = new Firebase(FB.link + '/collData');
+  var docDataRef = new Firebase(FB.link + '/docData/'+ $rootScope.docIndex);
 
   var collDataObjRef = $firebaseObject(collDataRef)
   collDataObjRef.$bindTo($rootScope, 'collData');
