@@ -6,7 +6,6 @@ app.controller('bratController', function($scope, $log, $rootScope, $firebaseObj
   // Index of document (in document data) to display.
   $rootScope.docIndex = parseInt(getQueryVariable("doc") || "0");
   
-  // TODO: Make constants for URL's here.
   var collDataRef = new Firebase(FB.link + '/collData');
   var docDataRef = new Firebase(FB.link + '/docData/'+ $rootScope.docIndex);
 
@@ -54,8 +53,8 @@ app.controller('bratController', function($scope, $log, $rootScope, $firebaseObj
 
             $rootScope.entity = getFirstEntity();
             $rootScope.span = getSpan($rootScope.entity);
-            $rootScope.items = $rootScope.collData.entity_types;
-            $rootScope.tagOrdering = $rootScope.items.map(function (tag) { return tag.type; });
+            $rootScope.characterTags = $rootScope.collData.entity_types;
+            $rootScope.tagOrdering = $rootScope.characterTags.map(function (tag) { return tag.type; });
             $rootScope.visualElement = $scope.findVisual;
             $rootScope.aliasesRemaining = $rootScope.docData.entities.filter(function(e) {
                 return e[1] == 'ALIAS';
@@ -117,7 +116,7 @@ app.controller('bratController', function($scope, $log, $rootScope, $firebaseObj
           $rootScope.docData['entities'].forEach(function(entity) {
             if (entity[0] == id) {
 
-              $rootScope.items.forEach(function(item) {
+              $rootScope.characterTags.forEach(function(item) {
                 if (item.type == entity[1]) {
                   $rootScope.entity = entity;
                   $rootScope.span = getSpan(entity);
