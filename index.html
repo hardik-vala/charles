@@ -55,8 +55,8 @@
 
 <body>
 
-  <div class="connection-failed" ng-controller="mainController as mainCtrl">
-    <div class="alert alert-danger" role="alert" style="height: 100vh;" ng-if="!mainCtrl.connectedToFirebase()">
+  <div ng-controller="mainController as mainCtrl">
+    <div class="alert alert-danger connection-failed" role="alert" style="height: 100vh;" ng-if="!mainCtrl.connectedToFirebase()">
       <h1>Connection to Firebase Failed</h1>
       <p>
         Check that the <span id="code">FB</span> instance exists and its
