@@ -41,6 +41,7 @@
   <script type="text/javascript" src="lib/spin.min.js"></script>
   <script type="text/javascript" src="js/app.js"></script>
   <script type="text/javascript" src="js/fb.js"></script>
+  <script type="text/javascript" src="js/domain.js"></script>
   <script type="text/javascript" src="js/controllers/mainController.js"></script>
   <script type="text/javascript" src="js/controllers/spinnerController.js"></script>
   <script type="text/javascript" src="js/controllers/docSelectorController.js"></script>
@@ -216,17 +217,17 @@
                   <b>NONE</b>
                 </p>
                 
-                <div style="margin-bottom: 5px; overflow: hidden;" ng-repeat="item in collData.entity_types">
-                  <label ng-show="item.type != 'ALIAS' && (item.type == 'NON-CHARACTER' || item.type == 'UNRESOLVED')">
+                <div class="taggable-non-character-tags-menu" style="margin-bottom: 5px; overflow: hidden;" ng-repeat="tag in taggableNonCharacterTags">
+                  <label>
                     <div style="float:left">
-                      <button class="btn btn-default" ng-click="tag(item)" ng-disabled="!visualElement">{{ item.type }}</button>
+                      <button class="btn btn-default" ng-click="tag(tag)" ng-disabled="!visualElement">{{ tag.type }}</button>
                     </div>
                   </label>
   
-                  <div style="float:right" ng-show="item.type == 'NON-CHARACTER' || item.type == 'UNRESOLVED'">
-                    <button class="btn btn-success" ng-click="tagOnTop(item)" ng-disabled="!visualElement">+</button>
+                  <div style="float:right">
+                    <button class="btn btn-success" ng-click="tagOnTop(tag)" ng-disabled="!visualElement">+</button>
                   </div>
-                </div>
+                </div> <!-- taggable-non-character-tags-menu -->
                 
                 <div ng-show="collData.entity_types.length > 3" class="pre-scrollable" style="border: 2px solid #AAA; border-radius: 5px; padding: 5px; max-height: 250px;">
                   <div style="overflow:hidden" ng-repeat="item in collData.entity_types | tagOrderFilter">

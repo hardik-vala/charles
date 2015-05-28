@@ -53,8 +53,19 @@ app.controller('bratController', function($scope, $log, $rootScope, $firebaseObj
 
             $rootScope.entity = getFirstEntity();
             $rootScope.span = getSpan($rootScope.entity);
-            $rootScope.characterTags = $rootScope.collData.entity_types;
-            $rootScope.tagOrdering = $rootScope.characterTags.map(function (tag) { return tag.type; });
+            $rootScope.tags = $rootScope.collData.entity_types;
+            
+            /* Tags that don't refer specifically to a character. */
+            $rootScope.nonCharacterTags = $rootScope.tags.filter(function (tag) {
+              return !isCharacterTag(tag)
+            });
+            
+            /* Non-character tags that can be used as tags. */
+            $rootScope.taggableNonCharacterTags = $rootScope.nonCharacterTags.filter(function (tag) {
+              return !isAliasTag(tag);
+            });
+            
+            $rootScope.tagOrdering = $rootScope.tags.map(function (tag) { return tag.type; });
             $rootScope.visualElement = $scope.findVisual;
             $rootScope.aliasesRemaining = $rootScope.docData.entities.filter(function(e) {
                 return e[1] == 'ALIAS';
@@ -116,7 +127,7 @@ app.controller('bratController', function($scope, $log, $rootScope, $firebaseObj
           $rootScope.docData['entities'].forEach(function(entity) {
             if (entity[0] == id) {
 
-              $rootScope.characterTags.forEach(function(item) {
+              $rootScope.tags.forEach(function(item) {
                 if (item.type == entity[1]) {
                   $rootScope.entity = entity;
                   $rootScope.span = getSpan(entity);

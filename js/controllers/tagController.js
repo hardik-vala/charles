@@ -43,7 +43,7 @@ app.controller('tagController', function($scope, $modal, $log, $rootScope, $fire
 
   // Checks if the given string is lowercase.
   var isLowerCase = function (s) { return s == s.toLowerCase(); };
-
+  
   /* Tag the selected entity with the given tag. */
   $scope.tag = function(item) {
     if (item.type == 'ALIAS' || item.type == $rootScope.entity[1]) {
@@ -136,7 +136,7 @@ app.controller('tagController', function($scope, $modal, $log, $rootScope, $fire
   $scope.addNewTag = function() {
     var tagLabel = $.trim($rootScope.docData.text.substring($rootScope.entity[2][0][0], $rootScope.entity[2][0][1]));
     
-    var sameTypeItems = $rootScope.characterTags.filter(function(i) {
+    var sameTypeItems = $rootScope.tags.filter(function(i) {
       var leftBracketIndex = i.type.indexOf("(");
       var baseType = (leftBracketIndex > 0) ? i.type.substring(0, leftBracketIndex - 1) : i.type;
       return tagLabel == baseType;
@@ -173,12 +173,12 @@ app.controller('tagController', function($scope, $modal, $log, $rootScope, $fire
       borderColor: 'darken'
     };
 
-    $rootScope.characterTags.push(newTag);
+    $rootScope.tags.push(newTag);
     $rootScope.tagOrdering.push(newTag.type);
   };
 
   $scope.removeTag = function(item) {
-    var itemIndex = $rootScope.characterTags.indexOf(item);
+    var itemIndex = $rootScope.tags.indexOf(item);
     if (itemIndex > -1) {
       var modalInstance = $modal.open({
         animation: $scope.animationsEnabled,
@@ -187,13 +187,13 @@ app.controller('tagController', function($scope, $modal, $log, $rootScope, $fire
         size: 'lg',
         resolve: {
           items: function () {
-            return $rootScope.characterTags.filter(function (t) { return t.type != 'ALIAS' && t.type != item.type; });
+            return $rootScope.tags.filter(function (t) { return t.type != 'ALIAS' && t.type != item.type; });
           }
         }
       });
   
       modalInstance.result.then(function (selectedItem) {
-        $rootScope.characterTags.splice(itemIndex, 1);
+        $rootScope.tags.splice(itemIndex, 1);
         $rootScope.tagOrdering.splice($rootScope.tagOrdering.indexOf(item.type), 1);
         
         $rootScope.docData.entities.forEach(function(entity) {

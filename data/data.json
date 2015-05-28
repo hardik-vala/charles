@@ -1,15 +1,21 @@
 {
-	"collData": {
+    "collData": {
 		"entity_types": [
-	    	{
-				"type": "ALIAS",
-				"labels" : ["ALIAS", "AL"],
-				"bgColor": "red",
-				"borderColor": "darken"
-			},
-			{
-	      "type": "NON-CHARACTER",
-	      "labels": ["NON-CHARACTER", "NON"],
+	    {
+    		"type": "ALIAS",
+    		"labels" : ["ALIAS", "AL"],
+    		"bgColor": "red",
+    		"borderColor": "darken"
+		},
+		{
+		    "type": "NON-CHARACTER",
+		    "labels": ["NON-CHARACTER", "NON"],
+    		"bgColor": "#FFFFFF",
+    		"borderColor": "darken"
+    	},
+    	{
+		    "type": "OTHER",
+		    "labels": ["OTHER", "OTHER"],
     		"bgColor": "#BBBBBB",
     		"borderColor": "darken"
     	},
