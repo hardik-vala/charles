@@ -221,7 +221,7 @@
                   <label>
                     <div style="float:left">
                       <!-- Using css classes to set the tag button background colours doesn't work here -->
-                      <button class="btn btn-default btn-tag" ng-style="{background: tag.bgColor}" ng-click="tag(tag)" ng-disabled="!visualElement">{{ tag.type }}</button>
+                      <button class="btn btn-default btn-tag" ng-style="{background: tag.bgColor}" ng-click="setTag(tag)" ng-disabled="!visualElement">{{ tag.type }}</button>
                     </div>
                   </label>
   
@@ -230,23 +230,23 @@
                   </div>
                 </div> <!-- taggable-non-character-tags-menu -->
                 
-                <div ng-show="collData.entity_types.length > 3" class="pre-scrollable" style="border: 2px solid #AAA; border-radius: 5px; padding: 5px; max-height: 250px;">
-                  <div style="overflow:hidden" ng-repeat="tag in collData.entity_types | tagOrderFilter">
-                    <label ng-show="tag.type != 'ALIAS' && tag.type != 'NON-CHARACTER' && tag.type != 'UNRESOLVED'">
+                <div ng-show="collData.entity_types.length > 4" class="pre-scrollable" style="border: 2px solid #AAA; border-radius: 5px; padding: 5px; max-height: 250px;">
+                  <div style="overflow:hidden" ng-repeat="tag in tags | tagOrderFilter">
+                    <label ng-show="tag.type != 'ALIAS' && tag.type != 'NON-CHARACTER' && tag.type != 'OTHER' && tag.type != 'UNRESOLVED'">
                       <div style="float:left">
-                        <button class="btn btn-default btn-tag" ng-style="{background: tag.bgColor}" ng-click="tag(tag)" ng-disabled="!visualElement">{{ tag.type }}</button>
+                        <button class="btn btn-default btn-tag" ng-style="{background: tag.bgColor}" ng-click="setTag(tag)" ng-disabled="!visualElement">{{ tag.type }}</button>
                       </div>
                     </label>
   
-                    <div style="float:right" ng-if="tag.type != 'ALIAS' && tag.type != 'NON-CHARACTER' && tag.type != 'UNRESOLVED'">
+                    <div style="float:right" ng-if="tag.type != 'ALIAS' && tag.type != 'NON-CHARACTER' && tag.type != 'OTHER' && tag.type != 'UNRESOLVED'">
                       <button class="btn btn-danger" ng-click="removeTag(tag)" ng-disabled="!visualElement">X</button>
                     </div>
   
-                    <div style="float:right" ng-show="tag.type != 'ALIAS' && tag.type != 'NON-CHARACTER' && tag.type != 'UNRESOLVED'">
+                    <div style="float:right" ng-show="tag.type != 'ALIAS' && tag.type != 'NON-CHARACTER' && tag.type != 'OTHER' && tag.type != 'UNRESOLVED'">
                       <button class="btn btn-success" ng-click="tagOnTop(tag)" ng-disabled="!visualElement">+</button>
                     </div>
   
-                    <div style="float:right" ng-show="tag.type != 'ALIAS' && tag.type != 'NON-CHARACTER' && tag.type != 'UNRESOLVED'">
+                    <div style="float:right" ng-show="tag.type != 'ALIAS' && tag.type != 'NON-CHARACTER' && tag.type != 'OTHER' && tag.type != 'UNRESOLVED'">
                       <button class="btn btn-info" ng-click="showEntities(tag)" ng-disabled="!visualElement"><></button>
                     </div>
                   </div>

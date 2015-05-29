@@ -14,10 +14,10 @@ app.controller('tagController', function($scope, $modal, $log, $rootScope, $fire
   };
 
   var getRandomLightColor = function() {
-    var letters = '3456789ABCDEF'.split('');
+    var letters = '456789ABCDEF'.split('');
     var color = '#';
     for (var i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 13)];
+      color += letters[Math.floor(Math.random() * 12)];
     }
     return color;
   };
@@ -44,8 +44,10 @@ app.controller('tagController', function($scope, $modal, $log, $rootScope, $fire
   // Checks if the given string is lowercase.
   var isLowerCase = function (s) { return s == s.toLowerCase(); };
   
+  this.isCharacterTag = isCharacterTag;
+  
   /* Tag the selected entity with the given tag. */
-  $scope.tag = function(item) {
+  $scope.setTag = function(item) {
     if (item.type == 'ALIAS' || item.type == $rootScope.entity[1]) {
       return;
     }
