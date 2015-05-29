@@ -65,7 +65,7 @@
       </p>
     </div><!-- alert -->
     
-    <div id="main" class="container" ng-if="mainCtrl.connectedToFirebase()">
+    <div id="main" class="container" ng-if="mainCtrl.connectedToFirebase()" ng-controller="bratController" tabindex="0" ng-click="selectEntity($event)" ng-keypress="nextSelection($event)">
       <div class="row">
         <div id="content" class="col-sm-7" ng-keypress="">
           <div>
@@ -155,7 +155,8 @@
             ];
           </script>
           
-          <div id="brat-view" ng-controller="bratController" tabindex="0" ng-click="selectEntity($event)" ng-keypress="nextSelection($event)"></div>
+          <!--<div id="brat-view" ng-controller="bratController" tabindex="0" ng-click="selectEntity($event)" ng-keypress="nextSelection($event)"></div>-->
+          <div id="brat-view"></div>
         </div>
   
   <div class="col-sm-4">
@@ -197,25 +198,19 @@
             <h3 class="modal-title">Choose a Replacement Character</h3>
           </div>
           <div class="modal-body">
-            <div ng-repeat="item in tags">
+            <div ng-repeat="item in items">
               <a ng-click="selected.item = item">{{ item.type }}</a>
             </div>
             <p style="margin-top: 5px;">Replace with <b>{{ selected.item.type }}</b></p>
           </div>
           <div class="modal-footer">
-            <button class="btn btn-danger" ng-click="ok()">DELETE</button>
+            <button class="btn btn-danger" ng-click="ok()">REPLACE</button>
             <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
           </div>
               </script>
               
               <div class="well well-sm">
-                <p align="center" style="font-size:12px">SELECTED:</p>
-                <p align="center" style="font-size:18px" ng-if="selectedEntity">
-                  <b>{{ span }}</b>
-                </p>
-                <p align="center" style="font-size:18px" ng-if="!selectedEntity">
-                  <b>NONE</b>
-                </p>
+                <p align="center" style="font-size:15px">Selected: <span ng-if="selectedEntity"> <b>{{ span }}</b></span><span ng-if="!selectedEntity"> <b>(NONE)</b></span></p>
                 
                 <div class="taggable-non-character-tags-menu" style="margin-bottom: 5px; overflow: hidden;" ng-repeat="tag in taggableNonCharacterTags">
                   <label>
@@ -226,11 +221,11 @@
                   </label>
   
                   <div style="float:right">
-                    <button class="btn btn-success" ng-click="tagOnTop(tag)" ng-disabled="!selectedEntity">+</button>
+                    <button class="btn btn-warning" ng-click="changeTag(tag)" ng-disabled="!selectedEntity">C</button>
                   </div>
                 </div> <!-- taggable-non-character-tags-menu -->
                 
-                <div ng-show="collData.entity_types.length > 4" class="pre-scrollable" style="border: 2px solid #AAA; border-radius: 5px; padding: 5px; max-height: 250px;">
+                <div ng-show="collData.entity_types.length > 4" class="pre-scrollable" style="border: 2px solid #AAA; border-radius: 5px; padding: 5px; max-height: 150px;">
                   <div style="overflow:hidden" ng-repeat="tag in tags | tagOrderFilter">
                     <label ng-show="tag.type != 'ALIAS' && tag.type != 'NON-CHARACTER' && tag.type != 'OTHER' && tag.type != 'UNRESOLVED'">
                       <div style="float:left">
@@ -243,7 +238,7 @@
                     </div>
   
                     <div style="float:right" ng-show="tag.type != 'ALIAS' && tag.type != 'NON-CHARACTER' && tag.type != 'OTHER' && tag.type != 'UNRESOLVED'">
-                      <button class="btn btn-success" ng-click="tagOnTop(tag)" ng-disabled="!selectedEntity">+</button>
+                      <button class="btn btn-warning" ng-click="changeTag(tag)" ng-disabled="!selectedEntity">C</button>
                     </div>
   
                     <div style="float:right" ng-show="tag.type != 'ALIAS' && tag.type != 'NON-CHARACTER' && tag.type != 'OTHER' && tag.type != 'UNRESOLVED'">
@@ -253,7 +248,7 @@
                 </div>
                 <div style="text-align: center;">
                   <button class="btn btn-info" style="font-size: 15px;margin: 10px auto;" ng-click="addNewTag()" ng-disabled="!selectedEntity">NEW</button>
-                  <button class="btn btn-warning" ng-click="untag()" ng-disabled="!selectedEntity">Untag</button>
+                  <button class="btn btn-danger" ng-click="untag()" ng-disabled="!selectedEntity">Untag</button>
                 </div>
               </div>
   

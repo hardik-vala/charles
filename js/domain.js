@@ -21,6 +21,10 @@ var isAliasTag = function (tag) {
     return tag.type == TagInfo.alias.name;
 };
 
+var isNonCharacterTag = function (tag) {
+    return tag.type == TagInfo.nonCharacter.name;
+};
+
 var isCharacterTag = function (tag) {
     return !(tag.type == TagInfo.alias.name ||
         tag.type == TagInfo.nonCharacter.name ||
@@ -43,7 +47,7 @@ var entityEquals = function (entity1, entity2) {
 
 /* Retrieves the span for the given entity from the given text. */
 var getEntitySpan = function(text, entity) {
-    return text.substring(entity[2][0][0], entity[2][0][1]);
+    return text.substring(entity[2][0][0], entity[2][0][1]).trim();
 };
 
 /* Sorts the given array of tagged entities by the starting character offset. If
@@ -100,4 +104,66 @@ var findTaggedEntityIndex = function (entities, entity) {
     }
     
     return -1;
+};
+
+var getEntityIdNumbers = function (entities) {
+    return entities.map(function(e) {
+        return parseInt(e[ID_IND].substring(1, e[ID_IND].length));
+    });
+};
+
+var getMaxEntityIdNumber = function (entities) {
+    return getEntityIdNumbers(entities).reduce(function(p, v) {
+      return ((p > v) ? p : v);
+    });
+};
+
+var getNewEntityIdNumber = function (entities) {
+    var idNums = getEntityIdNumbers(entities);
+    
+    var i = 1;
+    for (i = 1; i <= idNums.length; i++) {
+        if (idNums.indexOf(i) == -1)
+            return i;
+    };
+    
+    return i;
+};
+
+/* Returns the entities with the same offsets as the given entity in the list of
+   tagged entities. */
+var getSameOffsetEntities = function (entities, entity) {
+  return entities.filter(function (e) {
+     return e[CHAR_OFFSETS_IND][0][START_OFFSET_IND] == entity[CHAR_OFFSETS_IND][0][START_OFFSET_IND];
+  });
+};
+
+/* Checks if the given list of entities has an entity tagged with the given
+   type. Alternatively can check if an entity is tagged with a given type. */
+var hasType = function (entities, type) {
+    if (entities.length == 0)
+        return false;
+    
+    if (entities[0] instanceof Array)
+        return entities.filter(function (e) {
+           return e[TYPE_IND] == type; 
+        }).length > 0;  
+    
+    // Otherwise 'entities' is assumed to be a single tagged entity.
+    var entity = entities;
+    return entity[TYPE_IND] == type;
+};
+
+/* Checks if the given list of entities has an entity tagged with ALIAS.
+   Alternatively can check if an entity is tagged with ALIAS. */
+var hasAliasType = function (entities) {
+    return hasType(entities, TagInfo.alias.name);
+};
+
+/* Removed the given entity from the list of entities. (If it doesn't exist,
+   then the same list is returned.)*/
+var removeEntity = function (entities, entity) {
+    return entities.filter(function(e) {
+        return !entityEquals(e, entity);
+    });  
 };

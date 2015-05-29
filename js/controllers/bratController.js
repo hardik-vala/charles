@@ -54,17 +54,22 @@ app.controller('bratController', function($scope, $log, $rootScope, $firebaseObj
             $rootScope.span = getSpan($rootScope.selectedEntity);
             $rootScope.tags = $rootScope.collData.entity_types;
             
-            /* Tags that don't refer specifically to a character. */
-            $rootScope.nonCharacterTags = $rootScope.tags.filter(function (tag) {
-              return !isCharacterTag(tag)
+            /* Tags that refer specifically to a character. */
+            $rootScope.characterTags = $rootScope.collData.entity_types.filter(function (tag) {
+              return isCharacterTag(tag);
             });
             
+            /* Tags that don't refer specifically to a character. */
+            $rootScope.nonCharacterTags = $rootScope.collData.entity_types.filter(function (tag) {
+              return !isCharacterTag(tag);
+            });
+
             /* Non-character tags that can be used as tags. */
             $rootScope.taggableNonCharacterTags = $rootScope.nonCharacterTags.filter(function (tag) {
               return !isAliasTag(tag);
             });
             
-            $rootScope.tagOrdering = $rootScope.tags.map(function (tag) { return tag.type; });
+            $rootScope.tagOrdering = $rootScope.characterTags.map(function (tag) { return tag.type; });
             $scope.selectedVisualElement = $scope.findVisual;
             $rootScope.aliasesRemaining = $rootScope.docData.entities.filter(function(e) {
                 return e[1] == 'ALIAS';
@@ -101,7 +106,8 @@ app.controller('bratController', function($scope, $log, $rootScope, $firebaseObj
   };
   
   $scope.unapplySelectionStyle = function (element) {
-    element.style.strokeWidth = '';
+    if (element && element.style && element.style.strokeWidth)
+      element.style.strokeWidth = '';
   };
 
   $scope.findVisual = function() {
@@ -110,7 +116,7 @@ app.controller('bratController', function($scope, $log, $rootScope, $firebaseObj
         for (attribute in srcElement.attributes) {
           if (srcElement.attributes[attribute].nodeName == 'data-span-id') {
             id = srcElement.attributes[attribute].value
-            if ($rootScope.selectedEntity[0] == id) {
+            if ($rootScope.selectedEntity && $rootScope.selectedEntity[0] == id) {
               $scope.applySelectionStyle(srcElement);
               $scope.selectedVisualElement = srcElement;
             }
@@ -130,16 +136,17 @@ app.controller('bratController', function($scope, $log, $rootScope, $firebaseObj
   }
 
   $rootScope.selectEntity = function(e) {
-    $scope.unselect();
     if (e.srcElement.nodeName == 'rect' && e.srcElement.attributes.class.nodeValue.indexOf("span") > -1) {
+      $scope.unselect();
       for (var attribute in e.srcElement.attributes) {
         if (e.srcElement.attributes[attribute].nodeName == 'data-span-id') {
           $scope.selectedVisualElement = e.srcElement;
           var id = e.srcElement.attributes[attribute].value;
           $rootScope.docData['entities'].forEach(function(entity) {
             if (entity[0] == id) {
-
-              $rootScope.tags.forEach(function(item) {
+              // $scope.unselect();
+              
+              $rootScope.collData.entity_types.forEach(function(item) {
                 if (item.type == entity[1]) {
                   $rootScope.selectedEntity = entity;
                   $rootScope.span = getSpan(entity);
