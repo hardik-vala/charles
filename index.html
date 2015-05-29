@@ -220,7 +220,8 @@
                 <div class="taggable-non-character-tags-menu" style="margin-bottom: 5px; overflow: hidden;" ng-repeat="tag in taggableNonCharacterTags">
                   <label>
                     <div style="float:left">
-                      <button class="btn btn-default" ng-click="tag(tag)" ng-disabled="!visualElement">{{ tag.type }}</button>
+                      <!-- Using css classes to set the tag button background colours doesn't work here -->
+                      <button class="btn btn-default" ng-style="{'background': (tag.type == 'NON-CHARACTER') ? '#FFF' : ((tag.type == 'OTHER') ? '#BBB': ((tag.type == 'UNRESOLVED') ? '#39FF14': ''))}" ng-click="tag(tag)" ng-disabled="!visualElement"><strong>{{ tag.type }}</strong></button>
                     </div>
                   </label>
   

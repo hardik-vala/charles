@@ -1,15 +1,19 @@
 var TagInfo = {
     alias: {
-        name: 'ALIAS'
+        name: 'ALIAS',
+        color: 'red'
     },
     nonCharacter: {
-        name: 'NON-CHARACTER'
+        name: 'NON-CHARACTER',
+        color: '#FFFFFF'
     },
     other: {
-        name: 'OTHER'
+        name: 'OTHER',
+        color: '#BBBBBB'
     },
     unresolved: {
-        name: 'UNRESOLVED'
+        name: 'UNRESOLVED',
+        color: '#39FF14'
     },
 };
 
