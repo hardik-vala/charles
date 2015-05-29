@@ -104,7 +104,7 @@ app.controller('tagController', function($scope, $modal, $log, $rootScope, $fire
     var sameOffsetEntities = getSameOffsetEntities($rootScope.taggedEntities, $rootScope.selectedEntity);
 
     if (sameOffsetEntities.length > 0)
-      $rootScope.selectedEntity = sameSpanEntities[0];
+      $rootScope.selectedEntity = sameOffsetEntities[0];
     else {
       $rootScope.selectedEntity[TYPE_IND] = TagInfo.alias.name;
       $rootScope.docData.entities.push($rootScope.selectedEntity);
@@ -154,9 +154,12 @@ app.controller('tagController', function($scope, $modal, $log, $rootScope, $fire
 
     $rootScope.collData.entity_types.push(newTag);
     $rootScope.tagOrdering.push(newTag.type);
+    
+    // Changes the tag for the selected instance to the new tag.
+    $scope.changeTag(newTag);
   };
 
-  $scope.removeTag = function(tag) {
+  $rootScope.removeTag = function(tag) {
     var tagIndex = $rootScope.collData.entity_types.indexOf(tag);
     if (tagIndex > -1) {
       var modalInstance = $modal.open({
@@ -202,7 +205,7 @@ app.controller('tagController', function($scope, $modal, $log, $rootScope, $fire
     }
   }
   
-  $scope.showEntities = function(tag) {
+  $rootScope.showEntities = function(tag) {
     // TODO: Make this a controller constant.
     var windowLength = 200;
     

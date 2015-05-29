@@ -29,9 +29,8 @@
       var vars = query.split("&");
       for (var i = 0; i < vars.length; i++) {
         var pair = vars[i].split("=");
-        if (pair[0] == variable) {
+        if (pair[0] == variable)
           return pair[1];
-        }
       }
       return null;
     }
@@ -39,11 +38,13 @@
 
   <script type="text/javascript" src="head.load.min.js"></script>
   <script type="text/javascript" src="lib/spin.min.js"></script>
+  <script type="text/javascript" src="lib/contextMenu.js"></script>
   <script type="text/javascript" src="js/app.js"></script>
   <script type="text/javascript" src="js/fb.js"></script>
   <script type="text/javascript" src="js/domain.js"></script>
   <script type="text/javascript" src="js/controllers/mainController.js"></script>
   <script type="text/javascript" src="js/controllers/spinnerController.js"></script>
+  <script type="text/javascript" src="js/controllers/contextMenuController.js"></script>
   <script type="text/javascript" src="js/controllers/docSelectorController.js"></script>
   <script type="text/javascript" src="js/controllers/showController.js"></script>
   <script type="text/javascript" src="js/controllers/deleteTagController.js"></script>
@@ -57,6 +58,7 @@
 <body>
 
   <div ng-controller="mainController as mainCtrl">
+    
     <div class="alert alert-danger connection-failed" role="alert" style="height: 100vh;" ng-if="!mainCtrl.connectedToFirebase()">
       <h1>Connection to Firebase Failed</h1>
       <p>
@@ -65,9 +67,15 @@
       </p>
     </div><!-- alert -->
     
-    <div id="main" class="container" ng-if="mainCtrl.connectedToFirebase()" ng-controller="bratController" tabindex="0" ng-click="selectEntity($event)" ng-keypress="nextSelection($event)">
+    <!-- Doesn't work without importing Bootstrap's glyphicons. -->
+    <style type="text/css">
+      @import url("//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc2/css/bootstrap-glyphicons.css");
+    </style>
+    
+    <div id="main" class="container" ng-if="mainCtrl.connectedToFirebase()" ng-controller="bratController" ng-click="selectEntity($event)" tabindex="0" ng-keypress="nextSelection($event)">
       <div class="row">
-        <div id="content" class="col-sm-7" ng-keypress="">
+        <div id="content" class="col-sm-7 left-pane">
+          
           <div>
             <h1 style="text-align:center">Welcome to Frankenbrat!</h1>
           </div>
@@ -77,10 +85,6 @@
           </div>
           
           <div id="spinner" ng-controller="spinnerController"></div>
-          
-          <style type="text/css">
-            @import url("//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc2/css/bootstrap-glyphicons.css");
-          </style>
           
           <script type="text/ng-template" id="docSelectorModalContent.html">
             <div class="modal-header">
@@ -97,7 +101,7 @@
               <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
             </div>
           </script>
-          
+        
           <div style="margin: 15px auto 5px;" ng-controller="navigationController">
             <center>
               <div style="margin-bottom:40px">
@@ -159,103 +163,95 @@
           <div id="brat-view"></div>
         </div>
   
-  <div class="col-sm-4">
-    <div class="panel panel-primary" style="height: 100%;margin: 10px;position: fixed;">
-      <div class="panel-heading">
-        <h3>Character Annotation Panel</h3>
-      </div>
+        <div class="col-sm-5 right-pane">
+          <div class="panel panel-primary character-annotation-panel" style="margin: 5px;">
+            <div class="panel-heading">
+              <h2>Character Tagging Panel</h2>
+            </div>
   
-      <div class="panel-body" ng-controller="tagController">
+            <div class="panel-body" ng-controller="tagController">
   
-        <script type="text/ng-template" id="showModalContent.html">
-          <div class="modal-header">
-            <h3 class="modal-title">Instances of '{{ tag.type }}'</h3>
-          </div>
-          <div class="modal-body">
-            <div>
-              <carousel interval="myInterval">
-                <slide ng-repeat="slide in slides" active="slide.active">
-                  <!-- <img ng-src="{{slide.image}}" style="margin:auto;"> -->
-                  <div class="carousel-caption" style="position:relative;color:black;margin:auto;right:0;left:0;width:600px">
-                    <h4>{{ slide.docName }}</h4>
-                    <p>
-                      ...{{ slide.pretext }} &nbsp;&nbsp;&nbsp;
-                      <span style="color: red;font-weight: bold;">{{ slide.span }}</span> &nbsp;&nbsp;&nbsp; {{ slide.posttext }}...
-                    </p>
+              <div class="tag-counters">
+                <div class="tag-counter" align="center">
+                  <button type="button" class="btn btn-default disabled alias-counter-btn" style="background: red;">ALIAS</button>'s Remaining: <b>{{aliasesRemaining}}</b>
+                </div>
+                <div class="tag-counter" align="center">
+                  <button type="button" class="btn btn-default disabled unresolved-counter-btn" style="background: #39FF14;">UNRESOLVED</button>'s Remaining: <b>{{unresolvedsRemaining}}</b>
+                </div>
+              </div><!-- tag-counters -->
+  
+              <script type="text/ng-template" id="showModalContent.html">
+                <div class="modal-header">
+                  <h3 class="modal-title">Instances of '{{ tag.type }}'</h3>
+                </div>
+                <div class="modal-body">
+                  <div>
+                    <carousel interval="myInterval">
+                      <slide ng-repeat="slide in slides" active="slide.active">
+                        <!-- <img ng-src="{{slide.image}}" style="margin:auto;"> -->
+                        <div class="carousel-caption" style="position:relative;color:black;margin:auto;right:0;left:0;width:600px">
+                          <h4>{{ slide.docName }}</h4>
+                          <p>
+                            ...{{ slide.pretext }} &nbsp;&nbsp;&nbsp;
+                            <span style="color: red;font-weight: bold;">{{ slide.span }}</span> &nbsp;&nbsp;&nbsp; {{ slide.posttext }}...
+                          </p>
+                        </div>
+                      </slide>
+                    </carousel>
                   </div>
-                </slide>
-              </carousel>
-            </div>
-  
-          </div>
-          <div class="modal-footer">
-            <button class="btn btn-default" ng-click="close()">Close</button>
-          </div>
-        </script>
-  
-        <script type="text/ng-template" id="deleteTagModalContent.html">
-          <div class="modal-header">
-            <h3 class="modal-title">Choose a Replacement Character</h3>
-          </div>
-          <div class="modal-body">
-            <div ng-repeat="item in items">
-              <a ng-click="selected.item = item">{{ item.type }}</a>
-            </div>
-            <p style="margin-top: 5px;">Replace with <b>{{ selected.item.type }}</b></p>
-          </div>
-          <div class="modal-footer">
-            <button class="btn btn-danger" ng-click="ok()">REPLACE</button>
-            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
-          </div>
+        
+                </div>
+                <div class="modal-footer">
+                  <button class="btn btn-default" ng-click="close()">Close</button>
+                </div>
               </script>
+  
+            <script type="text/ng-template" id="deleteTagModalContent.html">
+              <div class="modal-header">
+                <h3 class="modal-title">Choose a Replacement Character</h3>
+              </div>
+              <div class="modal-body">
+                <div ng-repeat="item in items">
+                  <a ng-click="selected.item = item">{{ item.type }}</a>
+                </div>
+                <p style="margin-top: 5px;">Replace with <b>{{ selected.item.type }}</b></p>
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-danger" ng-click="ok()">REPLACE</button>
+                <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+              </div>
+            </script>
               
-              <div class="well well-sm">
+              <div class="well well-sm" ng-controller="contextMenuController">
                 <p align="center" style="font-size:15px">Selected: <span ng-if="selectedEntity"> <b>{{ span }}</b></span><span ng-if="!selectedEntity"> <b>(NONE)</b></span></p>
                 
-                <div class="taggable-non-character-tags-menu" style="margin-bottom: 5px; overflow: hidden;" ng-repeat="tag in taggableNonCharacterTags">
-                  <label>
-                    <div style="float:left">
-                      <!-- Using css classes to set the tag button background colours doesn't work here -->
-                      <button class="btn btn-default btn-tag" ng-style="{background: tag.bgColor}" ng-click="setTag(tag)" ng-disabled="!selectedEntity">{{ tag.type }}</button>
-                    </div>
-                  </label>
+                <div class="taggable-non-character-tags-menu" ng-repeat="tag in taggableNonCharacterTags">
+                  <div style="float:left">
+                    <!-- Using css classes to set the tag button background colours doesn't work here -->
+                    <button class="btn btn-default btn-tag" ng-style="{background: tag.bgColor}" ng-click="setTag(tag)" ng-disabled="!selectedEntity">{{ tag.type }}</button>
+                  </div>
   
                   <div style="float:right">
-                    <button class="btn btn-warning" ng-click="changeTag(tag)" ng-disabled="!selectedEntity">C</button>
+                    <button class="btn btn-warning change-tag-btn" ng-click="changeTag(tag)" ng-disabled="!selectedEntity"><span class="glyphicon glyphicon-repeat"></span></button>
                   </div>
                 </div> <!-- taggable-non-character-tags-menu -->
                 
-                <div ng-show="collData.entity_types.length > 4" class="pre-scrollable" style="border: 2px solid #AAA; border-radius: 5px; padding: 5px; max-height: 150px;">
-                  <div style="overflow:hidden" ng-repeat="tag in tags | tagOrderFilter">
-                    <label ng-show="tag.type != 'ALIAS' && tag.type != 'NON-CHARACTER' && tag.type != 'OTHER' && tag.type != 'UNRESOLVED'">
-                      <div style="float:left">
-                        <button class="btn btn-default btn-tag" ng-style="{background: tag.bgColor}" ng-click="setTag(tag)" ng-disabled="!selectedEntity">{{ tag.type }}</button>
-                      </div>
-                    </label>
-  
-                    <div style="float:right" ng-if="tag.type != 'ALIAS' && tag.type != 'NON-CHARACTER' && tag.type != 'OTHER' && tag.type != 'UNRESOLVED'">
-                      <button class="btn btn-danger" ng-click="removeTag(tag)" ng-disabled="!selectedEntity">X</button>
+                <!--<div ng-show="collData.entity_types.length > 4" class="pre-scrollable" style="border: 2px solid #AAA; border-radius: 5px; padding: 5px; max-height: 150px;">-->
+                 <div ng-show="collData.entity_types.length > 4" style="border: 2px solid #AAA; border-radius: 5px; padding: 5px;">
+                  <div style="overflow: hidden;" ng-repeat="tag in collData.entity_types | tagOrderFilter">
+                    <div style="float:left" ng-show="tag.type != 'ALIAS' && tag.type != 'NON-CHARACTER' && tag.type != 'OTHER' && tag.type != 'UNRESOLVED'">
+                      <button class="btn btn-default btn-tag" context-menu="menuOptions" ng-style="{background: tag.bgColor}" ng-click="setTag(tag)" ng-disabled="!selectedEntity">{{ tag.type }}</button>
                     </div>
-  
+                    
                     <div style="float:right" ng-show="tag.type != 'ALIAS' && tag.type != 'NON-CHARACTER' && tag.type != 'OTHER' && tag.type != 'UNRESOLVED'">
-                      <button class="btn btn-warning" ng-click="changeTag(tag)" ng-disabled="!selectedEntity">C</button>
-                    </div>
-  
-                    <div style="float:right" ng-show="tag.type != 'ALIAS' && tag.type != 'NON-CHARACTER' && tag.type != 'OTHER' && tag.type != 'UNRESOLVED'">
-                      <button class="btn btn-info" ng-click="showEntities(tag)" ng-disabled="!selectedEntity"><></button>
+                      <button class="btn btn-warning change-tag-btn" ng-click="changeTag(tag)" ng-disabled="!selectedEntity"><span class="glyphicon glyphicon-repeat"></span></button>
                     </div>
                   </div>
                 </div>
                 <div style="text-align: center;">
-                  <button class="btn btn-info" style="font-size: 15px;margin: 10px auto;" ng-click="addNewTag()" ng-disabled="!selectedEntity">NEW</button>
-                  <button class="btn btn-danger" ng-click="untag()" ng-disabled="!selectedEntity">Untag</button>
+                  <button class="btn btn-info" style="font-size: 15px;margin: 10px auto;" ng-click="addNewTag()" ng-disabled="!selectedEntity">NEW CHARACTER</button>
+                  <button class="btn btn-danger" ng-click="untag()" ng-disabled="!selectedEntity">UNTAG</button>
                 </div>
-              </div>
-  
-  
-              <div class="panel-footer bg-info">
-                <p align="center" style="color: blue;font-size: 15px;margin: 10px auto;">ALIAS's Remaining: <b>{{aliasesRemaining}}</b>
-                </p>
               </div>
             </div>
             

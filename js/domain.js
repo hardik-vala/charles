@@ -25,6 +25,10 @@ var isNonCharacterTag = function (tag) {
     return tag.type == TagInfo.nonCharacter.name;
 };
 
+var isUnresolvedTag = function (tag) {
+    return tag.type == TagInfo.unresolved.name;
+};
+
 var isCharacterTag = function (tag) {
     return !(tag.type == TagInfo.alias.name ||
         tag.type == TagInfo.nonCharacter.name ||
@@ -158,6 +162,32 @@ var hasType = function (entities, type) {
    Alternatively can check if an entity is tagged with ALIAS. */
 var hasAliasType = function (entities) {
     return hasType(entities, TagInfo.alias.name);
+};
+
+/* Checks if the given list of entities has an entity tagged with UNRESOLVED.
+   Alternatively can check if an entity is tagged with UNRESOLVED. */
+var hasUnresolvedType = function (entities) {
+    return hasType(entities, TagInfo.unresolved.name);
+};
+
+var getAliases = function (entities) {
+    return entities.filter(function(e) {
+        return hasAliasType(e);
+    });
+};
+
+var getUnresolveds = function (entities) {
+    return entities.filter(function(e) {
+        return hasUnresolvedType(e);
+    });
+};
+
+var countAliases = function (entities) {
+   return getAliases(entities).length;
+};
+
+var countUnresolveds = function (entities) {
+   return getUnresolveds(entities).length;
 };
 
 /* Removed the given entity from the list of entities. (If it doesn't exist,

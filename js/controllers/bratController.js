@@ -52,7 +52,6 @@ app.controller('bratController', function($scope, $log, $rootScope, $firebaseObj
             $rootScope.selectedEntity = firstTaggedEntity($rootScope.taggedEntities);
             $rootScope.taggedEntityIndex = 0;
             $rootScope.span = getSpan($rootScope.selectedEntity);
-            $rootScope.tags = $rootScope.collData.entity_types;
             
             /* Tags that refer specifically to a character. */
             $rootScope.characterTags = $rootScope.collData.entity_types.filter(function (tag) {
@@ -71,14 +70,13 @@ app.controller('bratController', function($scope, $log, $rootScope, $firebaseObj
             
             $rootScope.tagOrdering = $rootScope.characterTags.map(function (tag) { return tag.type; });
             $scope.selectedVisualElement = $scope.findVisual;
-            $rootScope.aliasesRemaining = $rootScope.docData.entities.filter(function(e) {
-                return e[1] == 'ALIAS';
-              }).length;
+            $rootScope.aliasesRemaining = countAliases($rootScope.taggedEntities);
+            
+            $rootScope.unresolvedsRemaining = countUnresolveds($rootScope.taggedEntities);
 
             docDataObjRef.$watch(function() {
-              $rootScope.aliasesRemaining = $rootScope.docData.entities.filter(function(e) {
-                return e[1] == 'ALIAS';
-              }).length;
+              $rootScope.aliasesRemaining = countAliases($rootScope.taggedEntities);
+              $rootScope.unresolvedsRemaining = countUnresolveds($rootScope.taggedEntities);
             });
 
             collDataObjRef.$watch(function() {
@@ -153,6 +151,7 @@ app.controller('bratController', function($scope, $log, $rootScope, $firebaseObj
                   $rootScope.taggedEntityIndex = findTaggedEntityIndex($rootScope.taggedEntities, $rootScope.selectedEntity);
                 }
               });
+              
               $scope.applySelectionStyle(e.srcElement);
             }
           });

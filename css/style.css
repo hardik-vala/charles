@@ -4,6 +4,12 @@
 
 /* Frankenbrat stylesheet. */
 
+body, html {
+  margin: 0;
+  overflow: hidden;
+  height:100%;
+}
+
 .connection-failed {
   text-align: center;
 }
@@ -12,6 +18,64 @@
   font-family: "Courier New", Courier, monospace;
 }
 
+.left-pane {
+  position: absolute;
+  top: 0px;
+  bottom: 0;
+  left: 0;
+  width: 65%;
+  overflow-y: scroll; 
+}
+
+.right-pane {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  overflow-y: scroll;
+  width: 35%;
+}
+
 .btn-tag {
   font-weight: bold;
+  margin-top: 3px;
+  margin-bottom: 3px;
+}
+
+.change-tag-btn {
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+.panel-body.character-annotation-panel {
+  margin: 5px;
+}
+
+.character-annotation-panel .panel-heading {
+    text-align: center;
+    padding: 1px;
+}
+
+.tag-counters {
+  margin-bottom: 10px;
+}
+
+.tag-counter {
+  color: blue;
+  font-size: 15px;
+  margin: 10px auto;
+}
+
+.alias-counter-btn {
+  color: #000000;
+  font-weight: bold;  
+}
+
+.unresolved-counter-btn {
+  color: #000000;
+  font-weight: bold; 
+}
+
+.taggable-non-character-tags-menu {
+  overflow: hidden;
 }
