@@ -67,7 +67,7 @@
     
     <div id="main" class="container" ng-if="mainCtrl.connectedToFirebase()">
       <div class="row">
-        <div id="content" class="col-sm-7">
+        <div id="content" class="col-sm-7" ng-keypress="">
           <div>
             <h1 style="text-align:center">Welcome to Frankenbrat!</h1>
           </div>
@@ -155,7 +155,7 @@
             ];
           </script>
           
-          <div id="brat-view" ng-controller="bratController" ng-click="select($event)"></div>
+          <div id="brat-view" ng-controller="bratController" tabindex="0" ng-click="selectEntity($event)" ng-keypress="nextSelection($event)"></div>
         </div>
   
   <div class="col-sm-4">
@@ -210,10 +210,10 @@
               
               <div class="well well-sm">
                 <p align="center" style="font-size:12px">SELECTED:</p>
-                <p align="center" style="font-size:18px" ng-show="visualElement" ng-hide="!visualElement">
+                <p align="center" style="font-size:18px" ng-if="selectedEntity">
                   <b>{{ span }}</b>
                 </p>
-                <p align="center" style="font-size:18px" ng-show="!visualElement" ng-hide="visualElement">
+                <p align="center" style="font-size:18px" ng-if="!selectedEntity">
                   <b>NONE</b>
                 </p>
                 
@@ -221,12 +221,12 @@
                   <label>
                     <div style="float:left">
                       <!-- Using css classes to set the tag button background colours doesn't work here -->
-                      <button class="btn btn-default btn-tag" ng-style="{background: tag.bgColor}" ng-click="setTag(tag)" ng-disabled="!visualElement">{{ tag.type }}</button>
+                      <button class="btn btn-default btn-tag" ng-style="{background: tag.bgColor}" ng-click="setTag(tag)" ng-disabled="!selectedEntity">{{ tag.type }}</button>
                     </div>
                   </label>
   
                   <div style="float:right">
-                    <button class="btn btn-success" ng-click="tagOnTop(tag)" ng-disabled="!visualElement">+</button>
+                    <button class="btn btn-success" ng-click="tagOnTop(tag)" ng-disabled="!selectedEntity">+</button>
                   </div>
                 </div> <!-- taggable-non-character-tags-menu -->
                 
@@ -234,26 +234,26 @@
                   <div style="overflow:hidden" ng-repeat="tag in tags | tagOrderFilter">
                     <label ng-show="tag.type != 'ALIAS' && tag.type != 'NON-CHARACTER' && tag.type != 'OTHER' && tag.type != 'UNRESOLVED'">
                       <div style="float:left">
-                        <button class="btn btn-default btn-tag" ng-style="{background: tag.bgColor}" ng-click="setTag(tag)" ng-disabled="!visualElement">{{ tag.type }}</button>
+                        <button class="btn btn-default btn-tag" ng-style="{background: tag.bgColor}" ng-click="setTag(tag)" ng-disabled="!selectedEntity">{{ tag.type }}</button>
                       </div>
                     </label>
   
                     <div style="float:right" ng-if="tag.type != 'ALIAS' && tag.type != 'NON-CHARACTER' && tag.type != 'OTHER' && tag.type != 'UNRESOLVED'">
-                      <button class="btn btn-danger" ng-click="removeTag(tag)" ng-disabled="!visualElement">X</button>
+                      <button class="btn btn-danger" ng-click="removeTag(tag)" ng-disabled="!selectedEntity">X</button>
                     </div>
   
                     <div style="float:right" ng-show="tag.type != 'ALIAS' && tag.type != 'NON-CHARACTER' && tag.type != 'OTHER' && tag.type != 'UNRESOLVED'">
-                      <button class="btn btn-success" ng-click="tagOnTop(tag)" ng-disabled="!visualElement">+</button>
+                      <button class="btn btn-success" ng-click="tagOnTop(tag)" ng-disabled="!selectedEntity">+</button>
                     </div>
   
                     <div style="float:right" ng-show="tag.type != 'ALIAS' && tag.type != 'NON-CHARACTER' && tag.type != 'OTHER' && tag.type != 'UNRESOLVED'">
-                      <button class="btn btn-info" ng-click="showEntities(tag)" ng-disabled="!visualElement"><></button>
+                      <button class="btn btn-info" ng-click="showEntities(tag)" ng-disabled="!selectedEntity"><></button>
                     </div>
                   </div>
                 </div>
                 <div style="text-align: center;">
-                  <button class="btn btn-info" style="font-size: 15px;margin: 10px auto;" ng-click="addNewTag()" ng-disabled="!visualElement">NEW</button>
-                  <button class="btn btn-warning" ng-click="untag()" ng-disabled="!visualElement">Untag</button>
+                  <button class="btn btn-info" style="font-size: 15px;margin: 10px auto;" ng-click="addNewTag()" ng-disabled="!selectedEntity">NEW</button>
+                  <button class="btn btn-warning" ng-click="untag()" ng-disabled="!selectedEntity">Untag</button>
                 </div>
               </div>
   
