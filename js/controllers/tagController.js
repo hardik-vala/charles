@@ -82,7 +82,7 @@ app.controller('tagController', function($scope, $modal, $log, $rootScope, $fire
 
   $scope.tagOnTop = function(item) {
     // TODO: Make constants of these base character types.
-    if (item.type == 'ALIAS' || item.type == 'NON-CHARACTER' || item.type == 'UNRESOLVED') {
+    if (item.type == 'ALIAS' || item.type == 'NON-CHARACTER') {
       return;
     }
 
