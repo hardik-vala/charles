@@ -11,3 +11,7 @@
 .connection-failed #code {
   font-family: "Courier New", Courier, monospace;
 }
+
+.btn-tag {
+  font-weight: bold;
+}
