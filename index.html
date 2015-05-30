@@ -264,19 +264,20 @@
             
             <h3 align="center">Log</h3>
             
-            <div class="well well-sm" ng-controller="logController" style="width:300px;margin:auto">
-                <div class="pre-scrollable" style="height:100px">
-                  <div style="overflow:hidden">
-               <ul style="list-style-type: none;">
-        <li style="margin: 15px 0;" ng-repeat="message in messages">{{ message.text }}</li>
-      </ul></div
-          <!-- push a new message onto the array -->
-      </div>
-          <form ng-submit="addMessage()">
-        <input ng-model="newMessageText" />
-        <button type="submit">Add Entry</button>
-      </form>
+            <div class="well well-sm" style="margin-bottom: 10px;" ng-controller="logController" style="width:300px;margin:auto">
+              <div class="pre-scrollable" style="height:100px">
+                <div style="overflow:hidden">
+                  <ul style="list-style-type: none;">
+                    <li style="margin: 15px 0;" ng-repeat="message in messages">{{ message.text }}</li>
+                  </ul>
+                </div>
+              </div>
+              <form ng-submit="addMessage()">
+                <input ng-model="newMessageText" />
+                <button type="submit">Add Entry</button>
+              </form>
             </div>
+            
           </div>
         </div>
   
