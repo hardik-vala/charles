@@ -36,34 +36,38 @@ body, html {
   width: 35%;
 }
 
-.btn-tag {
-  font-weight: bold;
-  margin-top: 3px;
-  margin-bottom: 3px;
-}
-
-.change-tag-btn {
-  margin-top: 4px;
-  margin-bottom: 4px;
-}
-
-.panel-body.character-annotation-panel {
-  margin: 5px;
-}
 
 .character-annotation-panel .panel-heading {
-    text-align: center;
-    padding: 1px;
+  text-align: center;
+  padding: 1px;
 }
 
-.tag-counters {
-  margin-bottom: 10px;
+.character-annotation-panel .panel-body {
+  padding: 0;
 }
 
 .tag-counter {
   color: blue;
   font-size: 15px;
   margin: 10px auto;
+}
+
+.entity-selection {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.entity-selection p {
+  font-size: 20px;
+}
+
+.entity-selection .selection {
+  background: yellow;
+  font-weight: bold;
+}
+
+.entity-selection .no-selection {
+  font-weight: bold;
 }
 
 .alias-counter-btn {
@@ -76,6 +80,22 @@ body, html {
   font-weight: bold; 
 }
 
-.taggable-non-character-tags-menu {
+.tag-item {
+  padding: 2px;
   overflow: hidden;
+}
+
+#core-tag {
+  background: #EEE;
+}
+
+.btn-tag {
+  font-weight: bold;
+  margin-top: 3px;
+  margin-bottom: 3px;
+}
+
+.change-tag-btn {
+  margin-top: 5px;
+  margin-bottom: 4px;
 }

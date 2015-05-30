@@ -206,48 +206,55 @@
                 </div>
               </script>
   
-            <script type="text/ng-template" id="deleteTagModalContent.html">
-              <div class="modal-header">
-                <h3 class="modal-title">Choose a Replacement Character</h3>
-              </div>
-              <div class="modal-body">
-                <div ng-repeat="item in items">
-                  <a ng-click="selected.item = item">{{ item.type }}</a>
+              <script type="text/ng-template" id="deleteTagModalContent.html">
+                <div class="modal-header">
+                  <h3 class="modal-title">Choose a Replacement Character</h3>
                 </div>
-                <p style="margin-top: 5px;">Replace with <b>{{ selected.item.type }}</b></p>
-              </div>
-              <div class="modal-footer">
-                <button class="btn btn-danger" ng-click="ok()">REPLACE</button>
-                <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
-              </div>
-            </script>
+                <div class="modal-body">
+                  <div ng-repeat="item in items">
+                    <a ng-click="selected.item = item">{{ item.type }}</a>
+                  </div>
+                  <p style="margin-top: 5px;">Replace with <b>{{ selected.item.type }}</b></p>
+                </div>
+                <div class="modal-footer">
+                  <button class="btn btn-danger" ng-click="ok()">REPLACE</button>
+                  <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+                </div>
+              </script>
               
-              <div class="well well-sm" ng-controller="contextMenuController">
-                <p align="center" style="font-size:15px">Selected: <span ng-if="selectedEntity"> <b>{{ span }}</b></span><span ng-if="!selectedEntity"> <b>(NONE)</b></span></p>
+              <!--<div class="well well-sm" ng-controller="contextMenuController">-->
+              <div ng-controller="contextMenuController">
+                <div class="entity-selection">
+                  <p align="center">Selected: <span class="selection" ng-if="selectedEntity">{{ span }}</span><span class="no-selection" ng-if="!selectedEntity">(NONE)</span></p>
+                </div>
                 
-                <div class="taggable-non-character-tags-menu" ng-repeat="tag in taggableNonCharacterTags">
-                  <div style="float:left">
-                    <!-- Using css classes to set the tag button background colours doesn't work here -->
-                    <button class="btn btn-default btn-tag" ng-style="{background: tag.bgColor}" ng-click="setTag(tag)" ng-disabled="!selectedEntity">{{ tag.type }}</button>
-                  </div>
-  
-                  <div style="float:right">
-                    <button class="btn btn-warning change-tag-btn" ng-click="changeTag(tag)" ng-disabled="!selectedEntity"><span class="glyphicon glyphicon-repeat"></span></button>
-                  </div>
+                <div class="taggable-non-character-tags-menu">
+                  <ul class="list-group tag-list">
+                    <li class="list-group-item tag-item" id="core-tag" ng-repeat="tag in taggableNonCharacterTags">
+                      <div style="float:left">
+                         <!--Using css classes to set the tag button background colours doesn't work here -->
+                        <button class="btn btn-default btn-tag" ng-style="{background: tag.bgColor}" ng-click="setTag(tag)" ng-disabled="!selectedEntity">{{ tag.type }}</button>
+                      </div>
+      
+                      <div style="float:right">
+                        <button class="btn btn-warning change-tag-btn" ng-click="changeTag(tag)" ng-disabled="!selectedEntity"><span class="glyphicon glyphicon-repeat"></span></button>
+                      </div>
+                    </li> 
+                  </ul>
                 </div> <!-- taggable-non-character-tags-menu -->
                 
-                <!--<div ng-show="collData.entity_types.length > 4" class="pre-scrollable" style="border: 2px solid #AAA; border-radius: 5px; padding: 5px; max-height: 150px;">-->
-                 <div ng-show="collData.entity_types.length > 4" style="border: 2px solid #AAA; border-radius: 5px; padding: 5px;">
-                  <div style="overflow: hidden;" ng-repeat="tag in collData.entity_types | tagOrderFilter">
-                    <div style="float:left" ng-show="tag.type != 'ALIAS' && tag.type != 'NON-CHARACTER' && tag.type != 'OTHER' && tag.type != 'UNRESOLVED'">
+                <ul class="list-group tag-list" ng-if="collData.entity_types.length > 4">
+                  <li class="list-group-item tag-item" ng-repeat="tag in collData.entity_types | tagOrderFilter">
+                    <div style="float:left" ng-if="tag.type != 'ALIAS' && tag.type != 'NON-CHARACTER' && tag.type != 'OTHER' && tag.type != 'UNRESOLVED'">
                       <button class="btn btn-default btn-tag" context-menu="menuOptions" ng-style="{background: tag.bgColor}" ng-click="setTag(tag)" ng-disabled="!selectedEntity">{{ tag.type }}</button>
                     </div>
                     
-                    <div style="float:right" ng-show="tag.type != 'ALIAS' && tag.type != 'NON-CHARACTER' && tag.type != 'OTHER' && tag.type != 'UNRESOLVED'">
+                    <div style="float:right" ng-if="tag.type != 'ALIAS' && tag.type != 'NON-CHARACTER' && tag.type != 'OTHER' && tag.type != 'UNRESOLVED'">
                       <button class="btn btn-warning change-tag-btn" ng-click="changeTag(tag)" ng-disabled="!selectedEntity"><span class="glyphicon glyphicon-repeat"></span></button>
                     </div>
-                  </div>
-                </div>
+                  </li>
+                </ul>
+                
                 <div style="text-align: center;">
                   <button class="btn btn-info" style="font-size: 15px;margin: 10px auto;" ng-click="addNewTag()" ng-disabled="!selectedEntity">NEW CHARACTER</button>
                   <button class="btn btn-danger" ng-click="untag()" ng-disabled="!selectedEntity">UNTAG</button>
