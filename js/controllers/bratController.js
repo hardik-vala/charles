@@ -210,9 +210,14 @@ app.filter('tagOrderFilter', function ($rootScope) {
       var orderedTrackedTags = $rootScope.tagOrdering.map(function (type) {
         return tags.filter(function (t) { return t.type == type; })[0];
       });
-      return orderedTrackedTags.concat(untrackedTags);
+      
+      return orderedTrackedTags.concat(untrackedTags).filter(function (t) {
+        return isCharacterTag(t);  
+      });
     } else {
-      return tags;
+      return tags.filter(function (t) {
+        return isCharacterTag(t);  
+      });
     }
   };
 });
