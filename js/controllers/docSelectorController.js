@@ -6,7 +6,7 @@ app.controller('docSelectorController', function ($scope, $modalInstance, $rootS
     };
 
     // TODO: Create new data structure for holding document names and indices.
-    var allDocDataRef = new Firebase('https://blazing-heat-6025.firebaseio.com/docData');
+    var allDocDataRef = new Firebase(FB.link + '/docData');
     
     var allDocDataObjRef = $firebaseObject(allDocDataRef);
     allDocDataObjRef.$bindTo($scope, 'allDocData');

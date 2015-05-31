@@ -1,7 +1,7 @@
 app.controller('bratController', function($scope, $log, $rootScope, $firebaseObject) {
   
   // TODO: Retrieve this value from Firebase.
-  $rootScope.numDocuments = 3;
+  $rootScope.numDocuments = 4;
   
   // Keycode for selecting previous instance ('a').
   $scope.prevTaggedKeyCode = 97;
