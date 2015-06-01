@@ -1,98 +1,100 @@
 app.controller('bratController', function($scope, $log, $rootScope, $firebaseObject) {
   
-  // TODO: Retrieve this value from Firebase.
-  $rootScope.numDocuments = 4;
-  
-  // Keycode for selecting previous instance ('a').
+  // Keycode for selecting previous instance ('A').
   $scope.prevTaggedKeyCode = 97;
-  // Keycode for selecting next instance ('d').
+  // Keycode for selecting next instance ('D').
   $scope.nextTaggedKeyCode = 100;
   
   // Returns the span for the given entity from the text that's loaded.
   var getSpan = function (entity) {
-    return getEntitySpan($rootScope.docData.text, entity);
+    return getEntitySpan($rootScope.docsData[$rootScope.docIndex].text, entity);
   };
   
   /* Index of document (in document data) to display. */
   $rootScope.docIndex = parseInt(getQueryVariable("doc") || "0");
   
   var collDataRef = new Firebase(FB.link + '/collData');
-  var docDataRef = new Firebase(FB.link + '/docData/'+ $rootScope.docIndex);
+  var docsDataRef = new Firebase(FB.link + '/docData');
 
   var collDataObjRef = $firebaseObject(collDataRef)
   collDataObjRef.$bindTo($rootScope, 'collData');
-  var docDataObjRef = $firebaseObject(docDataRef);
-  docDataObjRef.$bindTo($rootScope, 'docData');
+  var docsDataObjRef = $firebaseObject(docsDataRef);
+  docsDataObjRef.$bindTo($rootScope, 'docsData');
   
   collDataObjRef.$loaded(
     function(collData) {
-      docDataObjRef.$loaded(function(docData) {
+      docsDataObjRef.$loaded(function(docsData) {
+        head.ready(function() {
+          var liveDiv = $('#brat-view');
 
-          head.ready(function() {
-            var liveDiv = $('#brat-view');
+          // Hook into the dispatcher.
+          var liveDispatcher = Util.embed('brat-view',
+            $.extend({
+              'collection': null
+            }, collData),
+            $.extend({}, docsData[$rootScope.docIndex]), webFontURLs);
 
-            // Hook into the dispatcher.
-            var liveDispatcher = Util.embed('brat-view',
-              $.extend({
-                'collection': null
-              }, collData),
-              $.extend({}, docData), webFontURLs);
+          var renderError = function() {
+            // liveDiv.css({'border': '2px solid red'}); // Setting this blows the layout.
+          };
 
-            var renderError = function() {
-              // liveDiv.css({'border': '2px solid red'}); // Setting this blows the layout.
-            };
+          liveDispatcher.on('renderError: Fatal', renderError);
+          liveDispatcher.on('doneRendering', $scope.findVisual);
 
-            liveDispatcher.on('renderError: Fatal', renderError);
-            liveDispatcher.on('doneRendering', $scope.findVisual);
+          $rootScope.numDocs = 0;
+          docsData.forEach(function (i) {
+            $rootScope.numDocs++;
+          });
+          
+          $rootScope.taggedEntities = sortTaggedEntities(docsData[$rootScope.docIndex].entities);
 
-            $rootScope.taggedEntities = sortTaggedEntities(docData.entities);
+          // DECPRECATED
+          // $rootScope.entity = firstTaggedEntity($rootScope.taggedEntities);
+          $rootScope.selectedEntity = firstTaggedEntity($rootScope.taggedEntities);
+          $rootScope.taggedEntityIndex = 0;
+          $rootScope.span = getSpan($rootScope.selectedEntity);
+          
+          /* Tags that refer specifically to a character. */
+          $rootScope.characterTags = $rootScope.collData.entity_types.filter(function (tag) {
+            return isCharacterTag(tag);
+          });
+          
+          /* Tags that don't refer specifically to a character. */
+          $rootScope.nonCharacterTags = $rootScope.collData.entity_types.filter(function (tag) {
+            return !isCharacterTag(tag);
+          });
 
-            // DECPRECATED
-            $rootScope.entity = firstTaggedEntity($rootScope.taggedEntities);
-            $rootScope.selectedEntity = firstTaggedEntity($rootScope.taggedEntities);
-            $rootScope.taggedEntityIndex = 0;
-            $rootScope.span = getSpan($rootScope.selectedEntity);
+          /* Non-character tags that can be used as tags. */
+          $rootScope.taggableNonCharacterTags = $rootScope.nonCharacterTags.filter(function (tag) {
+            return !isAliasTag(tag);
+          });
             
-            /* Tags that refer specifically to a character. */
-            $rootScope.characterTags = $rootScope.collData.entity_types.filter(function (tag) {
-              return isCharacterTag(tag);
-            });
-            
-            /* Tags that don't refer specifically to a character. */
-            $rootScope.nonCharacterTags = $rootScope.collData.entity_types.filter(function (tag) {
-              return !isCharacterTag(tag);
-            });
+          $rootScope.tagOrdering = $rootScope.characterTags.map(function (tag) { return tag.type; });
+          
+          $scope.selectedVisualElement = $scope.findVisual;
+          
+          $rootScope.aliasesRemaining = countAliases($rootScope.taggedEntities);
+          $rootScope.unresolvedsRemaining = countUnresolveds($rootScope.taggedEntities);
 
-            /* Non-character tags that can be used as tags. */
-            $rootScope.taggableNonCharacterTags = $rootScope.nonCharacterTags.filter(function (tag) {
-              return !isAliasTag(tag);
-            });
-            
-            $rootScope.tagOrdering = $rootScope.characterTags.map(function (tag) { return tag.type; });
-            $scope.selectedVisualElement = $scope.findVisual;
+          docsDataObjRef.$watch(function() {
             $rootScope.aliasesRemaining = countAliases($rootScope.taggedEntities);
-            
             $rootScope.unresolvedsRemaining = countUnresolveds($rootScope.taggedEntities);
+          });
 
-            docDataObjRef.$watch(function() {
-              $rootScope.aliasesRemaining = countAliases($rootScope.taggedEntities);
-              $rootScope.unresolvedsRemaining = countUnresolveds($rootScope.taggedEntities);
-            });
+          collDataObjRef.$watch(function() {
+            liveDispatcher.post('collectionLoaded', [$.extend({
+              'collection': null
+            }, $rootScope.collData)]);
+          });
 
-            collDataObjRef.$watch(function() {
-              liveDispatcher.post('collectionLoaded', [$.extend({
-                'collection': null
-              }, $rootScope.collData)]);
-            });
-
-            docDataObjRef.$watch(function() {
-              liveDispatcher.post('requestRenderData', [$.extend({}, $rootScope.docData)]);
-            });
-          })
-        },
-        function(error) {
-          console.error("Error:", error);
-        })
+          docsDataObjRef.$watch(function() {
+            liveDispatcher.post('requestRenderData', [$.extend({}, $rootScope.docsData[$rootScope.docIndex])]);
+          });
+        });
+      },
+      function(error) {
+        console.error("Error:", error);
+      })
     },
     function(error) {
       console.error("Error:", error);
@@ -140,7 +142,7 @@ app.controller('bratController', function($scope, $log, $rootScope, $firebaseObj
         if (e.srcElement.attributes[attribute].nodeName == 'data-span-id') {
           $scope.selectedVisualElement = e.srcElement;
           var id = e.srcElement.attributes[attribute].value;
-          $rootScope.docData['entities'].forEach(function(entity) {
+          $rootScope.docsData[$rootScope.docIndex].entities.forEach(function(entity) {
             if (entity[0] == id) {
               // $scope.unselect();
               

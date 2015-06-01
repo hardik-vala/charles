@@ -25,7 +25,7 @@ app.controller('navigationController', function($scope, $log, $modal, $rootScope
   };
 
   $scope.nextDoc = function () {
-    if ($rootScope.docIndex < $rootScope.numDocuments - 1) {
+    if ($rootScope.docIndex < $rootScope.numDocs - 1) {
       document.location = "?doc=" + ($rootScope.docIndex + 1);
     }
   };

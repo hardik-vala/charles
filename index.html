@@ -111,9 +111,9 @@
               <button type="button" class="btn btn-default btn-lg" ng-click="previousDoc()" ng-disabled="docIndex <= 0">
                 <span class="glyphicon glyphicon-arrow-left"></span> &nbsp; Prev
               </button>
-              <!--<p style="display: inline;margin: 0 30px;padding-top: 10px;font-size:20px;font-weight:bold;">{{(docIndex + 1) + ' of ' + numDocuments}}</p>-->
-              <p style="display: inline;margin: 0 30px;padding-top: 10px;font-size:20px;font-weight:bold;">{{docData.name}}</p>
-              <button type="button" class="btn btn-default btn-lg" ng-click="nextDoc()" ng-disabled="docIndex >= numDocuments - 1">
+              <!--<p style="display: inline;margin: 0 30px;padding-top: 10px;font-size:20px;font-weight:bold;">{{(docIndex + 1) + ' of ' + numDocs}}</p>-->
+              <p style="display: inline;margin: 0 30px;padding-top: 10px;font-size:20px;font-weight:bold;">{{docsData[docIndex].name}}</p>
+              <button type="button" class="btn btn-default btn-lg" ng-click="nextDoc()" ng-disabled="docIndex >= numDocs - 1">
                 Next &nbsp; <span class="glyphicon glyphicon-arrow-right"></span>
               </button>
             </center>
