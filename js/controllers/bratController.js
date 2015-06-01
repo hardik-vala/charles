@@ -16,7 +16,7 @@ app.controller('bratController', function($scope, $log, $rootScope, $firebaseObj
   var collDataRef = new Firebase(FB.link + '/collData');
   var docsDataRef = new Firebase(FB.link + '/docData');
 
-  var collDataObjRef = $firebaseObject(collDataRef)
+  var collDataObjRef = $firebaseObject(collDataRef);
   collDataObjRef.$bindTo($rootScope, 'collData');
   var docsDataObjRef = $firebaseObject(docsDataRef);
   docsDataObjRef.$bindTo($rootScope, 'docsData');
