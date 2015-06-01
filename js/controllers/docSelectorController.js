@@ -3,7 +3,7 @@ app.controller('docSelectorController', function ($scope, $modalInstance, $rootS
   $scope.docNameIndexData = [];
 
   for (var i = 0; i < $rootScope.numDocs; i++)
-    $scope.docNameIndexData.push({name: $rootScope.docsData[i].name, index: i});
+    $scope.docNameIndexData.push({name: $rootScope.docsData.docs[i].name, index: i});
 
   $scope.selected = {
     nameIndex: $scope.docNameIndexData[0]

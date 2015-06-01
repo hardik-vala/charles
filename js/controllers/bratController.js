@@ -7,7 +7,7 @@ app.controller('bratController', function($scope, $log, $rootScope, $firebaseObj
   
   // Returns the span for the given entity from the text that's loaded.
   var getSpan = function (entity) {
-    return getEntitySpan($rootScope.docsData[$rootScope.docIndex].text, entity);
+    return getEntitySpan($rootScope.docsData.docs[$rootScope.docIndex].text, entity);
   };
   
   /* Index of document (in document data) to display. */
@@ -32,7 +32,7 @@ app.controller('bratController', function($scope, $log, $rootScope, $firebaseObj
             $.extend({
               'collection': null
             }, collData),
-            $.extend({}, docsData[$rootScope.docIndex]), webFontURLs);
+            $.extend({}, docsData.docs[$rootScope.docIndex]), webFontURLs);
 
           var renderError = function() {
             // liveDiv.css({'border': '2px solid red'}); // Setting this blows the layout.
@@ -41,12 +41,9 @@ app.controller('bratController', function($scope, $log, $rootScope, $firebaseObj
           liveDispatcher.on('renderError: Fatal', renderError);
           liveDispatcher.on('doneRendering', $scope.findVisual);
 
-          $rootScope.numDocs = 0;
-          docsData.forEach(function (i) {
-            $rootScope.numDocs++;
-          });
+          $rootScope.numDocs = docsData.docs.length;
           
-          $rootScope.taggedEntities = sortTaggedEntities(docsData[$rootScope.docIndex].entities);
+          $rootScope.taggedEntities = sortTaggedEntities(docsData.docs[$rootScope.docIndex].entities);
 
           // DECPRECATED
           // $rootScope.entity = firstTaggedEntity($rootScope.taggedEntities);
@@ -88,7 +85,7 @@ app.controller('bratController', function($scope, $log, $rootScope, $firebaseObj
           });
 
           docsDataObjRef.$watch(function() {
-            liveDispatcher.post('requestRenderData', [$.extend({}, $rootScope.docsData[$rootScope.docIndex])]);
+            liveDispatcher.post('requestRenderData', [$.extend({}, $rootScope.docsData.docs[$rootScope.docIndex])]);
           });
         });
       },
@@ -142,7 +139,7 @@ app.controller('bratController', function($scope, $log, $rootScope, $firebaseObj
         if (e.srcElement.attributes[attribute].nodeName == 'data-span-id') {
           $scope.selectedVisualElement = e.srcElement;
           var id = e.srcElement.attributes[attribute].value;
-          $rootScope.docsData[$rootScope.docIndex].entities.forEach(function(entity) {
+          $rootScope.docsData.docs[$rootScope.docIndex].entities.forEach(function(entity) {
             if (entity[0] == id) {
               // $scope.unselect();
               

@@ -17,7 +17,7 @@ app.controller('tagController', function($scope, $modal, $log, $rootScope, $fire
 
   // Returns the span for the given entity in the text.
   var getSpan = function(entity) {
-    return getEntitySpan($rootScope.docsData[$rootScope.docIndex].text, entity);
+    return getEntitySpan($rootScope.docsData.docs[$rootScope.docIndex].text, entity);
   };
 
   // Checks if the first letter of the given string is capitalized.
@@ -45,7 +45,7 @@ app.controller('tagController', function($scope, $modal, $log, $rootScope, $fire
     // list of tagged entities.
     if (hasAliasType($rootScope.selectedEntity)) {
       $rootScope.taggedEntities = removeEntity($rootScope.taggedEntities, $rootScope.selectedEntity);
-      $rootScope.docsData[$rootScope.docIndex].entities = removeEntity($rootScope.docsData[$rootScope.docIndex].entities, $rootScope.selectedEntity);
+      $rootScope.docsData.docs[$rootScope.docIndex].entities = removeEntity($rootScope.docsData.docs[$rootScope.docIndex].entities, $rootScope.selectedEntity);
     }
      
     var newEntityIdNumber = getNewEntityIdNumber($rootScope.taggedEntities);
@@ -54,7 +54,7 @@ app.controller('tagController', function($scope, $modal, $log, $rootScope, $fire
     var newEntity = ["T" + newEntityIdNumber, tag.type, $rootScope.selectedEntity[CHAR_OFFSETS_IND]];
     // Add new entity to the list of entities.
     $rootScope.taggedEntities.push(newEntity);
-    $rootScope.docsData[$rootScope.docIndex].entities.push(newEntity);
+    $rootScope.docsData.docs[$rootScope.docIndex].entities.push(newEntity);
     // Sort the list of entities.
     $rootScope.taggedEntities = sortTaggedEntities($rootScope.taggedEntities);
     // Change selected entity to new entity.
@@ -82,14 +82,14 @@ app.controller('tagController', function($scope, $modal, $log, $rootScope, $fire
     }
 
     $rootScope.taggedEntities = removeEntity($rootScope.taggedEntities, $rootScope.selectedEntity);
-    $rootScope.docsData[$rootScope.docIndex].entities = removeEntity($rootScope.docsData[$rootScope.docIndex].entities, $rootScope.selectedEntity);
+    $rootScope.docsData.docs[$rootScope.docIndex].entities = removeEntity($rootScope.docsData.docs[$rootScope.docIndex].entities, $rootScope.selectedEntity);
 
     $scope.setTag(tag);
   };
 
   $scope.untag = function() {
     $rootScope.taggedEntities = removeEntity($rootScope.taggedEntities, $rootScope.selectedEntity);
-    $rootScope.docsData[$rootScope.docIndex].entities = removeEntity($rootScope.docsData[$rootScope.docIndex].entities, $rootScope.selectedEntity);
+    $rootScope.docsData.docs[$rootScope.docIndex].entities = removeEntity($rootScope.docsData.docs[$rootScope.docIndex].entities, $rootScope.selectedEntity);
     
     var sameOffsetEntities = getSameOffsetEntities($rootScope.taggedEntities, $rootScope.selectedEntity);
 
@@ -97,7 +97,7 @@ app.controller('tagController', function($scope, $modal, $log, $rootScope, $fire
       $rootScope.selectedEntity = sameOffsetEntities[0];
     else {
       $rootScope.selectedEntity[TYPE_IND] = TagInfo.alias.name;
-      $rootScope.docsData[$rootScope.docIndex].entities.push($rootScope.selectedEntity);
+      $rootScope.docsData.docs[$rootScope.docIndex].entities.push($rootScope.selectedEntity);
       $rootScope.taggedEntities.push($rootScope.selectedEntity);
       // Sort the list of entities.
       $rootScope.taggedEntities = sortTaggedEntities($rootScope.taggedEntities);
@@ -179,9 +179,9 @@ app.controller('tagController', function($scope, $modal, $log, $rootScope, $fire
         });
         
         for (var i = 0; i < $rootScope.numDocs; i++) {
-          $rootScope.docsData[i].entities.forEach(function(entity) {
+          $rootScope.docsData.docs[i].entities.forEach(function(entity) {
             if (entity[1] == tag.type) {
-              if ($rootScope.docsData[i].entities.filter(function(e) {
+              if ($rootScope.docsData.docs[i].entities.filter(function(e) {
                   return entity[2][0][0] == e[2][0][0] && e[1] == selectedTag.type;
                 }).length == 0) {
                 entity[1] = selectedTag.type;
@@ -204,8 +204,8 @@ app.controller('tagController', function($scope, $modal, $log, $rootScope, $fire
     var showItems = [];
     
     for (var i = 0; i < $rootScope.numDocs; i++) {
-      var text = $rootScope.docsData[i].text;
-      var entities = $rootScope.docsData[i].entities;
+      var text = $rootScope.docsData.docs[i].text;
+      var entities = $rootScope.docsData.docs[i].entities;
       
       // Entities with the same type has the tag sorted in ascending order of character offsets.
       var sameTypeEntities = entities.filter(function (e) { return e[1] == tag.type; }).sort(function (e1, e2) {
@@ -214,7 +214,7 @@ app.controller('tagController', function($scope, $modal, $log, $rootScope, $fire
       
       sameTypeEntities.forEach(function (e) {
         showItems.push({
-          docName: $rootScope.docsData[i].name,
+          docName: $rootScope.docsData.docs[i].name,
           entity: e,
           span: text.substring(e[2][0][0], e[2][0][1]),
           pretext: text.substring((e[2][0][0] - windowLength < 0) ? 0 : e[2][0][0] - windowLength, e[2][0][0]).trim(),
