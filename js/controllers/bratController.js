@@ -142,7 +142,6 @@ app.controller('bratController', function($scope, $log, $rootScope, $firebaseObj
           $rootScope.docsData.docs[$rootScope.docIndex].entities.forEach(function(entity) {
             if (entity[0] == id) {
               // $scope.unselect();
-              
               $rootScope.collData.entity_types.forEach(function(item) {
                 if (item.type == entity[1]) {
                   $rootScope.selectedEntity = entity;
