@@ -1,5 +1,5 @@
 app.controller('logController', function($scope, $log, $rootScope, $firebaseArray) {
-  var logRef = new Firebase('https://blazing-heat-6025.firebaseio.com/log');
+  var logRef = new Firebase(FB.link + '/log');
 
   $scope.messages = $firebaseArray(logRef);
   

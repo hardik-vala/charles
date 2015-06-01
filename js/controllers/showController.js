@@ -7,14 +7,11 @@ app.controller('showController', function ($scope, $modalInstance, tag, showItem
     $modalInstance.close();
   };
 
-//   $scope.cancel = function () {
-//     $modalInstance.dismiss('cancel');
-//   };
-    $scope.myInterval = 5000;
-  var slides = $scope.slides = [];
+  $scope.slides = [];
+  
   $scope.addSlide = function(showItem) {
-    var newWidth = 868 + slides.length + 1;
-    slides.push({
+    var newWidth = 868 + $scope.slides.length + 1;
+    $scope.slides.push({
       image: 'http://placekitten.com/' + newWidth + '/300',
       docName: showItem.docName,
       pretext: showItem.pretext,

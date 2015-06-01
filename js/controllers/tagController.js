@@ -6,36 +6,18 @@ app.controller('tagController', function($scope, $modal, $log, $rootScope, $fire
     'One another', 'One', 'Each', 'Her', 'It', 'Who', 'Any', 'Those', 'Other', 'Others',
     'Everybody'];
 
-  var entityEquals = function(entity1, entity2) {
-    return (entity1[0] == entity2[0] &&
-      entity1[1] == entity2[1] &&
-      entity1[2][0][0] == entity2[2][0][0] &&
-      entity1[2][0][0] == entity2[2][0][0]);
-  };
-
   var getRandomLightColor = function() {
-    var letters = '3456789ABCDEF'.split('');
+    var letters = '56789ABCDEF'.split('');
     var color = '#';
     for (var i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 13)];
+      color += letters[Math.floor(Math.random() * 11)];
     }
     return color;
   };
 
-  // TODO: Make this accessible in other parts of the code.
+  // Returns the span for the given entity in the text.
   var getSpan = function(entity) {
-    return $rootScope.docData.text.substring(entity[2][0][0], entity[2][0][1]).trim();
-  };
-
-  /* Returns the entity immediately succeeding the given one. */
-  var nextEntity = function(entity) {
-    var lastEntity = $rootScope.docData.entities.reduce(function(p, v) {
-      return (p[2][0][0] > v[2][0][0]) ? p : v;
-    });
-
-    return $rootScope.docData.entities.reduce(function(p, v) {
-      return (entity[2][0][0] < v[2][0][0] && v[2][0][0] < p[2][0][0]) ? v : p;
-    }, lastEntity);
+    return getEntitySpan($rootScope.docsData.docs[$rootScope.docIndex].text, entity);
   };
 
   // Checks if the first letter of the given string is capitalized.
@@ -43,110 +25,99 @@ app.controller('tagController', function($scope, $modal, $log, $rootScope, $fire
 
   // Checks if the given string is lowercase.
   var isLowerCase = function (s) { return s == s.toLowerCase(); };
-
-  /* Tag the selected entity with the given tag. */
-  $scope.tag = function(item) {
-    if (item.type == 'ALIAS' || item.type == $rootScope.entity[1]) {
+  
+  this.isCharacterTag = isCharacterTag;
+  
+  /* Tags the selected entity with the given tag. */
+  $scope.setTag = function (tag) {
+    if (isAliasTag(tag) || hasType($rootScope.selectedEntity, tag.type))
       return;
-    }
 
-    if (item.type != 'NON-CHARACTER' || item.type != 'UNRESOLVED') {
-      var span = getSpan($rootScope.entity);
-      
-      if (isLowerCase(item.type) && isCapitalized(span) && pronouns.every(function (p) { return p != span })) {
-        $rootScope.docData.entities.forEach(function (e) {
-          if (e[1] == item.type) {
-            e[1] = span;
-          }
-        });
-        
-        $rootScope.tagOrdering[$rootScope.tagOrdering.indexOf(item.type)] = span;
-        
-        item.type = span;
-        item.labels = [span];
-      }
+    var sameOffsetEntities = getSameOffsetEntities($rootScope.taggedEntities, $rootScope.selectedEntity);
+  
+    if (hasType(sameOffsetEntities, TagInfo.nonCharacter.name))
+      return;
+
+    if (sameOffsetEntities.length > 1 && isNonCharacterTag(tag))
+      return;
+
+    // If the selected entity has type ALIAS, then remove the entity from the
+    // list of tagged entities.
+    if (hasAliasType($rootScope.selectedEntity)) {
+      $rootScope.taggedEntities = removeEntity($rootScope.taggedEntities, $rootScope.selectedEntity);
+      $rootScope.docsData.docs[$rootScope.docIndex].entities = removeEntity($rootScope.docsData.docs[$rootScope.docIndex].entities, $rootScope.selectedEntity);
     }
+     
+    var newEntityIdNumber = getNewEntityIdNumber($rootScope.taggedEntities);
+
+    // Create new entity with given tag.
+    var newEntity = ["T" + newEntityIdNumber, tag.type, $rootScope.selectedEntity[CHAR_OFFSETS_IND]];
+    // Add new entity to the list of entities.
+    $rootScope.taggedEntities.push(newEntity);
+    $rootScope.docsData.docs[$rootScope.docIndex].entities.push(newEntity);
+    // Sort the list of entities.
+    $rootScope.taggedEntities = sortTaggedEntities($rootScope.taggedEntities);
+    // Change selected entity to new entity.
+    $rootScope.selectedEntity = newEntity;
+    // TODO: Change this to update through a watcher.
+    $rootScope.span = getSpan($rootScope.selectedEntity);
+    // TODO: Change this to update through a watcher.
+    $rootScope.taggedEntityIndex = findTaggedEntityIndex($rootScope.taggedEntities, $rootScope.selectedEntity);
     
-    // Set selected entity type to tag type.
-    $rootScope.entity[1] = item.type;
-
-    // Move selected tag to the beginning of the list.
-    $rootScope.tagOrdering.splice($rootScope.tagOrdering.indexOf(item.type), 1);
-    $rootScope.tagOrdering.unshift(item.type);
-
-    $rootScope.entity = nextEntity($rootScope.entity);
-    $rootScope.span = getSpan($rootScope.entity);
+    // Move selected tag to the beginning of the list if it's a character tag.
+    if (isCharacterTag(tag)) {
+      $rootScope.tagOrdering.splice($rootScope.tagOrdering.indexOf(tag.type), 1);
+      $rootScope.tagOrdering.unshift(tag.type); 
+    }
   };
 
-  $scope.tagOnTop = function(item) {
-    // TODO: Make constants of these base character types.
-    if (item.type == 'ALIAS' || item.type == 'NON-CHARACTER' || item.type == 'UNRESOLVED') {
+  $scope.changeTag = function (tag) {
+    if (isAliasTag(tag) || hasType($rootScope.selectedEntity, tag.type))
       return;
-    }
 
-    if ($rootScope.docData.entities.filter(function(entity) {
-        return $rootScope.entity[2][0][0] == entity[2][0][0] && item.type == entity[1];
+    if ($rootScope.taggedEntities.filter(function(e) {
+        return $rootScope.selectedEntity[2][0][0] == e[2][0][0] && tag.type == e[1];
       }).length > 0) {
       return;
     }
 
-    // If the selected entity has type ALIAS, then remove the entity.
-    // TODO: Make a function for testing the character type of entities.
-    if ($rootScope.entity[1] == 'ALIAS') {
-      // TODO: Make a "removeEntity"-type function out of this code.
-      $rootScope.docData.entities = $rootScope.docData.entities.filter(function(entity) {
-        return !entityEquals($rootScope.entity, entity);
-      });
-    }
+    $rootScope.taggedEntities = removeEntity($rootScope.taggedEntities, $rootScope.selectedEntity);
+    $rootScope.docsData.docs[$rootScope.docIndex].entities = removeEntity($rootScope.docsData.docs[$rootScope.docIndex].entities, $rootScope.selectedEntity);
 
-    var entityIdNumbers = $rootScope.docData.entities.map(function(entity) {
-      return parseInt(entity[0].substring(1, entity[0].length));
-    });
-
-    var maxIdNumber = entityIdNumbers.reduce(function(p, v) {
-      return ((p > v) ? p : v);
-    });
-
-    // Create new entity with given tag.
-    var newEntity = ["T" + (maxIdNumber + 1), item.type, $rootScope.entity[2]];
-    // Add new entity to the list of entities.
-    $rootScope.docData.entities.push(newEntity);
-    // Change selected entity to new entity.
-    $rootScope.entity = newEntity;
+    $scope.setTag(tag);
   };
 
   $scope.untag = function() {
-    $rootScope.docData.entities = $rootScope.docData.entities.filter(function(entity) {
-      return !entityEquals($rootScope.entity, entity);
-    });
+    $rootScope.taggedEntities = removeEntity($rootScope.taggedEntities, $rootScope.selectedEntity);
+    $rootScope.docsData.docs[$rootScope.docIndex].entities = removeEntity($rootScope.docsData.docs[$rootScope.docIndex].entities, $rootScope.selectedEntity);
+    
+    var sameOffsetEntities = getSameOffsetEntities($rootScope.taggedEntities, $rootScope.selectedEntity);
 
-    var sameSpanEntities = $rootScope.docData.entities.filter(function(e) {
-      return $rootScope.entity[2][0][0] == e[2][0][0];
-    });
-
-    if (sameSpanEntities.length > 0) {
-      $rootScope.entity = sameSpanEntities[0];
-    }
+    if (sameOffsetEntities.length > 0)
+      $rootScope.selectedEntity = sameOffsetEntities[0];
     else {
-      $rootScope.entity[1] = 'ALIAS';
-      $rootScope.docData.entities.push($rootScope.entity);
+      $rootScope.selectedEntity[TYPE_IND] = TagInfo.alias.name;
+      $rootScope.docsData.docs[$rootScope.docIndex].entities.push($rootScope.selectedEntity);
+      $rootScope.taggedEntities.push($rootScope.selectedEntity);
+      // Sort the list of entities.
+      $rootScope.taggedEntities = sortTaggedEntities($rootScope.taggedEntities);
     }
   };
 
   $scope.addNewTag = function() {
-    var tagLabel = $.trim($rootScope.docData.text.substring($rootScope.entity[2][0][0], $rootScope.entity[2][0][1]));
+    var tagName = getSpan($rootScope.selectedEntity);
     
-    var sameTypeItems = $rootScope.items.filter(function(i) {
+    var sameTypeTags = $rootScope.collData.entity_types.filter(function(i) {
       var leftBracketIndex = i.type.indexOf("(");
       var baseType = (leftBracketIndex > 0) ? i.type.substring(0, leftBracketIndex - 1) : i.type;
-      return tagLabel == baseType;
+      return tagName == baseType;
     });
     
-    if (sameTypeItems.length > 0) {
-      var typeIndices = sameTypeItems.map(function (item) {
-        var leftBracketIndex = item.type.indexOf("(");
-        var rightBracketIndex = item.type.indexOf(")")
-        return (rightBracketIndex > 0) ? parseInt(item  .type.substring(leftBracketIndex + 1, rightBracketIndex)) : 0;
+    if (sameTypeTags.length > 0) {
+      var typeIndices = sameTypeTags.map(function (tag) {
+        var leftBracketIndex = tag.type.indexOf("(");
+        var rightBracketIndex = tag.type.indexOf(")")
+        return (rightBracketIndex > 0) ? parseInt(tag.type.substring(leftBracketIndex + 1, rightBracketIndex)) : 0;
       }).sort();
       
       var freeIndex = null;
@@ -158,28 +129,29 @@ app.controller('tagController', function($scope, $modal, $log, $rootScope, $fire
       }
       
       if (freeIndex) {
-        if (freeIndex > 0) {
-          tagLabel += ' (' + (freeIndex) + ')'
-        }
-      } else {
-        tagLabel += ' (' + (typeIndices.length) + ')'
-      }
+        if (freeIndex > 0)
+          tagName += ' (' + (freeIndex) + ')'
+      } else
+        tagName += ' (' + (typeIndices.length) + ')'
     }
     
     var newTag = {
-      type: tagLabel,
-      labels: [tagLabel],
+      type: tagName,
+      labels: [tagName],
       bgColor: getRandomLightColor(),
       borderColor: 'darken'
     };
 
-    $rootScope.items.push(newTag);
+    $rootScope.collData.entity_types.push(newTag);
     $rootScope.tagOrdering.push(newTag.type);
+    
+    // Changes the tag for the selected instance to the new tag.
+    $scope.changeTag(newTag);
   };
 
-  $scope.removeTag = function(item) {
-    var itemIndex = $rootScope.items.indexOf(item);
-    if (itemIndex > -1) {
+  $rootScope.removeTag = function(tag) {
+    var tagIndex = $rootScope.collData.entity_types.indexOf(tag);
+    if (tagIndex > -1) {
       var modalInstance = $modal.open({
         animation: $scope.animationsEnabled,
         templateUrl: 'deleteTagModalContent.html',
@@ -187,24 +159,36 @@ app.controller('tagController', function($scope, $modal, $log, $rootScope, $fire
         size: 'lg',
         resolve: {
           items: function () {
-            return $rootScope.items.filter(function (t) { return t.type != 'ALIAS' && t.type != item.type; });
+            return $rootScope.collData.entity_types.filter(function (t) { return !isAliasTag(t) && t.type != tag.type; });
           }
         }
       });
   
-      modalInstance.result.then(function (selectedItem) {
-        $rootScope.items.splice(itemIndex, 1);
-        $rootScope.tagOrdering.splice($rootScope.tagOrdering.indexOf(item.type), 1);
+      modalInstance.result.then(function (selectedTag) {
+        $rootScope.collData.entity_types.splice(tagIndex, 1);
+        $rootScope.tagOrdering.splice($rootScope.tagOrdering.indexOf(tag.type), 1);
         
-        $rootScope.docData.entities.forEach(function(entity) {
-          if (entity[1] == item.type) {
-            if ($rootScope.docData.entities.filter(function(e) {
-                return entity[2][0][0] == e[2][0][0] && e[1] == selectedItem.type;
+        $rootScope.taggedEntities.forEach(function(entity) {
+          if (entity[1] == tag.type) {
+            if ($rootScope.taggedEntities.filter(function(e) {
+                return entity[2][0][0] == e[2][0][0] && e[1] == selectedTag.type;
               }).length == 0) {
-              entity[1] = selectedItem.type;
+              entity[1] = selectedTag.type;
             }
           }
         });
+        
+        for (var i = 0; i < $rootScope.numDocs; i++) {
+          $rootScope.docsData.docs[i].entities.forEach(function(entity) {
+            if (entity[1] == tag.type) {
+              if ($rootScope.docsData.docs[i].entities.filter(function(e) {
+                  return entity[2][0][0] == e[2][0][0] && e[1] == selectedTag.type;
+                }).length == 0) {
+                entity[1] = selectedTag.type;
+              }
+            }
+          });
+        };
       }, function () {});
       
       $scope.toggleAnimation = function () {
@@ -213,59 +197,46 @@ app.controller('tagController', function($scope, $modal, $log, $rootScope, $fire
     }
   }
   
-  $scope.showEntities = function(tag) {
+  $rootScope.showEntities = function(tag) {
     // TODO: Make this a controller constant.
     var windowLength = 200;
     
     var showItems = [];
     
-    // TODO: Load all doc. data in the brat controller upon start.
-    var allDocDataRef = new Firebase('https://blazing-heat-6025.firebaseio.com/docData');
-
-    var allDocDataObjRef = $firebaseObject(allDocDataRef);
-    allDocDataObjRef.$bindTo($scope, 'allDocData');
-    
-    allDocDataObjRef.$loaded(
-      function (allDocData) {
-        for (var i = 0; i < $rootScope.numDocuments; i++) {
-          var text = allDocData[i].text;
-          var entities = allDocData[i].entities;
-          
-          // Entities with the same type has the tag sorted in ascending order of character offsets.
-          var sameTypeEntities = entities.filter(function (e) { return e[1] == tag.type; }).sort(function (e1, e2) {
-            return e1[2][0][0] - e2[2][0][0];
-          });
-          
-          sameTypeEntities.forEach(function (e) {
-            showItems.push({
-              docName: allDocData[i].name,
-              entity: e,
-              span: text.substring(e[2][0][0], e[2][0][1]),
-              pretext: text.substring((e[2][0][0] - windowLength < 0) ? 0 : e[2][0][0] - windowLength, e[2][0][0]).trim(),
-              posttext: text.substring(e[2][0][1] + 1, 
-                (e[2][0][1] + windowLength > text.length) ? text.length : e[2][0][1] + windowLength).trim()
-            });
-          });
-        }
-        
-        var modalInstance = $modal.open({
-          animation: $scope.showAnimationsEnabled,
-          templateUrl: 'showModalContent.html',
-          controller: 'showController',
-          resolve: {
-            tag: function () { return tag; },
-            showItems: function () { return showItems; }
-          }
+    for (var i = 0; i < $rootScope.numDocs; i++) {
+      var text = $rootScope.docsData.docs[i].text;
+      var entities = $rootScope.docsData.docs[i].entities;
+      
+      // Entities with the same type has the tag sorted in ascending order of character offsets.
+      var sameTypeEntities = entities.filter(function (e) { return e[1] == tag.type; }).sort(function (e1, e2) {
+        return e1[2][0][0] - e2[2][0][0];
+      });
+      
+      sameTypeEntities.forEach(function (e) {
+        showItems.push({
+          docName: $rootScope.docsData.docs[i].name,
+          entity: e,
+          span: text.substring(e[2][0][0], e[2][0][1]),
+          pretext: text.substring((e[2][0][0] - windowLength < 0) ? 0 : e[2][0][0] - windowLength, e[2][0][0]).trim(),
+          posttext: text.substring(e[2][0][1] + 1, 
+            (e[2][0][1] + windowLength > text.length) ? text.length : e[2][0][1] + windowLength).trim()
         });
-
-        $scope.toggleAnimation = function () {
-          $scope.showAnimationsEnabled = !$scope.showAnimationsEnabled;
-        };
-      },
-      function(error) {
-        console.error("Error:", error);
+      });
+    };
+        
+    var modalInstance = $modal.open({
+      animation: $scope.showAnimationsEnabled,
+      templateUrl: 'showModalContent.html',
+      controller: 'showController',
+      resolve: {
+        tag: function () { return tag; },
+        showItems: function () { return showItems; }
       }
-    );
+    });
+
+    $scope.toggleAnimation = function () {
+      $scope.showAnimationsEnabled = !$scope.showAnimationsEnabled;
+    };
   }
   
 });
