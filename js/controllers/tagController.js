@@ -179,15 +179,24 @@ app.controller('tagController', function($scope, $modal, $log, $rootScope, $fire
         });
         
         for (var i = 0; i < $rootScope.numDocs; i++) {
+          var entitiesToRemove = [];
+          
           $rootScope.docsData.docs[i].entities.forEach(function(entity) {
             if (entity[1] == tag.type) {
               if ($rootScope.docsData.docs[i].entities.filter(function(e) {
                   return entity[2][0][0] == e[2][0][0] && e[1] == selectedTag.type;
                 }).length == 0) {
                 entity[1] = selectedTag.type;
-              }
+              } else
+                entitiesToRemove.push(entity);
             }
           });
+          
+          entitiesToRemove.forEach(function (entity) {
+            $rootScope.taggedEntities = removeEntity($rootScope.taggedEntities, entity);
+            $rootScope.docsData.docs[$rootScope.docIndex].entities = removeEntity($rootScope.docsData.docs[$rootScope.docIndex].entities, entity);
+          });
+          
         };
       }, function () {});
       
