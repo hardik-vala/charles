@@ -244,11 +244,11 @@
                 
                 <ul class="list-group tag-list" ng-if="collData.entity_types.length > 4">
                   <li class="list-group-item tag-item" ng-repeat="tag in collData.entity_types | tagOrderFilter">
-                    <div style="float:left" ng-if="tag.type != 'ALIAS' && tag.type != 'NON-CHARACTER' && tag.type != 'OTHER' && tag.type != 'UNRESOLVED'">
+                    <div style="float:left" ng-if="tag.type != 'ALIAS' && tag.type != 'NON-CHARACTER' && tag.type != 'OTHER' && tag.type != '???' && tag.type != 'UNRESOLVED'">
                       <button class="btn btn-default btn-tag" context-menu="menuOptions" ng-style="{background: tag.bgColor}" ng-click="setTag(tag)" ng-disabled="!selectedEntity">{{ tag.type }}</button>
                     </div>
                     
-                    <div style="float:right" ng-if="tag.type != 'ALIAS' && tag.type != 'NON-CHARACTER' && tag.type != 'OTHER' && tag.type != 'UNRESOLVED'">
+                    <div style="float:right" ng-if="tag.type != 'ALIAS' && tag.type != 'NON-CHARACTER' && tag.type != 'OTHER' && tag.type != '???' && tag.type != 'UNRESOLVED'">
                       <button class="btn btn-warning change-tag-btn" ng-click="changeTag(tag)" ng-disabled="!selectedEntity"><span class="glyphicon glyphicon-repeat"></span></button>
                     </div>
                   </li>

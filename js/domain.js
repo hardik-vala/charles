@@ -11,6 +11,10 @@ var TagInfo = {
         name: 'OTHER',
         color: '#BBBBBB'
     },
+    unknown: {
+        name: '???',
+        color: '#777777'
+    },
     unresolved: {
         name: 'UNRESOLVED',
         color: '#39FF14'
@@ -33,6 +37,7 @@ var isCharacterTag = function (tag) {
     return !(tag.type == TagInfo.alias.name ||
         tag.type == TagInfo.nonCharacter.name ||
         tag.type == TagInfo.other.name ||
+        tag.type == TagInfo.unknown.name ||
         tag.type == TagInfo.unresolved.name);
 };
 
