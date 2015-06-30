@@ -101,19 +101,16 @@ body, html {
 }
 
 .non-tag-btn {
+  background: none;
+  border-radius: 0;
   font-size: 20px;
+  letter-spacing: 1px;
 }
 
 .new-character-btn {
-  box-shadow: 0 3px 0 0 #0083AA;
+
 }
 
 .untag-btn {
-  box-shadow: 0 3px 0 0 #B22222;
-}
 
-.non-tag-btn:active, .non-tag-btn.active {
-    box-shadow: none;
-    margin-bottom: -3px;
-    margin-top: 3px;
 }
