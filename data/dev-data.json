@@ -20,6 +20,12 @@
                 "borderColor": "darken"
             },
             {
+                "type": "???",
+                "labels": ["???"],
+                "bgColor": "#777777",
+                "borderColor": "darken"
+            },
+            {
                 "type": "UNRESOLVED",
                 "labels" : ["UNRESOLVED"],
                 "bgColor": "#39FF14",
