@@ -38,8 +38,10 @@ body, html {
 
 
 .character-annotation-panel .panel-heading {
-  text-align: center;
+  background: none;
+  background-color: #EEE;
   padding: 1px;
+  text-align: center;
 }
 
 .character-annotation-panel .panel-body {
