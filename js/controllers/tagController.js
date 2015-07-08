@@ -1,4 +1,4 @@
-app.controller('tagController', function($scope, $modal, $log, $rootScope, $firebaseObject) {
+app.controller('tagController', function($scope, $modal, $log, $rootScope, $firebaseObject, $resource) {
 
   // TODO
   var pronouns = ['I', 'Me', 'He', 'She', 'Him', 'You', 'Himself', 'Herself', 'Myself',
@@ -17,7 +17,7 @@ app.controller('tagController', function($scope, $modal, $log, $rootScope, $fire
 
   // Returns the span for the given entity in the text.
   var getSpan = function(entity) {
-    return getEntitySpan($rootScope.docsData.docs[$rootScope.docIndex].text, entity);
+    return getEntitySpan($rootScope.docData.text, entity);
   };
 
   // Checks if the first letter of the given string is capitalized.
@@ -45,7 +45,7 @@ app.controller('tagController', function($scope, $modal, $log, $rootScope, $fire
     // list of tagged entities.
     if (hasAliasType($rootScope.selectedEntity)) {
       $rootScope.taggedEntities = removeEntity($rootScope.taggedEntities, $rootScope.selectedEntity);
-      $rootScope.docsData.docs[$rootScope.docIndex].entities = removeEntity($rootScope.docsData.docs[$rootScope.docIndex].entities, $rootScope.selectedEntity);
+      $rootScope.docData.entities = removeEntity($rootScope.docData.entities, $rootScope.selectedEntity);
     }
      
     var newEntityIdNumber = getNewEntityIdNumber($rootScope.taggedEntities);
@@ -54,7 +54,7 @@ app.controller('tagController', function($scope, $modal, $log, $rootScope, $fire
     var newEntity = ["T" + newEntityIdNumber, tag.type, $rootScope.selectedEntity[CHAR_OFFSETS_IND]];
     // Add new entity to the list of entities.
     $rootScope.taggedEntities.push(newEntity);
-    $rootScope.docsData.docs[$rootScope.docIndex].entities.push(newEntity);
+    $rootScope.docData.entities.push(newEntity);
     // Sort the list of entities.
     $rootScope.taggedEntities = sortTaggedEntities($rootScope.taggedEntities);
     // Change selected entity to new entity.
@@ -82,14 +82,14 @@ app.controller('tagController', function($scope, $modal, $log, $rootScope, $fire
     }
 
     $rootScope.taggedEntities = removeEntity($rootScope.taggedEntities, $rootScope.selectedEntity);
-    $rootScope.docsData.docs[$rootScope.docIndex].entities = removeEntity($rootScope.docsData.docs[$rootScope.docIndex].entities, $rootScope.selectedEntity);
+    $rootScope.docData.entities = removeEntity($rootScope.docData.entities, $rootScope.selectedEntity);
 
     $scope.setTag(tag);
   };
 
   $scope.untag = function() {
     $rootScope.taggedEntities = removeEntity($rootScope.taggedEntities, $rootScope.selectedEntity);
-    $rootScope.docsData.docs[$rootScope.docIndex].entities = removeEntity($rootScope.docsData.docs[$rootScope.docIndex].entities, $rootScope.selectedEntity);
+    $rootScope.docData.entities = removeEntity($rootScope.docData.entities, $rootScope.selectedEntity);
     
     var sameOffsetEntities = getSameOffsetEntities($rootScope.taggedEntities, $rootScope.selectedEntity);
 
@@ -97,7 +97,7 @@ app.controller('tagController', function($scope, $modal, $log, $rootScope, $fire
       $rootScope.selectedEntity = sameOffsetEntities[0];
     else {
       $rootScope.selectedEntity[TYPE_IND] = TagInfo.alias.name;
-      $rootScope.docsData.docs[$rootScope.docIndex].entities.push($rootScope.selectedEntity);
+      $rootScope.docData.entities.push($rootScope.selectedEntity);
       $rootScope.taggedEntities.push($rootScope.selectedEntity);
       // Sort the list of entities.
       $rootScope.taggedEntities = sortTaggedEntities($rootScope.taggedEntities);
@@ -150,6 +150,8 @@ app.controller('tagController', function($scope, $modal, $log, $rootScope, $fire
   };
 
   $rootScope.removeTag = function(tag) {
+    var Frankend = $resource('https://frankend-elwebmaster-1.c9.io/:command');
+    
     var tagIndex = $rootScope.collData.entity_types.indexOf(tag);
     if (tagIndex > -1) {
       var modalInstance = $modal.open({
@@ -165,87 +167,81 @@ app.controller('tagController', function($scope, $modal, $log, $rootScope, $fire
       });
   
       modalInstance.result.then(function (selectedTag) {
-        $rootScope.collData.entity_types.splice(tagIndex, 1);
-        $rootScope.tagOrdering.splice($rootScope.tagOrdering.indexOf(tag.type), 1);
+            var replaceResult = Frankend.get({
+      command: 'replace',
+      old_character: tag.type,
+      replacement_character: selectedTag.type
+    }, function() {
+      console.log(replaceResult);
+    });
+      });
         
-        $rootScope.taggedEntities.forEach(function(entity) {
-          if (entity[1] == tag.type) {
-            if ($rootScope.taggedEntities.filter(function(e) {
-                return entity[2][0][0] == e[2][0][0] && e[1] == selectedTag.type;
-              }).length == 0) {
-              entity[1] = selectedTag.type;
-            }
-          }
-        });
+      //   $rootScope.collData.entity_types.splice(tagIndex, 1);
+      //   $rootScope.tagOrdering.splice($rootScope.tagOrdering.indexOf(tag.type), 1);
         
-        for (var i = 0; i < $rootScope.numDocs; i++) {
-          var entitiesToRemove = [];
+      //   $rootScope.taggedEntities.forEach(function(entity) {
+      //     if (entity[1] == tag.type) {
+      //       if ($rootScope.taggedEntities.filter(function(e) {
+      //           return entity[2][0][0] == e[2][0][0] && e[1] == selectedTag.type;
+      //         }).length == 0) {
+      //         entity[1] = selectedTag.type;
+      //       }
+      //     }
+      //   });
+        
+      //   for (var i = 0; i < $rootScope.numDocs; i++) {
+      //     var entitiesToRemove = [];
           
-          $rootScope.docsData.docs[i].entities.forEach(function(entity) {
-            if (entity[1] == tag.type) {
-              if ($rootScope.docsData.docs[i].entities.filter(function(e) {
-                  return entity[2][0][0] == e[2][0][0] && e[1] == selectedTag.type;
-                }).length == 0) {
-                entity[1] = selectedTag.type;
-              } else
-                entitiesToRemove.push(entity);
-            }
-          });
+      //     $rootScope.docData.entities.forEach(function(entity) {
+      //       if (entity[1] == tag.type) {
+      //         if ($rootScope.docData.entities.filter(function(e) {
+      //             return entity[2][0][0] == e[2][0][0] && e[1] == selectedTag.type;
+      //           }).length == 0) {
+      //           entity[1] = selectedTag.type;
+      //         } else
+      //           entitiesToRemove.push(entity);
+      //       }
+      //     });
           
-          entitiesToRemove.forEach(function (entity) {
-            $rootScope.taggedEntities = removeEntity($rootScope.taggedEntities, entity);
-            $rootScope.docsData.docs[$rootScope.docIndex].entities = removeEntity($rootScope.docsData.docs[$rootScope.docIndex].entities, entity);
-          });
+      //     entitiesToRemove.forEach(function (entity) {
+      //       $rootScope.taggedEntities = removeEntity($rootScope.taggedEntities, entity);
+      //       $rootScope.doc
+      //       Data.entities = removeEntity($rootScope.docData.entities, entity);
+      //     });
           
-        };
-      }, function () {});
+      //   };
+      // }, function () {});
       
-      $scope.toggleAnimation = function () {
-        $scope.animationsEnabled = !$scope.animationsEnabled;
-      };
+      // $scope.toggleAnimation = function () {
+      //   $scope.animationsEnabled = !$scope.animationsEnabled;
+      // };
     }
   }
   
   $rootScope.showEntities = function(tag) {
-    // TODO: Make this a controller constant.
-    var windowLength = 200;
-    
-    var showItems = [];
-    
-    for (var i = 0; i < $rootScope.numDocs; i++) {
-      var text = $rootScope.docsData.docs[i].text;
-      var entities = $rootScope.docsData.docs[i].entities;
-      
-      // Entities with the same type has the tag sorted in ascending order of character offsets.
-      var sameTypeEntities = entities.filter(function (e) { return e[1] == tag.type; }).sort(function (e1, e2) {
-        return e1[2][0][0] - e2[2][0][0];
+    var Frankend = $resource('https://frankend-elwebmaster-1.c9.io/:command');
+    var showItems = Frankend.query({
+      command: 'show',
+      character: tag.type
+    }, function() {
+      var modalInstance = $modal.open({
+        animation: $scope.showAnimationsEnabled,
+        templateUrl: 'showModalContent.html',
+        controller: 'showController',
+        resolve: {
+          tag: function() {
+            return tag;
+          },
+          showItems: function() {
+            return showItems;
+          }
+        }
       });
-      
-      sameTypeEntities.forEach(function (e) {
-        showItems.push({
-          docName: $rootScope.docsData.docs[i].name,
-          entity: e,
-          span: text.substring(e[2][0][0], e[2][0][1]),
-          pretext: text.substring((e[2][0][0] - windowLength < 0) ? 0 : e[2][0][0] - windowLength, e[2][0][0]).trim(),
-          posttext: text.substring(e[2][0][1] + 1, 
-            (e[2][0][1] + windowLength > text.length) ? text.length : e[2][0][1] + windowLength).trim()
-        });
-      });
-    };
-        
-    var modalInstance = $modal.open({
-      animation: $scope.showAnimationsEnabled,
-      templateUrl: 'showModalContent.html',
-      controller: 'showController',
-      resolve: {
-        tag: function () { return tag; },
-        showItems: function () { return showItems; }
-      }
-    });
 
-    $scope.toggleAnimation = function () {
-      $scope.showAnimationsEnabled = !$scope.showAnimationsEnabled;
-    };
+      $scope.toggleAnimation = function() {
+        $scope.showAnimationsEnabled = !$scope.showAnimationsEnabled;
+      };
+    });
   }
   
 });

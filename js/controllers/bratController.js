@@ -7,23 +7,23 @@ app.controller('bratController', function($scope, $log, $rootScope, $firebaseObj
   
   // Returns the span for the given entity from the text that's loaded.
   var getSpan = function (entity) {
-    return getEntitySpan($rootScope.docsData.docs[$rootScope.docIndex].text, entity);
+    return getEntitySpan($rootScope.docData.text, entity);
   };
   
   /* Index of document (in document data) to display. */
   $rootScope.docIndex = parseInt(getQueryVariable("doc") || "0");
   
   var collDataRef = new Firebase(FB.link + '/collData');
-  var docsDataRef = new Firebase(FB.link + '/docData');
+  var docDataRef = new Firebase(FB.link + '/docData/docs/' + $rootScope.docIndex);
 
   var collDataObjRef = $firebaseObject(collDataRef);
   collDataObjRef.$bindTo($rootScope, 'collData');
-  var docsDataObjRef = $firebaseObject(docsDataRef);
-  docsDataObjRef.$bindTo($rootScope, 'docsData');
+  var docDataObjRef = $firebaseObject(docDataRef);
+  docDataObjRef.$bindTo($rootScope, 'docData');
   
   collDataObjRef.$loaded(
     function(collData) {
-      docsDataObjRef.$loaded(function(docsData) {
+      docDataObjRef.$loaded(function(docData) {
         head.ready(function() {
           var liveDiv = $('#brat-view');
 
@@ -32,7 +32,7 @@ app.controller('bratController', function($scope, $log, $rootScope, $firebaseObj
             $.extend({
               'collection': null
             }, collData),
-            $.extend({}, docsData.docs[$rootScope.docIndex]), webFontURLs);
+            $.extend({}, docData), webFontURLs);
 
           var renderError = function() {
             // liveDiv.css({'border': '2px solid red'}); // Setting this blows the layout.
@@ -41,9 +41,10 @@ app.controller('bratController', function($scope, $log, $rootScope, $firebaseObj
           liveDispatcher.on('renderError: Fatal', renderError);
           liveDispatcher.on('doneRendering', $scope.findVisual);
 
-          $rootScope.numDocs = docsData.docs.length;
+          // TODO
+          $rootScope.numDocs = 5;
           
-          $rootScope.taggedEntities = sortTaggedEntities(docsData.docs[$rootScope.docIndex].entities);
+          $rootScope.taggedEntities = sortTaggedEntities(docData.entities);
 
           // DECPRECATED
           // $rootScope.entity = firstTaggedEntity($rootScope.taggedEntities);
@@ -73,7 +74,7 @@ app.controller('bratController', function($scope, $log, $rootScope, $firebaseObj
           $rootScope.aliasesRemaining = countAliases($rootScope.taggedEntities);
           $rootScope.unresolvedsRemaining = countUnresolveds($rootScope.taggedEntities);
 
-          docsDataObjRef.$watch(function() {
+          docDataObjRef.$watch(function() {
             $rootScope.aliasesRemaining = countAliases($rootScope.taggedEntities);
             $rootScope.unresolvedsRemaining = countUnresolveds($rootScope.taggedEntities);
           });
@@ -84,8 +85,8 @@ app.controller('bratController', function($scope, $log, $rootScope, $firebaseObj
             }, $rootScope.collData)]);
           });
 
-          docsDataObjRef.$watch(function() {
-            liveDispatcher.post('requestRenderData', [$.extend({}, $rootScope.docsData.docs[$rootScope.docIndex])]);
+          docDataObjRef.$watch(function() {
+            liveDispatcher.post('requestRenderData', [$.extend({}, $rootScope.docData)]);
           });
         });
       },
@@ -139,7 +140,7 @@ app.controller('bratController', function($scope, $log, $rootScope, $firebaseObj
         if (e.srcElement.attributes[attribute].nodeName == 'data-span-id') {
           $scope.selectedVisualElement = e.srcElement;
           var id = e.srcElement.attributes[attribute].value;
-          $rootScope.docsData.docs[$rootScope.docIndex].entities.forEach(function(entity) {
+          $rootScope.docData.entities.forEach(function(entity) {
             if (entity[0] == id) {
               // $scope.unselect();
               $rootScope.collData.entity_types.forEach(function(item) {
