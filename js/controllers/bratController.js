@@ -41,9 +41,6 @@ app.controller('bratController', function($scope, $log, $rootScope, $firebaseObj
           liveDispatcher.on('renderError: Fatal', renderError);
           liveDispatcher.on('doneRendering', $scope.findVisual);
 
-          // TODO
-          $rootScope.numDocs = 5;
-          
           $rootScope.taggedEntities = sortTaggedEntities(docData.entities);
 
           // DECPRECATED

@@ -1,4 +1,9 @@
-app.controller('navigationController', function($scope, $log, $modal, $rootScope) {
+app.controller('navigationController', function($scope, $log, $modal, $rootScope, $resource) {
+
+  // TODO
+  var Frankend = $resource('https://frankend-elwebmaster-1.c9.io/:command');
+  
+  $scope.docNameIndexData = Frankend.query({command: 'docs'}, function() {});
 
   $scope.selectDoc = function () {
     var modalInstance = $modal.open({
@@ -25,7 +30,7 @@ app.controller('navigationController', function($scope, $log, $modal, $rootScope
   };
 
   $scope.nextDoc = function () {
-    if ($rootScope.docIndex < $rootScope.numDocs - 1) {
+    if ($rootScope.docIndex < $scope.docNameIndexData.length - 1) {
       document.location = "?doc=" + ($rootScope.docIndex + 1);
     }
   };

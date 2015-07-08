@@ -1,13 +1,10 @@
-app.controller('docSelectorController', function ($scope, $modalInstance, $rootScope, $firebaseObject) {
-
-  $scope.docNameIndexData = [];
-
-  for (var i = 0; i < $rootScope.numDocs; i++)
-    $scope.docNameIndexData.push({name: $rootScope.docsData.docs[i].name, index: i});
-
-  $scope.selected = {
-    nameIndex: $scope.docNameIndexData[0]
-  };
+app.controller('docSelectorController', function ($scope, $modalInstance, $rootScope, $firebaseObject, $resource) {
+  // TODO
+  var Frankend = $resource('https://frankend-elwebmaster-1.c9.io/:command');
+  
+  $scope.docNameIndexData = Frankend.query({command: 'docs'}, function() {
+    $scope.selected = {nameIndex: $scope.docNameIndexData[0]};
+  });
 
   $scope.ok = function () {
       $modalInstance.close($scope.selected.nameIndex);

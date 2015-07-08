@@ -166,18 +166,16 @@ app.controller('tagController', function($scope, $modal, $log, $rootScope, $fire
         }
       });
   
-      modalInstance.result.then(function (selectedTag) {
-            var replaceResult = Frankend.get({
-      command: 'replace',
-      old_character: tag.type,
-      replacement_character: selectedTag.type
-    }, function() {
-      console.log(replaceResult);
-    });
+      modalInstance.result.then(function(selectedTag) {
+        var replaceResult = Frankend.get({
+          command: 'replace',
+          old_character: tag.type,
+          replacement_character: selectedTag.type
+        }, function() {
+          $rootScope.collData.entity_types.splice(tagIndex, 1);
+          $rootScope.tagOrdering.splice($rootScope.tagOrdering.indexOf(tag.type), 1);
+        });
       });
-        
-      //   $rootScope.collData.entity_types.splice(tagIndex, 1);
-      //   $rootScope.tagOrdering.splice($rootScope.tagOrdering.indexOf(tag.type), 1);
         
       //   $rootScope.taggedEntities.forEach(function(entity) {
       //     if (entity[1] == tag.type) {
