@@ -1,0 +1,3 @@
+[submodule "frankend"]
+	path = frankend
+	url = git@github.com:HardikV24/frankend.git
