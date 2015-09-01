@@ -1,7 +1,7 @@
 app.controller('navigationController', function($scope, $log, $modal, $rootScope, $resource) {
 
   // TODO
-  var Frankend = $resource('https://frankend-elwebmaster-1.c9.io/:command');
+  var Frankend = $resource('http://enterprise.cs.mcgill.ca:1823/:command');
   
   $scope.docNameIndexData = Frankend.query({command: 'docs'}, function() {});
 

@@ -150,7 +150,7 @@ app.controller('tagController', function($scope, $modal, $log, $rootScope, $fire
   };
 
   $rootScope.removeTag = function(tag) {
-    var Frankend = $resource('https://frankend-elwebmaster-1.c9.io/:command');
+    var Frankend = $resource('http://enterprise.cs.mcgill.ca:1823/:command');
     
     var tagIndex = $rootScope.collData.entity_types.indexOf(tag);
     if (tagIndex > -1) {
@@ -217,7 +217,7 @@ app.controller('tagController', function($scope, $modal, $log, $rootScope, $fire
   }
   
   $rootScope.showEntities = function(tag) {
-    var Frankend = $resource('https://frankend-elwebmaster-1.c9.io/:command');
+    var Frankend = $resource('http://enterprise.cs.mcgill.ca:1823/:command');
     var showItems = Frankend.query({
       command: 'show',
       character: tag.type
