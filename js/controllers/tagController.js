@@ -149,6 +149,7 @@ app.controller('tagController', function($scope, $modal, $log, $rootScope, $fire
     $scope.changeTag(newTag);
   };
 
+
   $rootScope.removeTag = function(tag) {
     var Frankend = $resource('http://enterprise.cs.mcgill.ca:1823/:command');
     
@@ -241,5 +242,29 @@ app.controller('tagController', function($scope, $modal, $log, $rootScope, $fire
       };
     });
   }
+  
+  
+  // TODO: Persist
+  $scope.groupTags = [];
+  
+  $scope.showGroupTagBuilder = function() {
+    var modalInstance = $modal.open({
+      animation: $scope.showAnimationsEnabled,
+      templateUrl: 'groupTagBuilderModalContent.html',
+      controller: 'groupTagController',
+      resolve: {
+          tags: function() {
+              return $rootScope.collData.entity_types;
+          }
+      }
+    });
+    modalInstance.result.then(function(group) {
+      $scope.groupTags.push(group);
+    });
+  };
+  
+  $scope.setGroupTag = function(tags) {
+    tags.forEach($scope.setTag);
+  };
   
 });

@@ -116,3 +116,17 @@ body, html {
 .untag-btn {
 
 }
+
+.new-group-btn {
+
+}
+
+.jumbotron-flat {
+  background-color: solid #4DB8FFF;
+  height: 100%;
+  border: 1px solid #4DB8FF;
+  background: white;
+  width: 100%;
+  text-align: center;
+  overflow: auto;
+}

@@ -1,1 +1,1 @@
-var app = angular.module('frankenbratApp', ['firebase', 'ui.bootstrap', 'ui.bootstrap.contextMenu', 'ngResource']);
+var app = angular.module('frankenbratApp', ['firebase', 'ui.bootstrap', 'ui.bootstrap.contextMenu', 'ngResource', 'ui.select']);
