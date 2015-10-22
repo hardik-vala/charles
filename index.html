@@ -22,6 +22,7 @@
   <link rel="stylesheet" type="text/css" href="css/style.css" />
   <link rel="stylesheet" type="text/css" href="css/style-vis.css" />
   <link rel="stylesheet" type="text/css" href="css/jquery-theme/jquery-ui-redmond.css" />
+  <link rel="stylesheet" type="text/css" href="css/select.min.css" />
   
   <script type="text/javascript">
     // Returns the value of a URL variable. (If it doesn't exist, then it returns null.)
@@ -40,6 +41,7 @@
   <script type="text/javascript" src="head.load.min.js"></script>
   <script type="text/javascript" src="lib/spin.min.js"></script>
   <script type="text/javascript" src="lib/contextMenu.js"></script>
+  <script type="text/javascript" src="js/lib/select.js"></script>
   <script type="text/javascript" src="js/app.js"></script>
   <script type="text/javascript" src="js/fb.js"></script>
   <script type="text/javascript" src="js/domain.js"></script>
@@ -53,6 +55,7 @@
   <script type="text/javascript" src="js/controllers/tagController.js"></script>
   <script type="text/javascript" src="js/controllers/navigationController.js"></script>
   <script type="text/javascript" src="js/controllers/logController.js"></script>
+  <script type="text/javascript" src="js/controllers/groupTagController.js"></script>
   <script type="text/javascript" src="js/lib/json2.js"></script>
 </head>
 
@@ -222,6 +225,46 @@
                 </div>
               </script>
               
+              <script type="text/ng-template" id="groupTagBuilderModalContent.html">
+                <div class="modal-header">
+                  <h3 class="modal-title">Group Tag Builder</h3>
+                </div>
+                <div class="modal-body">
+                  <form accept-charset="UTF-8" action="/">
+                    <div class='form-row'>
+                    
+                      <div class='form-group required'>
+                        <div class='error form-group hide'>
+                          <div class='alert-danger alert'>
+                            Please correct the errors and try again.
+                          </div>
+                        </div>
+                        
+                        <label class='control-label'>Name</label>
+                        <input class='form-control' size='4' type='text' ng-model="group.name">
+                      </div>
+                
+                    </div>
+                    
+                    <div class='form-row'>
+                      <div class='form-group required'>
+                        <label class='control-label'>Characters</label>
+                        <ui-select multiple ng-model="group.tags" class='form-control' size='4'>
+                          <ui-select-match placeholder="Select tags..."><span style="text-shadow:none;font-weight:bold">{{$item.type}}</span></ui-select-match>
+                          <ui-select-choices repeat="tag in tags | filter:$select.search">
+                            {{tag.type}}
+                          </ui-select-choices>
+                        </ui-select>
+                      </div>
+                    </div>
+                 </form>
+                </div>
+                <div class="modal-footer">
+                  <button class="btn btn-success" ng-click="ok()">Create</button>
+                  <button class="btn btn-primary" ng-click="cancel()">Cancel</button>
+                </div>
+              </script>
+              
               <!--<div class="well well-sm" ng-controller="contextMenuController">-->
               <div ng-controller="contextMenuController">
                 <div class="entity-selection">
@@ -246,7 +289,7 @@
                 <ul class="list-group tag-list" ng-if="collData.entity_types.length > 4">
                   <li class="list-group-item tag-item" ng-repeat="tag in collData.entity_types | tagOrderFilter">
                     <div style="float:left" ng-if="tag.type != 'ALIAS' && tag.type != 'NON-CHARACTER' && tag.type != 'OTHER' && tag.type != '???' && tag.type != 'UNRESOLVED'">
-                      <button class="btn btn-default btn-tag" context-menu="menuOptions" ng-style="{background: tag.bgColor}" ng-click="setTag(tag)" ng-disabled="!selectedEntity">{{ tag.type }}</button>
+                      <button class="btn btn-default btn-tag" context-menu="menuOptions" ng-style="{background: tag.bgColor}" style="text-shadow:none" ng-click="setTag(tag)" ng-disabled="!selectedEntity">{{ tag.type }}</button>
                     </div>
                     
                     <div style="float:right" ng-if="tag.type != 'ALIAS' && tag.type != 'NON-CHARACTER' && tag.type != 'OTHER' && tag.type != '???' && tag.type != 'UNRESOLVED'">
@@ -258,6 +301,21 @@
                 <div style="text-align: center;">
                   <button class="btn btn-default non-tag-btn new-character-btn" ng-click="addNewTag()" ng-disabled="!selectedEntity">NEW CHARACTER</button>
                   <button class="btn btn-default non-tag-btn untag-btn" ng-click="untag()" ng-disabled="!selectedEntity">UNTAG</button>
+                </div>
+                <br>
+                <div>
+                <ul class="list-group group-tag-list">
+                    <li class="list-group-item tag-item" id="core-tag" ng-repeat="group in groupTags">
+                      <div style="float:left">
+                         <!--Using css classes to set the tag button background colours doesn't work here -->
+                        <button class="btn btn-default btn-tag" ng-style="{background: group.bgColor}" ng-click="setGroupTag(group.tags)" ng-disabled="!selectedEntity">{{ group.name }}</button> |
+                         <button class="btn btn-default btn-tag" ng-style="{background: tag.bgColor}" style="text-shadow:none" ng-repeat="tag in group.tags">{{ tag.type }}</button>
+                      </div>
+                    </li> 
+                  </ul>
+                </div>
+                <div style="text-align: center;">
+                  <button class="btn btn-default non-tag-btn new-group-btn" ng-click="showGroupTagBuilder()" ng-disabled="!selectedEntity">NEW GROUP</button>
                 </div>
               </div>
             </div>
