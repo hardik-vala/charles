@@ -150,7 +150,8 @@ app.controller('tagController', function($scope, $modal, $log, $rootScope, $fire
   };
 
   $rootScope.removeTag = function(tag) {
-    var Frankend = $resource('https://frankend-elwebmaster-1.c9.io/:command');
+    // var Frankend = $resource('https://frankend-elwebmaster-1.c9.io/:command');
+    var Frankend = $resource('http://enterprise.cs.mcgill.ca:1824/:command');
     
     var tagIndex = $rootScope.collData.entity_types.indexOf(tag);
     if (tagIndex > -1) {
@@ -169,55 +170,20 @@ app.controller('tagController', function($scope, $modal, $log, $rootScope, $fire
       modalInstance.result.then(function(selectedTag) {
         var replaceResult = Frankend.get({
           command: 'replace',
-          old_character: tag.type,
-          replacement_character: selectedTag.type
+          old_type: tag.type,
+          replacement_type: selectedTag.type
         }, function() {
           $rootScope.collData.entity_types.splice(tagIndex, 1);
           $rootScope.tagOrdering.splice($rootScope.tagOrdering.indexOf(tag.type), 1);
         });
       });
-        
-      //   $rootScope.taggedEntities.forEach(function(entity) {
-      //     if (entity[1] == tag.type) {
-      //       if ($rootScope.taggedEntities.filter(function(e) {
-      //           return entity[2][0][0] == e[2][0][0] && e[1] == selectedTag.type;
-      //         }).length == 0) {
-      //         entity[1] = selectedTag.type;
-      //       }
-      //     }
-      //   });
-        
-      //   for (var i = 0; i < $rootScope.numDocs; i++) {
-      //     var entitiesToRemove = [];
-          
-      //     $rootScope.docData.entities.forEach(function(entity) {
-      //       if (entity[1] == tag.type) {
-      //         if ($rootScope.docData.entities.filter(function(e) {
-      //             return entity[2][0][0] == e[2][0][0] && e[1] == selectedTag.type;
-      //           }).length == 0) {
-      //           entity[1] = selectedTag.type;
-      //         } else
-      //           entitiesToRemove.push(entity);
-      //       }
-      //     });
-          
-      //     entitiesToRemove.forEach(function (entity) {
-      //       $rootScope.taggedEntities = removeEntity($rootScope.taggedEntities, entity);
-      //       $rootScope.doc
-      //       Data.entities = removeEntity($rootScope.docData.entities, entity);
-      //     });
-          
-      //   };
-      // }, function () {});
-      
-      // $scope.toggleAnimation = function () {
-      //   $scope.animationsEnabled = !$scope.animationsEnabled;
-      // };
     }
   }
   
   $rootScope.showEntities = function(tag) {
-    var Frankend = $resource('https://frankend-elwebmaster-1.c9.io/:command');
+    // var Frankend = $resource('https://frankend-elwebmaster-1.c9.io/:command');
+    var Frankend = $resource('http://enterprise.cs.mcgill.ca:1824/:command');
+    
     var showItems = Frankend.query({
       command: 'show',
       character: tag.type
