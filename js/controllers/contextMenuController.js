@@ -7,6 +7,16 @@ app.controller('contextMenuController', function($scope, $rootScope) {
         null, // Divider
         ['Delete & Replace', function ($itemScope) {
             $rootScope.removeTag($itemScope.tag);
+        }],
+        null, // Divider
+        ['Change to this', function ($itemScope) {
+            $rootScope.changeTag($itemScope.tag);
+        }]
+    ];
+    
+    $scope.specialMenuOptions = [
+        ['Change to this', function ($itemScope) {
+            $rootScope.changeTag($itemScope.tag);
         }]
     ];
     

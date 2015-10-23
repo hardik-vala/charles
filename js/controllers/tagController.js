@@ -71,7 +71,8 @@ app.controller('tagController', function($scope, $modal, $log, $rootScope, $fire
     }
   };
 
-  $scope.changeTag = function (tag) {
+  // TODO: refactor as service
+  $rootScope.changeTag = function (tag) {
     if (isAliasTag(tag) || hasType($rootScope.selectedEntity, tag.type))
       return;
 
@@ -232,5 +233,6 @@ app.controller('tagController', function($scope, $modal, $log, $rootScope, $fire
   $scope.setGroupTag = function(tags) {
     tags.forEach($scope.setTag);
   };
+  
   
 });

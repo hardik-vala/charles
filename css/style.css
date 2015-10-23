@@ -139,3 +139,7 @@ body, html {
   text-align: center;
   overflow: auto;
 }
+
+.form-control{
+    border-radius:0;
+}

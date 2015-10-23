@@ -23,7 +23,7 @@
   <link rel="stylesheet" type="text/css" href="css/style-vis.css" />
   <link rel="stylesheet" type="text/css" href="css/jquery-theme/jquery-ui-redmond.css" />
   <link rel="stylesheet" type="text/css" href="css/select.min.css" />
-  
+
   <script type="text/javascript">
     // Returns the value of a URL variable. (If it doesn't exist, then it returns null.)
     function getQueryVariable(variable) {
@@ -62,35 +62,36 @@
 <body>
 
   <div ng-controller="mainController as mainCtrl">
-    
+
     <div class="alert alert-danger connection-failed" role="alert" style="height: 100vh;" ng-if="!mainCtrl.connectedToFirebase()">
       <h1>Connection to Firebase Failed</h1>
       <p>
         Check that the <span id="code">FB</span> instance exists and its
         <span id="code">link</span> property is properly set.
       </p>
-    </div><!-- alert -->
-    
+    </div>
+    <!-- alert -->
+
     <!-- Doesn't work without importing Bootstrap's glyphicons. -->
     <style type="text/css">
       @import url("//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc2/css/bootstrap-glyphicons.css");
     </style>
-    
+
     <div id="main" class="container" ng-if="mainCtrl.connectedToFirebase()" ng-controller="bratController" ng-click="selectEntity($event)" tabindex="0" ng-keypress="nextSelection($event)">
       <div class="row">
         <div id="content" class="col-sm-7 left-pane">
-          
+
           <div>
             <h1 class="title">Welcome to CHARLES!</h1>
             <h3 class="sub-title">(CHAracter Resolution Label-Entry System)</h3>
           </div>
-          
+
           <div>
             <h3 style="text-align:center">Resolve the aliases to characters in these passages from <i>Pride and Prejudice</i></h3>
           </div>
-          
+
           <div id="spinner" ng-controller="spinnerController"></div>
-          
+
           <script type="text/ng-template" id="docSelectorModalContent.html">
             <div class="modal-header">
               <h3 class="modal-title">Select a Document</h3>
@@ -106,13 +107,13 @@
               <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
             </div>
           </script>
-        
+
           <div style="margin: 15px auto 5px;" ng-controller="navigationController">
             <center>
               <div style="margin-bottom:40px">
                 <button type="button" class="btn btn-default btn-lg" ng-click="selectDoc()"><strong>Select Document</strong></button>
               </div>
-              
+
               <button type="button" class="btn btn-default btn-lg" ng-click="previousDoc()" ng-disabled="docIndex <= 0">
                 <span class="glyphicon glyphicon-arrow-left"></span> &nbsp; Prev
               </button>
@@ -122,59 +123,61 @@
               </button>
             </center>
           </div>
-          
+
           <style type="text/css">
             text {
               font-size: 15px;
             }
+            
             .span text {
               font-size: 10px;
             }
+            
             .arcs text {
               font-size: 9px;
             }
           </style>
-  
+
           <script type="text/javascript">
             var bratLocation = 'lib/brat/';
-  
+
             head.js(
               // External libraries.
               bratLocation + '/client/lib/jquery.min.js',
               bratLocation + '/client/lib/jquery.svg.min.js',
               bratLocation + '/client/lib/jquery.svgdom.min.js',
-  
+
               // brat helper modules.
               bratLocation + '/client/src/configuration.js',
               bratLocation + '/client/src/util.js',
               bratLocation + '/client/src/annotation_log.js',
               bratLocation + '/client/lib/webfont.js',
-              
+
               // brat modules.
               bratLocation + '/client/src/dispatcher.js',
               bratLocation + '/client/src/url_monitor.js',
               bratLocation + '/client/src/visualizer.js'
             );
-  
+
             var webFontURLs = [
               bratLocation + '/static/fonts/Astloch-Bold.ttf',
               bratLocation + '/static/fonts/PT_Sans-Caption-Web-Regular.ttf',
               bratLocation + '/static/fonts/Liberation_Sans-Regular.ttf'
             ];
           </script>
-                    {{selected}}
+          {{selected}}
           <!--<div id="brat-view" ng-controller="bratController" tabindex="0" ng-click="selectEntity($event)" ng-keypress="nextSelection($event)"></div>-->
           <div id="brat-view" watch-selection></div>
         </div>
-  
+
         <div class="col-sm-5 right-pane">
           <div class="panel panel-default character-annotation-panel" style="margin: 5px;">
             <div class="panel-heading">
               <h2>Character Tagging Panel</h2>
             </div>
-  
+
             <div class="panel-body" ng-controller="tagController">
-  
+
               <div class="tag-counters">
                 <div class="tag-counter" align="center">
                   <button type="button" class="btn btn-default disabled alias-counter-btn" style="background: red;">ALIAS</button>'s Remaining: <b>{{aliasesRemaining}}</b>
@@ -182,8 +185,9 @@
                 <div class="tag-counter" align="center">
                   <button type="button" class="btn btn-default disabled unresolved-counter-btn" style="background: #39FF14;">UNRESOLVED</button>'s Remaining: <b>{{unresolvedsRemaining}}</b>
                 </div>
-              </div><!-- tag-counters -->
-  
+              </div>
+              <!-- tag-counters -->
+
               <script type="text/ng-template" id="showModalContent.html">
                 <div class="modal-header">
                   <h3 class="modal-title">Instances of '{{ tag.type }}'</h3>
@@ -203,13 +207,13 @@
                       </slide>
                     </carousel>
                   </div>
-        
+
                 </div>
                 <div class="modal-footer">
                   <button class="btn btn-default" ng-click="close()">Close</button>
                 </div>
               </script>
-  
+
               <script type="text/ng-template" id="deleteTagModalContent.html">
                 <div class="modal-header">
                   <h3 class="modal-title">Choose a Replacement Character</h3>
@@ -225,7 +229,7 @@
                   <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
                 </div>
               </script>
-              
+
               <script type="text/ng-template" id="groupTagBuilderModalContent.html">
                 <div class="modal-header">
                   <h3 class="modal-title">Group Tag Builder</h3>
@@ -233,20 +237,20 @@
                 <div class="modal-body">
                   <form accept-charset="UTF-8" action="/">
                     <div class='form-row'>
-                    
+
                       <div class='form-group required'>
                         <div class='error form-group hide'>
                           <div class='alert-danger alert'>
                             Please correct the errors and try again.
                           </div>
                         </div>
-                        
+
                         <label class='control-label'>Name</label>
-                        <input class='form-control' size='4' type='text' ng-model="group.name">
+                        <input class='form-control' size='4' maxlength="30" type='text' ng-model="group.name">
                       </div>
-                
+
                     </div>
-                    
+
                     <div class='form-row'>
                       <div class='form-group required'>
                         <label class='control-label'>Characters</label>
@@ -258,66 +262,72 @@
                         </ui-select>
                       </div>
                     </div>
-                 </form>
+                  </form>
                 </div>
                 <div class="modal-footer">
                   <button class="btn btn-success" ng-click="ok()">Create</button>
                   <button class="btn btn-primary" ng-click="cancel()">Cancel</button>
                 </div>
               </script>
-              
+
               <!--<div class="well well-sm" ng-controller="contextMenuController">-->
               <div ng-controller="contextMenuController">
                 <div class="entity-selection">
                   <p align="center">Selected: <span class="selection" ng-if="selectedEntity">{{ span }}</span><span class="no-selection" ng-if="!selectedEntity">(NONE)</span></p>
                 </div>
-                
+
                 <div class="taggable-non-character-tags-menu">
                   <ul class="list-group tag-list">
                     <li class="list-group-item tag-item" id="core-tag" ng-repeat="tag in taggableNonCharacterTags">
                       <div style="float:left">
-                         <!--Using css classes to set the tag button background colours doesn't work here -->
-                        <button class="btn btn-default btn-tag" ng-style="{background: tag.bgColor}" ng-click="setTag(tag)" ng-disabled="!selectedEntity">{{ tag.type }}</button>
+                        <!--Using css classes to set the tag button background colours doesn't work here -->
+                        <button class="btn btn-default btn-tag" context-menu="specialMenuOptions" ng-style="{background: tag.bgColor}" ng-click="setTag(tag)" ng-disabled="!selectedEntity">{{ tag.type }}</button>
                       </div>
-      
-                      <div style="float:right">
-                        <button class="btn btn-warning change-tag-btn" ng-click="changeTag(tag)" ng-disabled="!selectedEntity"><span class="glyphicon glyphicon-repeat"></span></button>
-                      </div>
-                    </li> 
+
+                      <!--<div style="float:right">-->
+                      <!--  <button class="btn btn-warning change-tag-btn" ng-click="changeTag(tag)" ng-disabled="!selectedEntity"><span class="glyphicon glyphicon-repeat"></span></button>-->
+                      <!--</div>-->
+                    </li>
                   </ul>
-                </div> <!-- taggable-non-character-tags-menu -->
-                
-                <form ng-submit="">
-                  <input type="text" name="tagPrefix" ng-model="tagPrefix"/>
-                  <!--<input type="submit" value="Add Speaker"/>-->
-                </form>
-                
+                </div>
+                <!-- taggable-non-character-tags-menu -->
+
+                <div id="custom-search-input">
+                  <div class="input-group col-md-12">
+                    <input type="text" class="form-control input-lg" name="tagPrefix" ng-model="tagPrefix.type" placeholder="Search tags" />
+                  </div>
+                </div>
+
                 <ul class="list-group tag-list" ng-if="collData.entity_types.length > 4">
-                  <li class="list-group-item tag-item" ng-repeat="tag in collData.entity_types | tagOrderFilter">
+                  <li class="list-group-item tag-item" ng-repeat="tag in collData.entity_types | tagOrderFilter | filter:tagPrefix">
                     <div style="float:left" ng-if="tag.type != 'ALIAS' && tag.type != 'NON-CHARACTER' && tag.type != 'OTHER' && tag.type != '???' && tag.type != 'UNRESOLVED'">
                       <button class="btn btn-default btn-tag" context-menu="menuOptions" ng-style="{background: tag.bgColor}" style="text-shadow:none" ng-click="setTag(tag)" ng-disabled="!selectedEntity">{{ tag.type }}</button>
                     </div>
-                    
-                    <div style="float:right" ng-if="tag.type != 'ALIAS' && tag.type != 'NON-CHARACTER' && tag.type != 'OTHER' && tag.type != '???' && tag.type != 'UNRESOLVED'">
-                      <button class="btn btn-warning change-tag-btn" ng-click="changeTag(tag)" ng-disabled="!selectedEntity"><span class="glyphicon glyphicon-repeat"></span></button>
-                    </div>
+
+                    <!--<div style="float:right" ng-if="tag.type != 'ALIAS' && tag.type != 'NON-CHARACTER' && tag.type != 'OTHER' && tag.type != '???' && tag.type != 'UNRESOLVED'">-->
+                    <!--  <button class="btn btn-warning change-tag-btn" ng-click="changeTag(tag)" ng-disabled="!selectedEntity"><span class="glyphicon glyphicon-repeat"></span></button>-->
+                    <!--</div>-->
                   </li>
                 </ul>
-                
+
                 <div style="text-align: center;">
                   <button class="btn btn-default non-tag-btn new-character-btn" ng-click="addNewTag()" ng-disabled="!selectedEntity">NEW CHARACTER</button>
                   <button class="btn btn-default non-tag-btn untag-btn" ng-click="untag()" ng-disabled="!selectedEntity">UNTAG</button>
                 </div>
                 <br>
                 <div>
-                <ul class="list-group group-tag-list">
+                  <ul class="list-group group-tag-list">
                     <li class="list-group-item tag-item" id="core-tag" ng-repeat="group in groupTags">
-                      <div style="float:left">
-                         <!--Using css classes to set the tag button background colours doesn't work here -->
-                        <button class="btn btn-default btn-tag" ng-style="{background: group.bgColor}" ng-click="setGroupTag(group.tags)" ng-disabled="!selectedEntity">{{ group.name }}</button> &nbsp;|&nbsp;
-                         <button class="btn btn-default btn-tag" ng-style="{background: tag.bgColor}" style="text-shadow:none" ng-repeat="tag in group.tags">{{ tag.type }}</button>
+                      <div class="row">
+                        <!--Using css classes to set the tag button background colours doesn't work here -->
+                        <div class="col-md-4">
+                          <button class="btn btn-default btn-tag" ng-style="{background: group.bgColor}" ng-click="setGroupTag(group.tags)" ng-disabled="!selectedEntity">{{ group.name }}</button>
+                        </div>
+                        <div class="col-md-8">
+                          <button class="btn btn-default btn-tag" ng-style="{background: tag.bgColor}" style="text-shadow:none" ng-repeat="tag in group.tags">{{ tag.type }}</button>
+                        </div>
                       </div>
-                    </li> 
+                    </li>
                   </ul>
                 </div>
                 <div style="text-align: center;">
@@ -325,9 +335,9 @@
                 </div>
               </div>
             </div>
-            
+
             <h3 align="center">Log</h3>
-            
+
             <div class="well well-sm" style="margin-bottom: 10px;" ng-controller="logController" style="width:300px;margin:auto">
               <div class="pre-scrollable" style="height:100px">
                 <div style="overflow:hidden">
@@ -341,10 +351,10 @@
                 <button type="submit">Add Entry</button>
               </form>
             </div>
-            
+
           </div>
         </div>
-  
+
       </div>
     </div>
   </div>
