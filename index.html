@@ -162,9 +162,9 @@
               bratLocation + '/static/fonts/Liberation_Sans-Regular.ttf'
             ];
           </script>
-          
+                    {{selected}}
           <!--<div id="brat-view" ng-controller="bratController" tabindex="0" ng-click="selectEntity($event)" ng-keypress="nextSelection($event)"></div>-->
-          <div id="brat-view"></div>
+          <div id="brat-view" watch-selection></div>
         </div>
   
         <div class="col-sm-5 right-pane">

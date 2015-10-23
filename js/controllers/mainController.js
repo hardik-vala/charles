@@ -5,5 +5,4 @@ app.controller('mainController', function() {
         // Connection is verified through the existence of the FB object.
         return typeof FB !== 'undefined';
     };
-    
 });

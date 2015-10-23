@@ -1,5 +1,6 @@
 app.controller('bratController', function($scope, $log, $rootScope, $firebaseObject) {
-  
+      $scope.selected = '';
+
   // Keycode for selecting previous instance ('A').
   $scope.prevTaggedKeyCode = 97;
   // Keycode for selecting next instance ('D').
@@ -145,6 +146,9 @@ app.controller('bratController', function($scope, $log, $rootScope, $firebaseObj
                   $rootScope.selectedEntity = entity;
                   $rootScope.span = getSpan(entity);
                   $rootScope.taggedEntityIndex = findTaggedEntityIndex($rootScope.taggedEntities, $rootScope.selectedEntity);
+                
+                  // DEBUG
+                  console.log($rootScope.selectedEntity);
                 }
               });
               
