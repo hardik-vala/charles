@@ -36,6 +36,15 @@ body, html {
   width: 35%;
 }
 
+.title {
+  font-weight: bold;
+  text-align: center;
+}
+
+.sub-title {
+  text-align: center;
+  margin: 0;
+}
 
 .character-annotation-panel .panel-heading {
   background: none;

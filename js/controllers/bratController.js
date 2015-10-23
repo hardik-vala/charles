@@ -65,7 +65,7 @@ app.controller('bratController', function($scope, $log, $rootScope, $firebaseObj
           });
             
           $rootScope.tagOrdering = $rootScope.characterTags.map(function (tag) { return tag.type; });
-          
+ 
           $scope.selectedVisualElement = $scope.findVisual;
           
           $rootScope.aliasesRemaining = countAliases($rootScope.taggedEntities);
