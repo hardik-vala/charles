@@ -1,3 +1,3 @@
 # CHARLES
 
-CHARLES (CHAracter Resolution Label-Entry System) is a web-application for annotating characters in literary texts.
+CHARLES (CHAracter Resolution Label-Entry System) is a web-application for annotating characters in literary texts. Can be used generally for the task of cross-document entity resolution.
