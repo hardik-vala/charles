@@ -1,5 +1,10 @@
-app.service('ConfigService', function () {
+app.service('ConfigService', function ($http) {
     
-    this.fbLink = function () { return 'https://frankenbrat-live.firebaseio.com'; };
+    var config;
+    $http.get("config.json").success(function (data) {
+       config = data;
+    });
+    
+    this.getFBLink = function () { return config.fbLink; };
     
 });
