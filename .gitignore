@@ -3,8 +3,5 @@
 # Cloud9 directory.
 .c9/
 
-# Stores Firebase app properties, such as the link to the appropriate app.
-js/fb.js
-
 # Contains tutorial videos and other related videos.
 vids/

@@ -1,8 +1,8 @@
-app.controller('mainController', function() {
+app.controller('mainController', function(ConfigService) {
 
     /* Checks there is a connection to Firebase. */
     this.connectedToFirebase = function () {
-        // Connection is verified through the existence of the FB object.
-        return typeof FB !== 'undefined';
+        return typeof ConfigService.fbLink() !== 'undefined';
     };
+    
 });

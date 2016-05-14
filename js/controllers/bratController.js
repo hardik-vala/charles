@@ -1,4 +1,4 @@
-app.controller('bratController', function($scope, $log, $rootScope, $firebaseObject) {
+app.controller('bratController', function($scope, $log, $rootScope, $firebaseObject, ConfigService) {
       $scope.selected = '';
 
   // Keycode for selecting previous instance ('A').
@@ -14,8 +14,9 @@ app.controller('bratController', function($scope, $log, $rootScope, $firebaseObj
   /* Index of document (in document data) to display. */
   $rootScope.docIndex = parseInt(getQueryVariable("doc") || "0");
   
-  var collDataRef = new Firebase(FB.link + '/collData');
-  var docDataRef = new Firebase(FB.link + '/docData/docs/' + $rootScope.docIndex);
+  //var collDataRef = new Firebase(FB.link + '/collData');
+  var collDataRef = new Firebase(ConfigService.fbLink() + '/collData');
+  var docDataRef = new Firebase(ConfigService.fbLink() + '/docData/docs/' + $rootScope.docIndex);
 
   var collDataObjRef = $firebaseObject(collDataRef);
   collDataObjRef.$bindTo($rootScope, 'collData');
