@@ -1,0 +1,747 @@
+{
+  "collData" : {
+    "entity_types" : [ {
+      "bgColor" : "red",
+      "borderColor" : "darken",
+      "labels" : [ "ALIAS", "AL" ],
+      "type" : "ALIAS"
+    }, {
+      "bgColor" : "#FFFFFF",
+      "borderColor" : "darken",
+      "labels" : [ "NON-CHARACTER", "NON" ],
+      "type" : "NON-CHARACTER"
+    }, {
+      "bgColor" : "#BBBBBB",
+      "borderColor" : "darken",
+      "labels" : [ "OTHER" ],
+      "type" : "OTHER"
+    }, {
+      "bgColor" : "#777777",
+      "borderColor" : "darken",
+      "labels" : [ "???" ],
+      "type" : "???"
+    }, {
+      "bgColor" : "#39FF14",
+      "borderColor" : "darken",
+      "labels" : [ "UNRESOLVED" ],
+      "type" : "UNRESOLVED"
+    }, {
+      "bgColor" : "#F67B88",
+      "borderColor" : "darken",
+      "labels" : [ "Elizabeth" ],
+      "type" : "Elizabeth"
+    }, {
+      "bgColor" : "#89958F",
+      "borderColor" : "darken",
+      "labels" : [ "Jane" ],
+      "type" : "Jane"
+    }, {
+      "bgColor" : "#8A9BB8",
+      "borderColor" : "darken",
+      "labels" : [ "Miss Bingley" ],
+      "type" : "Miss Bingley"
+    }, {
+      "bgColor" : "#F69C8C",
+      "borderColor" : "darken",
+      "labels" : [ "Mr. Hurst" ],
+      "type" : "Mr. Hurst"
+    }, {
+      "bgColor" : "#D5B5FD",
+      "borderColor" : "darken",
+      "labels" : [ "Mrs. Hurst" ],
+      "type" : "Mrs. Hurst"
+    }, {
+      "bgColor" : "#85C9FF",
+      "borderColor" : "darken",
+      "labels" : [ "Nicholls" ],
+      "type" : "Nicholls"
+    }, {
+      "bgColor" : "#8776D8",
+      "borderColor" : "darken",
+      "labels" : [ "Mrs. Bennet" ],
+      "type" : "Mrs. Bennet"
+    }, {
+      "bgColor" : "#65D69C",
+      "borderColor" : "darken",
+      "labels" : [ "Mr. Bingley" ],
+      "type" : "Mr. Bingley"
+    }, {
+      "bgColor" : "#69C6DB",
+      "borderColor" : "darken",
+      "labels" : [ "Mr. Darcy" ],
+      "type" : "Mr. Darcy"
+    }, {
+      "bgColor" : "#EDD6B6",
+      "borderColor" : "darken",
+      "labels" : [ "Mary" ],
+      "type" : "Mary"
+    }, {
+      "bgColor" : "#AA7FCD",
+      "borderColor" : "darken",
+      "labels" : [ "Lydia" ],
+      "type" : "Lydia"
+    }, {
+      "bgColor" : "#8CBC59",
+      "borderColor" : "darken",
+      "labels" : [ "officers" ],
+      "type" : "officers"
+    }, {
+      "bgColor" : "#BDDF8E",
+      "borderColor" : "darken",
+      "labels" : [ "private" ],
+      "type" : "private"
+    }, {
+      "bgColor" : "#A9DFFC",
+      "borderColor" : "darken",
+      "labels" : [ "Colonel Forster" ],
+      "type" : "Colonel Forster"
+    }, {
+      "bgColor" : "#FAA5BE",
+      "borderColor" : "darken",
+      "labels" : [ "Mr. Bennet" ],
+      "type" : "Mr. Bennet"
+    }, {
+      "bgColor" : "#EFA7A8",
+      "borderColor" : "darken",
+      "labels" : [ "Charlotte Lucas" ],
+      "type" : "Charlotte Lucas"
+    }, {
+      "bgColor" : "#D79D7F",
+      "borderColor" : "darken",
+      "labels" : [ "Mr. Collins" ],
+      "type" : "Mr. Collins"
+    }, {
+      "bgColor" : "#77A58A",
+      "borderColor" : "darken",
+      "labels" : [ "Hill" ],
+      "type" : "Hill"
+    }, {
+      "bgColor" : "#9FE8EC",
+      "borderColor" : "darken",
+      "labels" : [ "Right Honourable Lady Catherine de\nBourgh" ],
+      "type" : "Right Honourable Lady Catherine de\nBourgh"
+    }, {
+      "bgColor" : "#C79F5B",
+      "borderColor" : "darken",
+      "labels" : [ "Sir Lewis de Bourgh" ],
+      "type" : "Sir Lewis de Bourgh"
+    }, {
+      "bgColor" : "#ADEF6C",
+      "borderColor" : "darken",
+      "labels" : [ "parishioners" ],
+      "type" : "parishioners"
+    }, {
+      "bgColor" : "#9CCECA",
+      "borderColor" : "darken",
+      "labels" : [ "cook" ],
+      "type" : "cook"
+    }, {
+      "bgColor" : "#F75EDC",
+      "borderColor" : "darken",
+      "labels" : [ "servants" ],
+      "type" : "servants"
+    }, {
+      "bgColor" : "#5BF68B",
+      "borderColor" : "darken",
+      "labels" : [ "relations" ],
+      "type" : "relations"
+    }, {
+      "bgColor" : "#7FEE7C",
+      "borderColor" : "darken",
+      "labels" : [ "Miss de Bourgh" ],
+      "type" : "Miss de Bourgh"
+    }, {
+      "bgColor" : "#EAC7BF",
+      "borderColor" : "darken",
+      "labels" : [ "Kitty" ],
+      "type" : "Kitty"
+    }, {
+      "bgColor" : "#ADDAE5",
+      "borderColor" : "darken",
+      "labels" : [ "Richard" ],
+      "type" : "Richard"
+    }, {
+      "bgColor" : "#8E87A8",
+      "borderColor" : "darken",
+      "labels" : [ "Mr. Denny" ],
+      "type" : "Mr. Denny"
+    }, {
+      "bgColor" : "#65A7BA",
+      "borderColor" : "darken",
+      "labels" : [ "Mr. Wickham" ],
+      "type" : "Mr. Wickham"
+    }, {
+      "bgColor" : "#78D8B9",
+      "borderColor" : "darken",
+      "labels" : [ "Mr. Phillip" ],
+      "type" : "Mr. Phillip"
+    }, {
+      "bgColor" : "#E77F9B",
+      "borderColor" : "darken",
+      "labels" : [ "Mrs. Phillips" ],
+      "type" : "Mrs. Phillips"
+    }, {
+      "bgColor" : "#A8CA59",
+      "borderColor" : "darken",
+      "labels" : [ "Mr. Jones" ],
+      "type" : "Mr. Jones"
+    }, {
+      "bgColor" : "#75CBA5",
+      "borderColor" : "darken",
+      "labels" : [ "shop-boy" ],
+      "type" : "shop-boy"
+    }, {
+      "bgColor" : "#A8FD58",
+      "borderColor" : "darken",
+      "labels" : [ "Miss Darcy" ],
+      "type" : "Miss Darcy"
+    }, {
+      "bgColor" : "#5CCC8B",
+      "borderColor" : "darken",
+      "labels" : [ "Miss\nGrantley" ],
+      "type" : "Miss\nGrantley"
+    }, {
+      "bgColor" : "#578FC7",
+      "borderColor" : "darken",
+      "labels" : [ "housekeeper" ],
+      "type" : "housekeeper"
+    }, {
+      "bgColor" : "#F6BCBA",
+      "borderColor" : "darken",
+      "labels" : [ "Sir William Lucas" ],
+      "type" : "Sir William Lucas"
+    }, {
+      "bgColor" : "#B5FFCE",
+      "borderColor" : "darken",
+      "labels" : [ "Lady Lucas" ],
+      "type" : "Lady Lucas"
+    }, {
+      "bgColor" : "#E989D8",
+      "borderColor" : "darken",
+      "labels" : [ "father" ],
+      "type" : "father"
+    }, {
+      "bgColor" : "#8BFF55",
+      "borderColor" : "darken",
+      "labels" : [ "milliner" ],
+      "type" : "milliner"
+    }, {
+      "bgColor" : "#CBEB59",
+      "borderColor" : "darken",
+      "labels" : [ "Captain Carter" ],
+      "type" : "Captain Carter"
+    }, {
+      "bgColor" : "#87CE88",
+      "borderColor" : "darken",
+      "labels" : [ "Miss Watson" ],
+      "type" : "Miss Watson"
+    }, {
+      "bgColor" : "#8B7DAF",
+      "borderColor" : "darken",
+      "labels" : [ "Clarke" ],
+      "type" : "Clarke"
+    }, {
+      "bgColor" : "#FAE6C5",
+      "borderColor" : "darken",
+      "labels" : [ "footman" ],
+      "type" : "footman"
+    }, {
+      "bgColor" : "#F7C8AF",
+      "borderColor" : "darken",
+      "labels" : [ "servant" ],
+      "type" : "servant"
+    }, {
+      "bgColor" : "#FCFBE9",
+      "borderColor" : "darken",
+      "labels" : [ "Mr. Darcy (1)" ],
+      "type" : "Mr. Darcy (1)"
+    }, {
+      "bgColor" : "#C99B8C",
+      "borderColor" : "darken",
+      "labels" : [ "father (1)" ],
+      "type" : "father (1)"
+    }, {
+      "bgColor" : "#5757AA",
+      "borderColor" : "darken",
+      "labels" : [ "father (2)" ],
+      "type" : "father (2)"
+    }, {
+      "bgColor" : "#6C9D9B",
+      "borderColor" : "darken",
+      "labels" : [ "tenants" ],
+      "type" : "tenants"
+    }, {
+      "bgColor" : "#FEAB8B",
+      "borderColor" : "darken",
+      "labels" : [ "poor" ],
+      "type" : "poor"
+    }, {
+      "bgColor" : "#96BE6B",
+      "borderColor" : "darken",
+      "labels" : [ "Lady Anne Darcy" ],
+      "type" : "Lady Anne Darcy"
+    }, {
+      "bgColor" : "#9ABDD6",
+      "borderColor" : "darken",
+      "labels" : [ "housemaid" ],
+      "type" : "housemaid"
+    }, {
+      "bgColor" : "#AA9B9B",
+      "borderColor" : "darken",
+      "labels" : [ "Archbishop" ],
+      "type" : "Archbishop"
+    }, {
+      "bgColor" : "#BC6687",
+      "borderColor" : "darken",
+      "labels" : [ "officer" ],
+      "type" : "officer"
+    }, {
+      "bgColor" : "#769CBB",
+      "borderColor" : "darken",
+      "labels" : [ "Mrs. Jenkinson" ],
+      "type" : "Mrs. Jenkinson"
+    }, {
+      "bgColor" : "#DF7CAF",
+      "borderColor" : "darken",
+      "labels" : [ "man" ],
+      "type" : "man"
+    }, {
+      "bgColor" : "#6E5D6F",
+      "borderColor" : "darken",
+      "labels" : [ "great-uncle" ],
+      "type" : "great-uncle"
+    }, {
+      "bgColor" : "#E5ED58",
+      "borderColor" : "darken",
+      "labels" : [ "ladies" ],
+      "type" : "ladies"
+    }, {
+      "bgColor" : "#9A55B7",
+      "borderColor" : "darken",
+      "labels" : [ "wives" ],
+      "type" : "wives"
+    }, {
+      "bgColor" : "#B8DA7E",
+      "borderColor" : "darken",
+      "labels" : [ "one" ],
+      "type" : "one"
+    }, {
+      "bgColor" : "#66D8FA",
+      "borderColor" : "darken",
+      "labels" : [ "Mrs. Long" ],
+      "type" : "Mrs. Long"
+    }, {
+      "bgColor" : "#7BC7EE",
+      "borderColor" : "darken",
+      "labels" : [ "Mr. Morris" ],
+      "type" : "Mr. Morris"
+    }, {
+      "bgColor" : "#7DA6EC",
+      "borderColor" : "darken",
+      "labels" : [ "servants (1)" ],
+      "type" : "servants (1)"
+    }, {
+      "bgColor" : "#9EF557",
+      "borderColor" : "darken",
+      "labels" : [ "nieces" ],
+      "type" : "nieces"
+    }, {
+      "bgColor" : "#AF7D5A",
+      "borderColor" : "darken",
+      "labels" : [ "Miss King" ],
+      "type" : "Miss King"
+    }, {
+      "bgColor" : "#9DEF58",
+      "borderColor" : "darken",
+      "labels" : [ "Maria Lucas" ],
+      "type" : "Maria Lucas"
+    }, {
+      "bgColor" : "#9EDFFA",
+      "borderColor" : "darken",
+      "labels" : [ "king" ],
+      "type" : "king"
+    }, {
+      "bgColor" : "#D5C5EF",
+      "borderColor" : "darken",
+      "labels" : [ "Mr. Robinson" ],
+      "type" : "Mr. Robinson"
+    }, {
+      "bgColor" : "#755D8C",
+      "borderColor" : "darken",
+      "labels" : [ "Lucas" ],
+      "type" : "Lucas"
+    }, {
+      "bgColor" : "#85EFAA",
+      "borderColor" : "darken",
+      "labels" : [ "officer (1)" ],
+      "type" : "officer (1)"
+    }, {
+      "bgColor" : "#77996B",
+      "borderColor" : "darken",
+      "labels" : [ "housemaid (1)" ],
+      "type" : "housemaid (1)"
+    }, {
+      "bgColor" : "#D8EBD6",
+      "borderColor" : "darken",
+      "labels" : [ "cottagers" ],
+      "type" : "cottagers"
+    }, {
+      "bgColor" : "#969A56",
+      "borderColor" : "darken",
+      "labels" : [ "Colonel Fitzwilliam" ],
+      "type" : "Colonel Fitzwilliam"
+    }, {
+      "bgColor" : "#DF579F",
+      "borderColor" : "darken",
+      "labels" : [ "Lord" ],
+      "type" : "Lord"
+    }, {
+      "bgColor" : "#CEAC97",
+      "borderColor" : "darken",
+      "labels" : [ "incumbent" ],
+      "type" : "incumbent"
+    }, {
+      "bgColor" : "#9B8BA6",
+      "borderColor" : "darken",
+      "labels" : [ "Mrs. Younge" ],
+      "type" : "Mrs. Younge"
+    }, {
+      "bgColor" : "#5CB6A6",
+      "borderColor" : "darken",
+      "labels" : [ "Dawson" ],
+      "type" : "Dawson"
+    }, {
+      "bgColor" : "#5FCFE5",
+      "borderColor" : "darken",
+      "labels" : [ "men-servants" ],
+      "type" : "men-servants"
+    }, {
+      "bgColor" : "#F758BA",
+      "borderColor" : "darken",
+      "labels" : [ "John" ],
+      "type" : "John"
+    }, {
+      "bgColor" : "#87DC7B",
+      "borderColor" : "darken",
+      "labels" : [ "Mrs. Gardiner" ],
+      "type" : "Mrs. Gardiner"
+    }, {
+      "bgColor" : "#F89A57",
+      "borderColor" : "darken",
+      "labels" : [ "Mr. Gardiner" ],
+      "type" : "Mr. Gardiner"
+    }, {
+      "bgColor" : "#6ECBC9",
+      "borderColor" : "darken",
+      "labels" : [ "coachman" ],
+      "type" : "coachman"
+    }, {
+      "bgColor" : "#7C68ED",
+      "borderColor" : "darken",
+      "labels" : [ "milliner (1)" ],
+      "type" : "milliner (1)"
+    }, {
+      "bgColor" : "#59DA5A",
+      "borderColor" : "darken",
+      "labels" : [ "sentinel" ],
+      "type" : "sentinel"
+    }, {
+      "bgColor" : "#888AA7",
+      "borderColor" : "darken",
+      "labels" : [ "waiter" ],
+      "type" : "waiter"
+    }, {
+      "bgColor" : "#CCDD5E",
+      "borderColor" : "darken",
+      "labels" : [ "uncle" ],
+      "type" : "uncle"
+    }, {
+      "bgColor" : "#F578CA",
+      "borderColor" : "darken",
+      "labels" : [ "friends" ],
+      "type" : "friends"
+    }, {
+      "bgColor" : "#897CDF",
+      "borderColor" : "darken",
+      "labels" : [ "Mrs. Forster" ],
+      "type" : "Mrs. Forster"
+    }, {
+      "bgColor" : "#8B799B",
+      "borderColor" : "darken",
+      "labels" : [ "Harringtons" ],
+      "type" : "Harringtons"
+    }, {
+      "bgColor" : "#A6C6AA",
+      "borderColor" : "darken",
+      "labels" : [ "Pen" ],
+      "type" : "Pen"
+    }, {
+      "bgColor" : "#F977B8",
+      "borderColor" : "darken",
+      "labels" : [ "Chamberlayne" ],
+      "type" : "Chamberlayne"
+    }, {
+      "bgColor" : "#AF8CA6",
+      "borderColor" : "darken",
+      "labels" : [ "Pratt" ],
+      "type" : "Pratt"
+    }, {
+      "bgColor" : "#A79A5E",
+      "borderColor" : "darken",
+      "labels" : [ "boys" ],
+      "type" : "boys"
+    }, {
+      "bgColor" : "#5FC8A6",
+      "borderColor" : "darken",
+      "labels" : [ "girls" ],
+      "type" : "girls"
+    }, {
+      "bgColor" : "#5676BA",
+      "borderColor" : "darken",
+      "labels" : [ "grandfather" ],
+      "type" : "grandfather"
+    }, {
+      "bgColor" : "#CA6A7F",
+      "borderColor" : "darken",
+      "labels" : [ "servants (2)" ],
+      "type" : "servants (2)"
+    }, {
+      "bgColor" : "#999D9E",
+      "borderColor" : "darken",
+      "labels" : [ "Miss\nWebbs" ],
+      "type" : "Miss\nWebbs"
+    }, {
+      "bgColor" : "#6ECD9D",
+      "borderColor" : "darken",
+      "labels" : [ "father (3)" ],
+      "type" : "father (3)"
+    }, {
+      "bgColor" : "#AFCDBF",
+      "borderColor" : "darken",
+      "labels" : [ "nieces (1)" ],
+      "type" : "nieces (1)"
+    }, {
+      "bgColor" : "#6EDA7E",
+      "borderColor" : "darken",
+      "labels" : [ "Lady Metcalf" ],
+      "type" : "Lady Metcalf"
+    }, {
+      "bgColor" : "#7B666B",
+      "borderColor" : "darken",
+      "labels" : [ "Miss Pope" ],
+      "type" : "Miss Pope"
+    }, {
+      "bgColor" : "#58BC7F",
+      "borderColor" : "darken",
+      "labels" : [ "Colonel\nMiller" ],
+      "type" : "Colonel\nMiller"
+    }, {
+      "bgColor" : "#EC9787",
+      "borderColor" : "darken",
+      "labels" : [ "acquaintance" ],
+      "type" : "acquaintance"
+    }, {
+      "bgColor" : "#EFADCB",
+      "borderColor" : "darken",
+      "labels" : [ "chambermaid" ],
+      "type" : "chambermaid"
+    }, {
+      "bgColor" : "#858ED6",
+      "borderColor" : "darken",
+      "labels" : [ "Mrs.\nReynolds" ],
+      "type" : "Mrs.\nReynolds"
+    }, {
+      "bgColor" : "#5DFABE",
+      "borderColor" : "darken",
+      "labels" : [ "servants (3)" ],
+      "type" : "servants (3)"
+    }, {
+      "bgColor" : "#A99EEA",
+      "borderColor" : "darken",
+      "labels" : [ "gardener" ],
+      "type" : "gardener"
+    }, {
+      "bgColor" : "#EF59BE",
+      "borderColor" : "darken",
+      "labels" : [ "steward" ],
+      "type" : "steward"
+    }, {
+      "bgColor" : "#FB7C56",
+      "borderColor" : "darken",
+      "labels" : [ "Gouldings" ],
+      "type" : "Gouldings"
+    }, {
+      "bgColor" : "#7A7CB7",
+      "borderColor" : "darken",
+      "labels" : [ "regulars" ],
+      "type" : "regulars"
+    }, {
+      "bgColor" : "#5FDAE7",
+      "borderColor" : "darken",
+      "labels" : [ "General" ],
+      "type" : "General"
+    }, {
+      "bgColor" : "#7E6EAF",
+      "borderColor" : "darken",
+      "labels" : [ "creditors" ],
+      "type" : "creditors"
+    }, {
+      "bgColor" : "#CC7986",
+      "borderColor" : "darken",
+      "labels" : [ "Haggerston" ],
+      "type" : "Haggerston"
+    }, {
+      "bgColor" : "#6F9AEF",
+      "borderColor" : "darken",
+      "labels" : [ "William Goulding" ],
+      "type" : "William Goulding"
+    }, {
+      "bgColor" : "#BE8DE9",
+      "borderColor" : "darken",
+      "labels" : [ "Mr. Stone" ],
+      "type" : "Mr. Stone"
+    }, {
+      "bgColor" : "#FBC8ED",
+      "borderColor" : "darken",
+      "labels" : [ "butcher" ],
+      "type" : "butcher"
+    }, {
+      "bgColor" : "#BB5F67",
+      "borderColor" : "darken",
+      "labels" : [ "inhabitants" ],
+      "type" : "inhabitants"
+    }, {
+      "bgColor" : "#DCACEF",
+      "borderColor" : "darken",
+      "labels" : [ "Mrs. Annesley" ],
+      "type" : "Mrs. Annesley"
+    }, {
+      "bgColor" : "#CF7D77",
+      "borderColor" : "darken",
+      "labels" : [ "maid" ],
+      "type" : "maid"
+    }, {
+      "bgColor" : "#F787B6",
+      "borderColor" : "darken",
+      "labels" : [ "John (1)" ],
+      "type" : "John (1)"
+    }, {
+      "bgColor" : "#6A5E86",
+      "borderColor" : "darken",
+      "labels" : [ "Sarah" ],
+      "type" : "Sarah"
+    }, {
+      "bgColor" : "#55AF7E",
+      "borderColor" : "darken",
+      "labels" : [ "waiting-woman" ],
+      "type" : "waiting-woman"
+    }, {
+      "bgColor" : "#975CA6",
+      "borderColor" : "darken",
+      "labels" : [ "Sally" ],
+      "type" : "Sally"
+    }, {
+      "bgColor" : "#6988AE",
+      "borderColor" : "darken",
+      "labels" : [ "postilions" ],
+      "type" : "postilions"
+    }, {
+      "bgColor" : "#B7CC5E",
+      "borderColor" : "darken",
+      "labels" : [ "coachman (1)" ],
+      "type" : "coachman (1)"
+    }, {
+      "bgColor" : "#65E876",
+      "borderColor" : "darken",
+      "labels" : [ "tradesman" ],
+      "type" : "tradesman"
+    }, {
+      "bgColor" : "#8B7DD6",
+      "borderColor" : "darken",
+      "labels" : [ "mother" ],
+      "type" : "mother"
+    }, {
+      "bgColor" : "#797F77",
+      "borderColor" : "darken",
+      "labels" : [ "He" ],
+      "type" : "He"
+    }, {
+      "bgColor" : "#FACBF7",
+      "borderColor" : "darken",
+      "labels" : [ "butler" ],
+      "type" : "butler"
+    }, {
+      "bgColor" : "#CE676C",
+      "borderColor" : "darken",
+      "labels" : [ "housemaids" ],
+      "type" : "housemaids"
+    }, {
+      "bgColor" : "#5FFF7A",
+      "borderColor" : "darken",
+      "labels" : [ "acquaintances" ],
+      "type" : "acquaintances"
+    }, {
+      "bgColor" : "#5FE8DD",
+      "borderColor" : "darken",
+      "labels" : [ "owner" ],
+      "type" : "owner"
+    }, {
+      "bgColor" : "#E85DCF",
+      "borderColor" : "darken",
+      "labels" : [ "masters" ],
+      "type" : "masters"
+    }, {
+      "bgColor" : "#B9ED65",
+      "borderColor" : "darken",
+      "labels" : [ "father (4)" ],
+      "type" : "father (4)"
+    }, {
+      "bgColor" : "#7F6FB8",
+      "borderColor" : "darken",
+      "labels" : [ "lady (1)" ],
+      "type" : "lady (1)"
+    }, {
+      "bgColor" : "#597ADB",
+      "borderColor" : "darken",
+      "labels" : [ "domestics" ],
+      "type" : "domestics"
+    }, {
+      "bgColor" : "#FB66E6",
+      "borderColor" : "darken",
+      "labels" : [ "servant (1)" ],
+      "type" : "servant (1)"
+    }, {
+      "bgColor" : "#ADF7EB",
+      "borderColor" : "darken",
+      "labels" : [ "creditors (1)" ],
+      "type" : "creditors (1)"
+    }, {
+      "bgColor" : "#9A5C6E",
+      "borderColor" : "darken",
+      "labels" : [ "Harriet" ],
+      "type" : "Harriet"
+    } ]
+  },
+  "docData" : {
+    "docs" : [ {
+      "entities" : [ [ "T1", "NON-CHARACTER", [ [ 54, 57 ] ] ], [ "T15", "NON-CHARACTER", [ [ 112, 116 ] ] ], [ "T15", "NON-CHARACTER", [ [ 172, 175 ] ] ], [ "T28", "NON-CHARACTER", [ [ 282, 290 ] ] ], [ "T2", "NON-CHARACTER", [ [ 297, 299 ] ] ], [ "T3", "NON-CHARACTER", [ [ 344, 347 ] ] ], [ "T4", "NON-CHARACTER", [ [ 351, 356 ] ] ], [ "T27", "NON-CHARACTER", [ [ 366, 375 ] ] ], [ "T29", "Mr. Bennet", [ [ 387, 397 ] ] ], [ "T30", "Mrs. Bennet", [ [ 409, 413 ] ] ], [ "T5", "Mr. Bennet", [ [ 417, 420 ] ] ], [ "T7", "Mr. Bennet", [ [ 436, 439 ] ] ], [ "T6", "Mr. Bennet", [ [ 486, 496 ] ] ], [ "T8", "Mr. Bennet", [ [ 510, 512 ] ] ], [ "T10", "Mrs. Bennet", [ [ 545, 548 ] ] ], [ "T9", "Mrs. Long", [ [ 555, 564 ] ] ], [ "T11", "Mrs. Long", [ [ 589, 592 ] ] ], [ "T12", "Mrs. Long", [ [ 598, 600 ] ] ], [ "T13", "Mr. Bennet", [ [ 617, 627 ] ] ], [ "T14", "Mr. Bennet", [ [ 649, 652 ] ] ], [ "T16", "Mrs. Bennet", [ [ 699, 703 ] ] ], [ "T17", "Mrs. Bennet", [ [ 719, 722 ] ] ], [ "T18", "Mr. Bennet", [ [ 736, 738 ] ] ], [ "T19", "Mr. Bennet", [ [ 744, 745 ] ] ], [ "T20", "Mr. Bennet", [ [ 819, 823 ] ] ], [ "T21", "Mr. Bennet", [ [ 825, 828 ] ] ], [ "T31", "Mrs. Long", [ [ 840, 849 ] ] ], [ "T32", "Mr. Bingley", [ [ 892, 895 ] ] ], [ "T22", "Mr. Bingley", [ [ 945, 947 ] ] ], [ "T24", "Mr. Bingley", [ [ 1047, 1049 ] ] ], [ "T23", "Mr. Morris", [ [ 1062, 1072 ] ] ], [ "T25", "Mr. Bingley", [ [ 1091, 1093 ] ] ], [ "T33", "servants (1)", [ [ 1151, 1159 ] ] ], [ "T34", "Mr. Bingley", [ [ 1232, 1239 ] ] ], [ "T26", "Mr. Bingley", [ [ 1247, 1249 ] ] ], [ "T35", "Mr. Bennet", [ [ 1287, 1291 ] ] ], [ "T36", "Mr. Bingley", [ [ 1314, 1317 ] ] ], [ "T37", "Jane", [ [ 1392, 1397 ] ] ], [ "T38", "Elizabeth", [ [ 1392, 1397 ] ] ], [ "T39", "Lydia", [ [ 1392, 1397 ] ] ], [ "T40", "Mary", [ [ 1392, 1397 ] ] ], [ "T41", "Kitty", [ [ 1392, 1397 ] ] ] ],
+      "name" : "Pride & Prejudice Demo - Chapter 1, Passage 1",
+      "text" : "It is a truth universally acknowledged, that a single man in possession\nof a good fortune, must be in want of a wife.\n\nHowever little known the feelings or views of such a man may be on his\nfirst entering a neighbourhood, this truth is so well fixed in the minds\nof the surrounding families, that he is considered the rightful property\nof some one or other of their daughters.\n\n\"My dear Mr. Bennet,\" said his lady to him one day, \"have you heard that\nNetherfield Park is let at last?\"\n\nMr. Bennet replied that he had not.\n\n\"But it is,\" returned she; \"for Mrs. Long has just been here, and she\ntold me all about it.\"\n\nMr. Bennet made no answer.\n\n\"Do you not want to know who has taken it?\" cried his wife impatiently.\n\n\"You want to tell me, and I have no objection to hearing it.\"\n\nThis was invitation enough.\n\n\"Why, my dear, you must know, Mrs. Long says that Netherfield is taken\nby a young man of large fortune from the north of England; that he came\ndown on Monday in a chaise and four to see the place, and was so much\ndelighted with it, that he agreed with Mr. Morris immediately; that he\nis to take possession before Michaelmas, and some of his servants are to\nbe in the house by the end of next week.\"\n\n\"What is his name?\"\n\n\"Bingley.\"\n\n\"Is he married or single?\"\n\n\"Oh! Single, my dear, to be sure! A single man of large fortune; four or\nfive thousand a year. What a fine thing for our girls!\""
+    }, {
+      "entities" : [ [ "T2", "Jane", [ [ 27, 31 ] ] ], [ "T56", "Elizabeth", [ [ 27, 31 ] ] ], [ "T57", "Lydia", [ [ 27, 31 ] ] ], [ "T58", "Mary", [ [ 27, 31 ] ] ], [ "T59", "Kitty", [ [ 27, 31 ] ] ], [ "T1", "Mr. Bennet", [ [ 44, 54 ] ] ], [ "T47", "Mrs. Bennet", [ [ 69, 73 ] ] ], [ "T3", "Mr. Bennet", [ [ 84, 87 ] ] ], [ "T4", "Mr. Bennet", [ [ 104, 107 ] ] ], [ "T5", "Mrs. Bennet", [ [ 123, 124 ] ] ], [ "T6", "NON-CHARACTER", [ [ 153, 156 ] ] ], [ "T7", "Elizabeth", [ [ 160, 164 ] ] ], [ "T60", "Lydia", [ [ 160, 164 ] ] ], [ "T61", "Mary", [ [ 160, 164 ] ] ], [ "T62", "Kitty", [ [ 160, 164 ] ] ], [ "T63", "Jane", [ [ 160, 164 ] ] ], [ "T8", "Mr. Bennet", [ [ 235, 238 ] ] ], [ "T10", "Mr. Bingley", [ [ 275, 277 ] ] ], [ "T11", "NON-CHARACTER", [ [ 300, 303 ] ] ], [ "T12", "Elizabeth", [ [ 307, 311 ] ] ], [ "T64", "Lydia", [ [ 307, 311 ] ] ], [ "T65", "Mary", [ [ 307, 311 ] ] ], [ "T66", "Kitty", [ [ 307, 311 ] ] ], [ "T67", "Jane", [ [ 307, 311 ] ] ], [ "T13", "Mr. Bennet", [ [ 327, 330 ] ] ], [ "T14", "Mr. Bingley", [ [ 342, 345 ] ] ], [ "T15", "Mr. Bingley", [ [ 357, 359 ] ] ], [ "T16", "Mr. Bennet", [ [ 370, 371 ] ] ], [ "T17", "Mrs. Bennet", [ [ 398, 401 ] ] ], [ "T9", "Lydia", [ [ 410, 415 ] ] ], [ "T68", "Mary", [ [ 410, 415 ] ] ], [ "T69", "Kitty", [ [ 410, 415 ] ] ], [ "T70", "Jane", [ [ 410, 415 ] ] ], [ "T71", "Elizabeth", [ [ 410, 415 ] ] ], [ "T18", "Mrs. Bennet", [ [ 427, 430 ] ] ], [ "T19", "Lydia", [ [ 440, 444 ] ] ], [ "T72", "Mary", [ [ 440, 444 ] ] ], [ "T73", "Kitty", [ [ 440, 444 ] ] ], [ "T74", "Jane", [ [ 440, 444 ] ] ], [ "T75", "Elizabeth", [ [ 440, 444 ] ] ], [ "T20", "Lydia", [ [ 448, 458 ] ] ], [ "T76", "Mary", [ [ 448, 458 ] ] ], [ "T77", "Kitty", [ [ 448, 458 ] ] ], [ "T78", "Jane", [ [ 448, 458 ] ] ], [ "T79", "Elizabeth", [ [ 448, 458 ] ] ], [ "T21", "Mrs. Bennet", [ [ 503, 506 ] ] ], [ "T22", "Lydia", [ [ 526, 529 ] ] ], [ "T80", "Mary", [ [ 526, 529 ] ] ], [ "T81", "Kitty", [ [ 526, 529 ] ] ], [ "T82", "Jane", [ [ 526, 529 ] ] ], [ "T83", "Elizabeth", [ [ 526, 529 ] ] ], [ "T23", "Lydia", [ [ 533, 537 ] ] ], [ "T84", "Mary", [ [ 533, 537 ] ] ], [ "T85", "Kitty", [ [ 533, 537 ] ] ], [ "T86", "Jane", [ [ 533, 537 ] ] ], [ "T87", "Elizabeth", [ [ 533, 537 ] ] ], [ "T48", "Mr. Bingley", [ [ 539, 550 ] ] ], [ "T24", "Mrs. Bennet", [ [ 560, 563 ] ] ], [ "T43", "Lydia", [ [ 580, 585 ] ] ], [ "T88", "Mary", [ [ 580, 585 ] ] ], [ "T89", "Kitty", [ [ 580, 585 ] ] ], [ "T90", "Jane", [ [ 580, 585 ] ] ], [ "T91", "Elizabeth", [ [ 580, 585 ] ] ], [ "T92", "Mrs. Bennet", [ [ 580, 585 ] ] ], [ "T49", "Mr. Bennet", [ [ 593, 597 ] ] ], [ "T25", "Mr. Bennet", [ [ 599, 602 ] ] ], [ "T26", "Mrs. Bennet", [ [ 611, 613 ] ] ], [ "T27", "Mrs. Bennet", [ [ 615, 616 ] ] ], [ "T28", "Mrs. Bennet", [ [ 660, 661 ] ] ], [ "T50", "NON-CHARACTER", [ [ 718, 723 ] ] ], [ "T51", "NON-CHARACTER", [ [ 742, 751 ] ] ], [ "T29", "NON-CHARACTER", [ [ 753, 756 ] ] ], [ "T30", "NON-CHARACTER", [ [ 824, 829 ] ] ], [ "T52", "Mr. Bennet", [ [ 880, 884 ] ] ], [ "T31", "Mr. Bennet", [ [ 886, 889 ] ] ], [ "T53", "Mr. Bingley", [ [ 913, 924 ] ] ], [ "T32", "Mr. Bingley", [ [ 930, 932 ] ] ], [ "T34", "Mr. Bennet", [ [ 982, 983 ] ] ], [ "T35", "Mr. Bennet", [ [ 996, 997 ] ] ], [ "T36", "Mrs. Bennet", [ [ 1005, 1008 ] ] ], [ "T33", "Lydia", [ [ 1031, 1040 ] ] ], [ "T93", "Mary", [ [ 1031, 1040 ] ] ], [ "T94", "Kitty", [ [ 1031, 1040 ] ] ], [ "T95", "Jane", [ [ 1031, 1040 ] ] ], [ "T96", "Elizabeth", [ [ 1031, 1040 ] ] ], [ "T38", "NON-CHARACTER", [ [ 1091, 1094 ] ] ], [ "T39", "Lydia", [ [ 1098, 1102 ] ] ], [ "T97", "Mary", [ [ 1098, 1102 ] ] ], [ "T98", "Kitty", [ [ 1098, 1102 ] ] ], [ "T99", "Jane", [ [ 1098, 1102 ] ] ], [ "T100", "Elizabeth", [ [ 1098, 1102 ] ] ], [ "T37", "Sir William Lucas", [ [ 1104, 1115 ] ] ], [ "T54", "Lady Lucas", [ [ 1120, 1130 ] ] ], [ "T40", "Mr. Bennet", [ [ 1193, 1196 ] ] ], [ "T41", "Sir William Lucas", [ [ 1203, 1207 ] ] ], [ "T101", "Lady Lucas", [ [ 1203, 1207 ] ] ], [ "T55", "NON-CHARACTER", [ [ 1217, 1226 ] ] ], [ "T42", "Mr. Bennet", [ [ 1235, 1238 ] ] ], [ "T44", "Mrs. Bennet", [ [ 1278, 1280 ] ] ], [ "T102", "Lydia", [ [ 1278, 1280 ] ] ], [ "T103", "Mary", [ [ 1278, 1280 ] ] ], [ "T104", "Kitty", [ [ 1278, 1280 ] ] ], [ "T105", "Jane", [ [ 1278, 1280 ] ] ], [ "T106", "Elizabeth", [ [ 1278, 1280 ] ] ], [ "T45", "Mr. Bingley", [ [ 1290, 1293 ] ] ], [ "T46", "Mr. Bennet", [ [ 1297, 1300 ] ] ] ],
+      "name" : "Pride & Prejudice Demo - Chapter 1, Passage 2",
+      "text" : "\"How so? How can it affect them?\"\n\n\"My dear Mr. Bennet,\" replied his wife, \"how can you be so tiresome! You\nmust know that I am thinking of his marrying one of them.\"\n\n\"Is that his design in settling here?\"\n\n\"Design! Nonsense, how can you talk so! But it is very likely that he\nmay fall in love with one of them, and therefore you must visit him as\nsoon as he comes.\"\n\n\"I see no occasion for that. You and the girls may go, or you may send\nthem by themselves, which perhaps will be still better, for as you are\nas handsome as any of them, Mr. Bingley may like you the best of the\nparty.\"\n\n\"My dear, you flatter me. I certainly have had my share of beauty, but\nI do not pretend to be anything extraordinary now. When a woman has five\ngrown-up daughters, she ought to give over thinking of her own beauty.\"\n\n\"In such cases, a woman has not often much beauty to think of.\"\n\n\"But, my dear, you must indeed go and see Mr. Bingley when he comes into\nthe neighbourhood.\"\n\n\"It is more than I engage for, I assure you.\"\n\n\"But consider your daughters. Only think what an establishment it would\nbe for one of them. Sir William and Lady Lucas are determined to\ngo, merely on that account, for in general, you know, they visit no\nnewcomers. Indeed you must go, for it will be impossible for us to\nvisit him if you do not.\""
+    }, {
+      "entities" : [ [ "T1", "Mrs. Bennet", [ [ 1, 4 ] ] ], [ "T2", "Mr. Bennet", [ [ 34, 35 ] ] ], [ "T43", "Mr. Bingley", [ [ 45, 56 ] ] ], [ "T3", "Mrs. Bennet", [ [ 82, 85 ] ] ], [ "T4", "Lydia", [ [ 91, 92 ] ] ], [ "T46", "Mary", [ [ 91, 92 ] ] ], [ "T56", "Jane", [ [ 91, 92 ] ] ], [ "T57", "Elizabeth", [ [ 91, 92 ] ] ], [ "T58", "Kitty", [ [ 91, 92 ] ] ], [ "T5", "Mrs. Bennet", [ [ 118, 121 ] ] ], [ "T6", "Mr. Bingley", [ [ 132, 135 ] ] ], [ "T39", "NON-CHARACTER", [ [ 173, 182 ] ] ], [ "T7", "Mr. Bingley", [ [ 183, 185 ] ] ], [ "T47", "Lydia", [ [ 201, 206 ] ] ], [ "T59", "Mary", [ [ 201, 206 ] ] ], [ "T60", "Jane", [ [ 201, 206 ] ] ], [ "T61", "Elizabeth", [ [ 201, 206 ] ] ], [ "T62", "Kitty", [ [ 201, 206 ] ] ], [ "T8", "Mr. Bennet", [ [ 215, 216 ] ] ], [ "T48", "Elizabeth", [ [ 257, 262 ] ] ], [ "T9", "Mrs. Bennet", [ [ 267, 268 ] ] ], [ "T10", "Mr. Bennet", [ [ 276, 279 ] ] ], [ "T49", "Elizabeth", [ [ 303, 308 ] ] ], [ "T11", "Lydia", [ [ 338, 344 ] ] ], [ "T63", "Mary", [ [ 338, 344 ] ] ], [ "T64", "Jane", [ [ 338, 344 ] ] ], [ "T65", "Kitty", [ [ 338, 344 ] ] ], [ "T12", "Mrs. Bennet", [ [ 350, 351 ] ] ], [ "T13", "Elizabeth", [ [ 360, 363 ] ] ], [ "T50", "Jane", [ [ 391, 395 ] ] ], [ "T51", "Lydia", [ [ 426, 431 ] ] ], [ "T14", "Mr. Bennet", [ [ 437, 440 ] ] ], [ "T15", "Elizabeth", [ [ 459, 462 ] ] ], [ "T16", "Mary", [ [ 482, 486 ] ] ], [ "T66", "Kitty", [ [ 482, 486 ] ] ], [ "T67", "Jane", [ [ 482, 486 ] ] ], [ "T68", "Lydia", [ [ 482, 486 ] ] ], [ "T17", "Mary", [ [ 500, 504 ] ] ], [ "T69", "Kitty", [ [ 500, 504 ] ] ], [ "T70", "Jane", [ [ 500, 504 ] ] ], [ "T71", "Lydia", [ [ 500, 504 ] ] ], [ "T18", "Mary", [ [ 523, 527 ] ] ], [ "T72", "Kitty", [ [ 523, 527 ] ] ], [ "T73", "Jane", [ [ 523, 527 ] ] ], [ "T74", "Lydia", [ [ 523, 527 ] ] ], [ "T19", "Mr. Bennet", [ [ 538, 540 ] ] ], [ "T20", "Mary", [ [ 543, 547 ] ] ], [ "T75", "Kitty", [ [ 543, 547 ] ] ], [ "T76", "Jane", [ [ 543, 547 ] ] ], [ "T77", "Lydia", [ [ 543, 547 ] ] ], [ "T21", "NON-CHARACTER", [ [ 586, 591 ] ] ], [ "T52", "Elizabeth", [ [ 597, 602 ] ] ], [ "T22", "Mary", [ [ 644, 651 ] ] ], [ "T78", "Kitty", [ [ 644, 651 ] ] ], [ "T79", "Jane", [ [ 644, 651 ] ] ], [ "T80", "Lydia", [ [ 644, 651 ] ] ], [ "T53", "Mr. Bennet", [ [ 656, 666 ] ] ], [ "T23", "Mr. Bennet", [ [ 676, 679 ] ] ], [ "T81", "Mary", [ [ 695, 703 ] ] ], [ "T82", "Kitty", [ [ 695, 703 ] ] ], [ "T83", "Jane", [ [ 695, 703 ] ] ], [ "T54", "Lydia", [ [ 695, 703 ] ] ], [ "T24", "Mr. Bennet", [ [ 719, 722 ] ] ], [ "T25", "Mrs. Bennet", [ [ 746, 748 ] ] ], [ "T26", "Mr. Bennet", [ [ 750, 753 ] ] ], [ "T27", "Mrs. Bennet", [ [ 796, 799 ] ] ], [ "T28", "Mr. Bennet", [ [ 808, 810 ] ] ], [ "T55", "Mrs. Bennet", [ [ 815, 819 ] ] ], [ "T29", "Mr. Bennet", [ [ 821, 822 ] ] ], [ "T31", "Mr. Bennet", [ [ 885, 886 ] ] ], [ "T32", "Mrs. Bennet", [ [ 898, 901 ] ] ], [ "T34", "Mr. Bennet", [ [ 975, 978 ] ] ], [ "T35", "Mrs. Bennet", [ [ 996, 997 ] ] ], [ "T36", "Mr. Bennet", [ [ 1013, 1014 ] ] ], [ "T37", "Mrs. Bennet", [ [ 1020, 1023 ] ] ], [ "T30", "NON-CHARACTER", [ [ 1069, 1072 ] ] ], [ "T40", "Mrs. Bennet", [ [ 1150, 1152 ] ] ], [ "T84", "Mr. Bennet", [ [ 1150, 1152 ] ] ], [ "T33", "NON-CHARACTER", [ [ 1164, 1168 ] ] ], [ "T41", "Mr. Bennet", [ [ 1188, 1191 ] ] ], [ "T42", "NON-CHARACTER", [ [ 1207, 1211 ] ] ], [ "T38", "Mrs. Bennet", [ [ 1235, 1239 ] ] ], [ "T44", "Mr. Bennet", [ [ 1269, 1270 ] ] ], [ "T45", "NON-CHARACTER", [ [ 1282, 1286 ] ] ] ],
+      "name" : "Pride & Prejudice Demo - Chapter 1, Passage 3",
+      "text" : "\"You are over-scrupulous, surely. I dare say Mr. Bingley will be very\nglad to see you; and I will send a few lines by you to assure him of my\nhearty consent to his marrying whichever he chooses of the girls; though\nI must throw in a good word for my little Lizzy.\"\n\n\"I desire you will do no such thing. Lizzy is not a bit better than the\nothers; and I am sure she is not half so handsome as Jane, nor half so\ngood-humoured as Lydia. But you are always giving her the preference.\"\n\n\"They have none of them much to recommend them,\" replied he; \"they are\nall silly and ignorant like other girls; but Lizzy has something more of\nquickness than her sisters.\"\n\n\"Mr. Bennet, how can you abuse your own children in such a way? You\ntake delight in vexing me. You have no compassion for my poor nerves.\"\n\n\"You mistake me, my dear. I have a high respect for your nerves. They\nare my old friends. I have heard you mention them with consideration\nthese last twenty years at least.\"\n\n\"Ah, you do not know what I suffer.\"\n\n\"But I hope you will get over it, and live to see many young men of four\nthousand a year come into the neighbourhood.\"\n\n\"It will be no use to us, if twenty such should come, since you will not\nvisit them.\"\n\n\"Depend upon it, my dear, that when there are twenty, I will visit them\nall.\""
+    }, {
+      "entities" : [ [ "T7", "Mr. Bennet", [ [ 0, 10 ] ] ], [ "T8", "Mrs. Bennet", [ [ 168, 172 ] ] ], [ "T2", "Mrs. Bennet", [ [ 239, 242 ] ] ], [ "T1", "Mrs. Bennet", [ [ 249, 254 ] ] ], [ "T3", "Mrs. Bennet", [ [ 325, 328 ] ] ], [ "T4", "Mrs. Bennet", [ [ 347, 350 ] ] ], [ "T5", "Mrs. Bennet", [ [ 359, 366 ] ] ], [ "T6", "Lydia", [ [ 416, 425 ] ] ], [ "T9", "Mary", [ [ 416, 425 ] ] ], [ "T10", "Jane", [ [ 416, 425 ] ] ], [ "T11", "Elizabeth", [ [ 416, 425 ] ] ], [ "T12", "Kitty", [ [ 416, 425 ] ] ] ],
+      "name" : "Pride & Prejudice Demo - Chapter 1, Passage 4",
+      "text" : "Mr. Bennet was so odd a mixture of quick parts, sarcastic humour,\nreserve, and caprice, that the experience of three-and-twenty years had\nbeen insufficient to make his wife understand his character. Her mind\nwas less difficult to develop. She was a woman of mean understanding,\nlittle information, and uncertain temper. When she was discontented,\nshe fancied herself nervous. The business of her life was to get her\ndaughters married; its solace was visiting and news."
+    } ]
+  },
+  "log" : [ {
+    "text" : "Hardik: CHARLES is awesome!."
+  } ]
+}
